@@ -1,0 +1,2017 @@
+{
+  "original_score": 50.78,
+  "best_score": 53.67,
+  "score_delta": 2.89,
+  "best_lesson": {
+    "id": "photosynthesis_intro",
+    "title": "Introduction to Photosynthesis",
+    "learning_goals": [
+      "Explain how plants turn light energy into stored chemical energy.",
+      "Describe the roles of chlorophyll, glucose, carbon dioxide, and water."
+    ],
+    "target_audience": "Middle-school science students",
+    "segments": [
+      {
+        "id": "slide_1",
+        "title": "What plants need",
+        "content": "Plants need sunlight, water, and carbon dioxide. They use these ingredients to make food.",
+        "concepts": [
+          "sunlight",
+          "water",
+          "carbon dioxide"
+        ],
+        "modality": "slide",
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "id": "slide_2",
+        "title": "The job of chlorophyll",
+        "content": "Chlorophyll is the green pigment in leaves that absorbs energy from sunlight.",
+        "concepts": [
+          "chlorophyll",
+          "light energy"
+        ],
+        "modality": "text",
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "id": "slide_3",
+        "title": "Photosynthesis all at once",
+        "content": "Chlorophyll captures photons, water splits, oxygen leaves, ATP carries energy, carbon fixation uses carbon dioxide, and glucose stores the energy for later. These light reactions and chemical equation describe several connected steps at the same time.",
+        "concepts": [
+          "chlorophyll",
+          "photons",
+          "water splitting",
+          "oxygen",
+          "ATP",
+          "carbon fixation",
+          "glucose",
+          "light reactions"
+        ],
+        "modality": "text",
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "id": "slide_3_example_2",
+        "title": "Example: chlorophyll",
+        "content": "Example: Apply chlorophyll to a familiar real-world situation and explain what changes.",
+        "concepts": [
+          "chlorophyll"
+        ],
+        "modality": "mixed",
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "id": "slide_3_example",
+        "title": "Example: chlorophyll",
+        "content": "Example: Apply chlorophyll to a familiar real-world situation and explain what changes.",
+        "concepts": [
+          "chlorophyll"
+        ],
+        "modality": "mixed",
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "id": "slide_4",
+        "title": "The chemical equation",
+        "content": "6CO2 plus 6H2O becomes C6H12O6 plus 6O2. This equation summarizes photosynthesis.",
+        "concepts": [
+          "chemical equation",
+          "glucose",
+          "oxygen"
+        ],
+        "modality": "slide",
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "id": "slide_5",
+        "title": "Why light matters",
+        "content": "Less sunlight means less energy is available to make glucose.",
+        "concepts": [
+          "sunlight",
+          "glucose"
+        ],
+        "modality": "slide",
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "id": "slide_6",
+        "title": "Summary",
+        "content": "Photosynthesis helps plants make sugar using energy from light.",
+        "concepts": [
+          "photosynthesis",
+          "glucose"
+        ],
+        "modality": "text",
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "diagnoses": {
+    "diagnoses": [
+      {
+        "id": "slide_3:cognitive_overload",
+        "segment_id": "slide_3",
+        "issue_type": "cognitive_overload",
+        "severity": "high",
+        "explanation": "This segment may be too dense or may introduce too much information too quickly.",
+        "metric_evidence": {
+          "cognitive_load": 100.0,
+          "information_density": 100.0
+        },
+        "recommended_actions": [
+          "split_section",
+          "simplify_explanation",
+          "add_example"
+        ],
+        "priority": 1
+      },
+      {
+        "id": "slide_1:low_retention",
+        "segment_id": "slide_1",
+        "issue_type": "low_retention",
+        "severity": "high",
+        "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+        "metric_evidence": {
+          "retention": 38.0,
+          "reinforcement": 24.0
+        },
+        "recommended_actions": [
+          "add_retrieval_question",
+          "add_recap",
+          "insert_check_for_understanding"
+        ],
+        "priority": 2
+      },
+      {
+        "id": "slide_2:low_retention",
+        "segment_id": "slide_2",
+        "issue_type": "low_retention",
+        "severity": "high",
+        "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+        "metric_evidence": {
+          "retention": 38.0,
+          "reinforcement": 24.0
+        },
+        "recommended_actions": [
+          "add_retrieval_question",
+          "add_recap",
+          "insert_check_for_understanding"
+        ],
+        "priority": 3
+      },
+      {
+        "id": "slide_3:low_retention",
+        "segment_id": "slide_3",
+        "issue_type": "low_retention",
+        "severity": "high",
+        "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+        "metric_evidence": {
+          "retention": 38.0,
+          "reinforcement": 24.0
+        },
+        "recommended_actions": [
+          "add_retrieval_question",
+          "add_recap",
+          "insert_check_for_understanding"
+        ],
+        "priority": 4
+      },
+      {
+        "id": "slide_4:low_retention",
+        "segment_id": "slide_4",
+        "issue_type": "low_retention",
+        "severity": "high",
+        "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+        "metric_evidence": {
+          "retention": 38.0,
+          "reinforcement": 24.0
+        },
+        "recommended_actions": [
+          "add_retrieval_question",
+          "add_recap",
+          "insert_check_for_understanding"
+        ],
+        "priority": 5
+      },
+      {
+        "id": "slide_5:low_retention",
+        "segment_id": "slide_5",
+        "issue_type": "low_retention",
+        "severity": "high",
+        "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+        "metric_evidence": {
+          "retention": 38.0,
+          "reinforcement": 24.0
+        },
+        "recommended_actions": [
+          "add_retrieval_question",
+          "add_recap",
+          "insert_check_for_understanding"
+        ],
+        "priority": 6
+      },
+      {
+        "id": "slide_6:low_retention",
+        "segment_id": "slide_6",
+        "issue_type": "low_retention",
+        "severity": "high",
+        "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+        "metric_evidence": {
+          "retention": 38.0,
+          "reinforcement": 24.0
+        },
+        "recommended_actions": [
+          "add_retrieval_question",
+          "add_recap",
+          "insert_check_for_understanding"
+        ],
+        "priority": 7
+      },
+      {
+        "id": "slide_1:low_multimodal_support",
+        "segment_id": "slide_1",
+        "issue_type": "low_multimodal_support",
+        "severity": "medium",
+        "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+        "metric_evidence": {
+          "multimodal_support": 32.0
+        },
+        "recommended_actions": [
+          "add_visual",
+          "add_analogy",
+          "add_concrete_example"
+        ],
+        "priority": 8
+      },
+      {
+        "id": "slide_2:low_multimodal_support",
+        "segment_id": "slide_2",
+        "issue_type": "low_multimodal_support",
+        "severity": "medium",
+        "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+        "metric_evidence": {
+          "multimodal_support": 32.0
+        },
+        "recommended_actions": [
+          "add_visual",
+          "add_analogy",
+          "add_concrete_example"
+        ],
+        "priority": 9
+      },
+      {
+        "id": "slide_3:low_multimodal_support",
+        "segment_id": "slide_3",
+        "issue_type": "low_multimodal_support",
+        "severity": "medium",
+        "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+        "metric_evidence": {
+          "multimodal_support": 32.0
+        },
+        "recommended_actions": [
+          "add_visual",
+          "add_analogy",
+          "add_concrete_example"
+        ],
+        "priority": 10
+      },
+      {
+        "id": "slide_4:low_multimodal_support",
+        "segment_id": "slide_4",
+        "issue_type": "low_multimodal_support",
+        "severity": "medium",
+        "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+        "metric_evidence": {
+          "multimodal_support": 32.0
+        },
+        "recommended_actions": [
+          "add_visual",
+          "add_analogy",
+          "add_concrete_example"
+        ],
+        "priority": 11
+      },
+      {
+        "id": "slide_5:low_multimodal_support",
+        "segment_id": "slide_5",
+        "issue_type": "low_multimodal_support",
+        "severity": "medium",
+        "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+        "metric_evidence": {
+          "multimodal_support": 32.0
+        },
+        "recommended_actions": [
+          "add_visual",
+          "add_analogy",
+          "add_concrete_example"
+        ],
+        "priority": 12
+      },
+      {
+        "id": "slide_6:low_multimodal_support",
+        "segment_id": "slide_6",
+        "issue_type": "low_multimodal_support",
+        "severity": "medium",
+        "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+        "metric_evidence": {
+          "multimodal_support": 32.0
+        },
+        "recommended_actions": [
+          "add_visual",
+          "add_analogy",
+          "add_concrete_example"
+        ],
+        "priority": 13
+      }
+    ],
+    "warnings": []
+  },
+  "edit_history": [
+    {
+      "edits": [
+        {
+          "id": "edit_slide_3_example",
+          "target_segment_id": "slide_3",
+          "action": "add_example",
+          "rationale": "This segment may be too dense or may introduce too much information too quickly.",
+          "new_segments": [
+            {
+              "id": "slide_3_example",
+              "title": "Example: chlorophyll",
+              "content": "Example: Apply chlorophyll to a familiar real-world situation and explain what changes.",
+              "concepts": [
+                "chlorophyll"
+              ],
+              "modality": "mixed",
+              "start_time": null,
+              "end_time": null
+            }
+          ],
+          "inserted_after_segment_id": "slide_3",
+          "source_diagnosis_id": "slide_3:cognitive_overload",
+          "expected_metric_impact": {
+            "multimodal_support": 14.0,
+            "concept_flow": 5.0
+          }
+        }
+      ]
+    },
+    {
+      "edits": [
+        {
+          "id": "edit_slide_3_example",
+          "target_segment_id": "slide_3",
+          "action": "add_example",
+          "rationale": "This segment may be too dense or may introduce too much information too quickly.",
+          "new_segments": [
+            {
+              "id": "slide_3_example_2",
+              "title": "Example: chlorophyll",
+              "content": "Example: Apply chlorophyll to a familiar real-world situation and explain what changes.",
+              "concepts": [
+                "chlorophyll"
+              ],
+              "modality": "mixed",
+              "start_time": null,
+              "end_time": null
+            }
+          ],
+          "inserted_after_segment_id": "slide_3",
+          "source_diagnosis_id": "slide_3:cognitive_overload",
+          "expected_metric_impact": {
+            "multimodal_support": 14.0,
+            "concept_flow": 5.0
+          }
+        }
+      ]
+    }
+  ],
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "diagnoses": {
+        "diagnoses": [
+          {
+            "id": "slide_3:cognitive_overload",
+            "segment_id": "slide_3",
+            "issue_type": "cognitive_overload",
+            "severity": "high",
+            "explanation": "This segment may be too dense or may introduce too much information too quickly.",
+            "metric_evidence": {
+              "cognitive_load": 100.0,
+              "information_density": 100.0
+            },
+            "recommended_actions": [
+              "split_section",
+              "simplify_explanation",
+              "add_example"
+            ],
+            "priority": 1
+          },
+          {
+            "id": "slide_1:low_retention",
+            "segment_id": "slide_1",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 2
+          },
+          {
+            "id": "slide_2:low_retention",
+            "segment_id": "slide_2",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 3
+          },
+          {
+            "id": "slide_3:low_retention",
+            "segment_id": "slide_3",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 4
+          },
+          {
+            "id": "slide_4:low_retention",
+            "segment_id": "slide_4",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 5
+          },
+          {
+            "id": "slide_5:low_retention",
+            "segment_id": "slide_5",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 6
+          },
+          {
+            "id": "slide_6:low_retention",
+            "segment_id": "slide_6",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 7
+          },
+          {
+            "id": "slide_1:low_multimodal_support",
+            "segment_id": "slide_1",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 8
+          },
+          {
+            "id": "slide_2:low_multimodal_support",
+            "segment_id": "slide_2",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 9
+          },
+          {
+            "id": "slide_3:low_multimodal_support",
+            "segment_id": "slide_3",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 10
+          },
+          {
+            "id": "slide_4:low_multimodal_support",
+            "segment_id": "slide_4",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 11
+          },
+          {
+            "id": "slide_5:low_multimodal_support",
+            "segment_id": "slide_5",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 12
+          },
+          {
+            "id": "slide_6:low_multimodal_support",
+            "segment_id": "slide_6",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 13
+          }
+        ],
+        "warnings": []
+      },
+      "candidates": [
+        {
+          "candidate_id": "candidate_1_slide_3_split_section",
+          "edit_plan": {
+            "edits": [
+              {
+                "id": "edit_slide_3_split",
+                "target_segment_id": "slide_3",
+                "action": "split_section",
+                "rationale": "This segment may be too dense or may introduce too much information too quickly.",
+                "new_segments": [
+                  {
+                    "id": "slide_3_a",
+                    "title": "Photosynthesis all at once: intuition",
+                    "content": "Start with the big idea: chlorophyll, photons, water splitting, oxygen. Focus on why it matters before adding detail.",
+                    "concepts": [
+                      "chlorophyll",
+                      "photons",
+                      "water splitting",
+                      "oxygen"
+                    ],
+                    "modality": "text",
+                    "start_time": null,
+                    "end_time": null
+                  },
+                  {
+                    "id": "slide_3_b",
+                    "title": "Photosynthesis all at once: core idea",
+                    "content": "Now add the core detail: ATP, carbon fixation, glucose, light reactions. Chlorophyll captures photons, water splits, oxygen leaves, ATP carries energy, carbon fixation uses carbon dioxide, and glucose stores the energy for later. These light reactions and chemical equation describe several connected steps at the same time.",
+                    "concepts": [
+                      "ATP",
+                      "carbon fixation",
+                      "glucose",
+                      "light reactions"
+                    ],
+                    "modality": "text",
+                    "start_time": null,
+                    "end_time": null
+                  }
+                ],
+                "inserted_after_segment_id": null,
+                "source_diagnosis_id": "slide_3:cognitive_overload",
+                "expected_metric_impact": {
+                  "cognitive_load": -18.0,
+                  "information_density": -15.0,
+                  "concept_flow": 8.0
+                }
+              }
+            ]
+          },
+          "score": 51.89,
+          "score_delta": 1.11,
+          "metric_report": {
+            "global_metrics": {
+              "engagement": 64.34,
+              "cognitive_load": 63.37,
+              "concept_flow": 71.93,
+              "retention": 38.0,
+              "novelty": 64.57,
+              "information_density": 55.03,
+              "reinforcement": 24.0,
+              "multimodal_support": 32.0
+            },
+            "learning_score": 51.89,
+            "segment_metrics": [
+              {
+                "segment_id": "slide_1",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 75.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_2",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 66.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_a",
+                "metrics": {
+                  "engagement": 62.8,
+                  "cognitive_load": 75.0,
+                  "concept_flow": 65.5,
+                  "retention": 38.0,
+                  "novelty": 75.0,
+                  "information_density": 65.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_b",
+                "metrics": {
+                  "engagement": 62.6,
+                  "cognitive_load": 81.6,
+                  "concept_flow": 83.0,
+                  "retention": 38.0,
+                  "novelty": 74.0,
+                  "information_density": 75.2,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_4",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_5",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_6",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 71.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              }
+            ],
+            "model_name": null,
+            "model_version": null,
+            "raw_output_path": null,
+            "confidence": null,
+            "warnings": []
+          }
+        },
+        {
+          "candidate_id": "candidate_2_slide_3_simplify_explanation",
+          "edit_plan": {
+            "edits": [
+              {
+                "id": "edit_slide_3_simplify",
+                "target_segment_id": "slide_3",
+                "action": "simplify_explanation",
+                "rationale": "This segment may be too dense or may introduce too much information too quickly.",
+                "new_segments": [
+                  {
+                    "id": "slide_3",
+                    "title": "Photosynthesis all at once",
+                    "content": "Let's break this into the main idea first: chlorophyll, photons, water splitting, oxygen, ATP, carbon fixation, glucose, light reactions. Then connect the details one at a time.",
+                    "concepts": [
+                      "chlorophyll",
+                      "photons",
+                      "water splitting",
+                      "oxygen",
+                      "ATP",
+                      "carbon fixation",
+                      "glucose",
+                      "light reactions"
+                    ],
+                    "modality": "text",
+                    "start_time": null,
+                    "end_time": null
+                  }
+                ],
+                "inserted_after_segment_id": null,
+                "source_diagnosis_id": "slide_3:cognitive_overload",
+                "expected_metric_impact": {
+                  "cognitive_load": -12.0,
+                  "information_density": -10.0
+                }
+              }
+            ]
+          },
+          "score": 50.78,
+          "score_delta": 0.0,
+          "metric_report": {
+            "global_metrics": {
+              "engagement": 63.17,
+              "cognitive_load": 64.5,
+              "concept_flow": 70.08,
+              "retention": 38.0,
+              "novelty": 67.17,
+              "information_density": 57.5,
+              "reinforcement": 24.0,
+              "multimodal_support": 32.0
+            },
+            "learning_score": 50.78,
+            "segment_metrics": [
+              {
+                "segment_id": "slide_1",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 75.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_2",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 66.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3",
+                "metrics": {
+                  "engagement": 54.0,
+                  "cognitive_load": 100.0,
+                  "concept_flow": 65.5,
+                  "retention": 38.0,
+                  "novelty": 100.0,
+                  "information_density": 100.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_4",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_5",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_6",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 71.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              }
+            ],
+            "model_name": null,
+            "model_version": null,
+            "raw_output_path": null,
+            "confidence": null,
+            "warnings": []
+          }
+        },
+        {
+          "candidate_id": "candidate_3_slide_3_add_example",
+          "edit_plan": {
+            "edits": [
+              {
+                "id": "edit_slide_3_example",
+                "target_segment_id": "slide_3",
+                "action": "add_example",
+                "rationale": "This segment may be too dense or may introduce too much information too quickly.",
+                "new_segments": [
+                  {
+                    "id": "slide_3_example",
+                    "title": "Example: chlorophyll",
+                    "content": "Example: Apply chlorophyll to a familiar real-world situation and explain what changes.",
+                    "concepts": [
+                      "chlorophyll"
+                    ],
+                    "modality": "mixed",
+                    "start_time": null,
+                    "end_time": null
+                  }
+                ],
+                "inserted_after_segment_id": "slide_3",
+                "source_diagnosis_id": "slide_3:cognitive_overload",
+                "expected_metric_impact": {
+                  "multimodal_support": 14.0,
+                  "concept_flow": 5.0
+                }
+              }
+            ]
+          },
+          "score": 52.55,
+          "score_delta": 1.77,
+          "metric_report": {
+            "global_metrics": {
+              "engagement": 64.14,
+              "cognitive_load": 61.29,
+              "concept_flow": 70.93,
+              "retention": 38.0,
+              "novelty": 64.43,
+              "information_density": 54.29,
+              "reinforcement": 24.0,
+              "multimodal_support": 38.0
+            },
+            "learning_score": 52.55,
+            "segment_metrics": [
+              {
+                "segment_id": "slide_1",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 75.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_2",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 66.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3",
+                "metrics": {
+                  "engagement": 54.0,
+                  "cognitive_load": 100.0,
+                  "concept_flow": 65.5,
+                  "retention": 38.0,
+                  "novelty": 100.0,
+                  "information_density": 100.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_example",
+                "metrics": {
+                  "engagement": 70.0,
+                  "cognitive_load": 42.0,
+                  "concept_flow": 76.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 35.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 74.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_4",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_5",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_6",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 71.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              }
+            ],
+            "model_name": null,
+            "model_version": null,
+            "raw_output_path": null,
+            "confidence": null,
+            "warnings": []
+          }
+        }
+      ],
+      "selected_candidate_id": "candidate_3_slide_3_add_example"
+    },
+    {
+      "iteration": 2,
+      "diagnoses": {
+        "diagnoses": [
+          {
+            "id": "slide_3:cognitive_overload",
+            "segment_id": "slide_3",
+            "issue_type": "cognitive_overload",
+            "severity": "high",
+            "explanation": "This segment may be too dense or may introduce too much information too quickly.",
+            "metric_evidence": {
+              "cognitive_load": 100.0,
+              "information_density": 100.0
+            },
+            "recommended_actions": [
+              "split_section",
+              "simplify_explanation",
+              "add_example"
+            ],
+            "priority": 1
+          },
+          {
+            "id": "slide_1:low_retention",
+            "segment_id": "slide_1",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 2
+          },
+          {
+            "id": "slide_2:low_retention",
+            "segment_id": "slide_2",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 3
+          },
+          {
+            "id": "slide_3:low_retention",
+            "segment_id": "slide_3",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 4
+          },
+          {
+            "id": "slide_3_example:low_retention",
+            "segment_id": "slide_3_example",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 5
+          },
+          {
+            "id": "slide_4:low_retention",
+            "segment_id": "slide_4",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 6
+          },
+          {
+            "id": "slide_5:low_retention",
+            "segment_id": "slide_5",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 7
+          },
+          {
+            "id": "slide_6:low_retention",
+            "segment_id": "slide_6",
+            "issue_type": "low_retention",
+            "severity": "high",
+            "explanation": "The lesson does not sufficiently revisit or reinforce earlier concepts.",
+            "metric_evidence": {
+              "retention": 38.0,
+              "reinforcement": 24.0
+            },
+            "recommended_actions": [
+              "add_retrieval_question",
+              "add_recap",
+              "insert_check_for_understanding"
+            ],
+            "priority": 8
+          },
+          {
+            "id": "slide_1:low_multimodal_support",
+            "segment_id": "slide_1",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 9
+          },
+          {
+            "id": "slide_2:low_multimodal_support",
+            "segment_id": "slide_2",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 10
+          },
+          {
+            "id": "slide_3:low_multimodal_support",
+            "segment_id": "slide_3",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 11
+          },
+          {
+            "id": "slide_4:low_multimodal_support",
+            "segment_id": "slide_4",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 12
+          },
+          {
+            "id": "slide_5:low_multimodal_support",
+            "segment_id": "slide_5",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 13
+          },
+          {
+            "id": "slide_6:low_multimodal_support",
+            "segment_id": "slide_6",
+            "issue_type": "low_multimodal_support",
+            "severity": "medium",
+            "explanation": "This concept is mostly taught through one channel and may benefit from a visual, analogy, or concrete example.",
+            "metric_evidence": {
+              "multimodal_support": 32.0
+            },
+            "recommended_actions": [
+              "add_visual",
+              "add_analogy",
+              "add_concrete_example"
+            ],
+            "priority": 14
+          }
+        ],
+        "warnings": []
+      },
+      "candidates": [
+        {
+          "candidate_id": "candidate_1_slide_3_split_section",
+          "edit_plan": {
+            "edits": [
+              {
+                "id": "edit_slide_3_split",
+                "target_segment_id": "slide_3",
+                "action": "split_section",
+                "rationale": "This segment may be too dense or may introduce too much information too quickly.",
+                "new_segments": [
+                  {
+                    "id": "slide_3_a",
+                    "title": "Photosynthesis all at once: intuition",
+                    "content": "Start with the big idea: chlorophyll, photons, water splitting, oxygen. Focus on why it matters before adding detail.",
+                    "concepts": [
+                      "chlorophyll",
+                      "photons",
+                      "water splitting",
+                      "oxygen"
+                    ],
+                    "modality": "text",
+                    "start_time": null,
+                    "end_time": null
+                  },
+                  {
+                    "id": "slide_3_b",
+                    "title": "Photosynthesis all at once: core idea",
+                    "content": "Now add the core detail: ATP, carbon fixation, glucose, light reactions. Chlorophyll captures photons, water splits, oxygen leaves, ATP carries energy, carbon fixation uses carbon dioxide, and glucose stores the energy for later. These light reactions and chemical equation describe several connected steps at the same time.",
+                    "concepts": [
+                      "ATP",
+                      "carbon fixation",
+                      "glucose",
+                      "light reactions"
+                    ],
+                    "modality": "text",
+                    "start_time": null,
+                    "end_time": null
+                  }
+                ],
+                "inserted_after_segment_id": null,
+                "source_diagnosis_id": "slide_3:cognitive_overload",
+                "expected_metric_impact": {
+                  "cognitive_load": -18.0,
+                  "information_density": -15.0,
+                  "concept_flow": 8.0
+                }
+              }
+            ]
+          },
+          "score": 53.31,
+          "score_delta": 0.76,
+          "metric_report": {
+            "global_metrics": {
+              "engagement": 65.05,
+              "cognitive_load": 60.7,
+              "concept_flow": 72.44,
+              "retention": 38.0,
+              "novelty": 62.5,
+              "information_density": 52.52,
+              "reinforcement": 24.0,
+              "multimodal_support": 37.25
+            },
+            "learning_score": 53.31,
+            "segment_metrics": [
+              {
+                "segment_id": "slide_1",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 75.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_2",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 66.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_a",
+                "metrics": {
+                  "engagement": 62.8,
+                  "cognitive_load": 75.0,
+                  "concept_flow": 65.5,
+                  "retention": 38.0,
+                  "novelty": 75.0,
+                  "information_density": 65.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_b",
+                "metrics": {
+                  "engagement": 62.6,
+                  "cognitive_load": 81.6,
+                  "concept_flow": 83.0,
+                  "retention": 38.0,
+                  "novelty": 74.0,
+                  "information_density": 75.2,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_example",
+                "metrics": {
+                  "engagement": 70.0,
+                  "cognitive_load": 42.0,
+                  "concept_flow": 76.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 35.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 74.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_4",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_5",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_6",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 71.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              }
+            ],
+            "model_name": null,
+            "model_version": null,
+            "raw_output_path": null,
+            "confidence": null,
+            "warnings": []
+          }
+        },
+        {
+          "candidate_id": "candidate_2_slide_3_simplify_explanation",
+          "edit_plan": {
+            "edits": [
+              {
+                "id": "edit_slide_3_simplify",
+                "target_segment_id": "slide_3",
+                "action": "simplify_explanation",
+                "rationale": "This segment may be too dense or may introduce too much information too quickly.",
+                "new_segments": [
+                  {
+                    "id": "slide_3",
+                    "title": "Photosynthesis all at once",
+                    "content": "Let's break this into the main idea first: chlorophyll, photons, water splitting, oxygen, ATP, carbon fixation, glucose, light reactions. Then connect the details one at a time.",
+                    "concepts": [
+                      "chlorophyll",
+                      "photons",
+                      "water splitting",
+                      "oxygen",
+                      "ATP",
+                      "carbon fixation",
+                      "glucose",
+                      "light reactions"
+                    ],
+                    "modality": "text",
+                    "start_time": null,
+                    "end_time": null
+                  }
+                ],
+                "inserted_after_segment_id": null,
+                "source_diagnosis_id": "slide_3:cognitive_overload",
+                "expected_metric_impact": {
+                  "cognitive_load": -12.0,
+                  "information_density": -10.0
+                }
+              }
+            ]
+          },
+          "score": 52.55,
+          "score_delta": 0.0,
+          "metric_report": {
+            "global_metrics": {
+              "engagement": 64.14,
+              "cognitive_load": 61.29,
+              "concept_flow": 70.93,
+              "retention": 38.0,
+              "novelty": 64.43,
+              "information_density": 54.29,
+              "reinforcement": 24.0,
+              "multimodal_support": 38.0
+            },
+            "learning_score": 52.55,
+            "segment_metrics": [
+              {
+                "segment_id": "slide_1",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 75.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_2",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 66.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3",
+                "metrics": {
+                  "engagement": 54.0,
+                  "cognitive_load": 100.0,
+                  "concept_flow": 65.5,
+                  "retention": 38.0,
+                  "novelty": 100.0,
+                  "information_density": 100.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_example",
+                "metrics": {
+                  "engagement": 70.0,
+                  "cognitive_load": 42.0,
+                  "concept_flow": 76.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 35.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 74.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_4",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_5",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_6",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 71.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              }
+            ],
+            "model_name": null,
+            "model_version": null,
+            "raw_output_path": null,
+            "confidence": null,
+            "warnings": []
+          }
+        },
+        {
+          "candidate_id": "candidate_3_slide_3_add_example",
+          "edit_plan": {
+            "edits": [
+              {
+                "id": "edit_slide_3_example",
+                "target_segment_id": "slide_3",
+                "action": "add_example",
+                "rationale": "This segment may be too dense or may introduce too much information too quickly.",
+                "new_segments": [
+                  {
+                    "id": "slide_3_example_2",
+                    "title": "Example: chlorophyll",
+                    "content": "Example: Apply chlorophyll to a familiar real-world situation and explain what changes.",
+                    "concepts": [
+                      "chlorophyll"
+                    ],
+                    "modality": "mixed",
+                    "start_time": null,
+                    "end_time": null
+                  }
+                ],
+                "inserted_after_segment_id": "slide_3",
+                "source_diagnosis_id": "slide_3:cognitive_overload",
+                "expected_metric_impact": {
+                  "multimodal_support": 14.0,
+                  "concept_flow": 5.0
+                }
+              }
+            ]
+          },
+          "score": 53.67,
+          "score_delta": 1.12,
+          "metric_report": {
+            "global_metrics": {
+              "engagement": 64.74,
+              "cognitive_load": 58.88,
+              "concept_flow": 71.22,
+              "retention": 37.38,
+              "novelty": 62.38,
+              "information_density": 51.88,
+              "reinforcement": 23.38,
+              "multimodal_support": 41.88
+            },
+            "learning_score": 53.67,
+            "segment_metrics": [
+              {
+                "segment_id": "slide_1",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 75.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_2",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 67.0,
+                  "retention": 38.0,
+                  "novelty": 66.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3",
+                "metrics": {
+                  "engagement": 54.0,
+                  "cognitive_load": 100.0,
+                  "concept_flow": 65.5,
+                  "retention": 38.0,
+                  "novelty": 100.0,
+                  "information_density": 100.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_example_2",
+                "metrics": {
+                  "engagement": 70.0,
+                  "cognitive_load": 42.0,
+                  "concept_flow": 76.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 35.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 74.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_3_example",
+                "metrics": {
+                  "engagement": 68.9,
+                  "cognitive_load": 42.0,
+                  "concept_flow": 73.25,
+                  "retention": 33.0,
+                  "novelty": 48.0,
+                  "information_density": 35.0,
+                  "reinforcement": 19.0,
+                  "multimodal_support": 69.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_4",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 64.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 55.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_5",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 75.0,
+                  "retention": 38.0,
+                  "novelty": 48.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              },
+              {
+                "segment_id": "slide_6",
+                "metrics": {
+                  "engagement": 65.0,
+                  "cognitive_load": 53.0,
+                  "concept_flow": 71.0,
+                  "retention": 38.0,
+                  "novelty": 57.0,
+                  "information_density": 45.0,
+                  "reinforcement": 24.0,
+                  "multimodal_support": 32.0
+                },
+                "start_time": null,
+                "end_time": null,
+                "raw_embedding_path": null,
+                "confidence": null,
+                "warnings": []
+              }
+            ],
+            "model_name": null,
+            "model_version": null,
+            "raw_output_path": null,
+            "confidence": null,
+            "warnings": []
+          }
+        }
+      ],
+      "selected_candidate_id": "candidate_3_slide_3_add_example"
+    }
+  ]
+}
