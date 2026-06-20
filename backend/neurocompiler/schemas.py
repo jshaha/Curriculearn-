@@ -39,12 +39,22 @@ class MetricScores(BaseModel):
 class SegmentMetric(BaseModel):
     segment_id: str
     metrics: MetricScores
+    start_time: Optional[float] = None
+    end_time: Optional[float] = None
+    raw_embedding_path: Optional[str] = None
+    confidence: Optional[float] = Field(default=None, ge=0, le=1)
+    warnings: List[str] = Field(default_factory=list)
 
 
 class MetricReport(BaseModel):
     global_metrics: MetricScores
     learning_score: float = Field(ge=0, le=100)
     segment_metrics: List[SegmentMetric]
+    model_name: Optional[str] = None
+    model_version: Optional[str] = None
+    raw_output_path: Optional[str] = None
+    confidence: Optional[float] = Field(default=None, ge=0, le=1)
+    warnings: List[str] = Field(default_factory=list)
 
 
 class Diagnosis(BaseModel):
@@ -66,6 +76,7 @@ class Diagnosis(BaseModel):
 
 class DiagnosisReport(BaseModel):
     diagnoses: List[Diagnosis]
+    warnings: List[str] = Field(default_factory=list)
 
 
 class EditOperation(BaseModel):
@@ -87,6 +98,21 @@ class EditedLessonCandidate(BaseModel):
     edit_plan: EditPlan
 
 
+class CandidateEvaluation(BaseModel):
+    candidate_id: str
+    edit_plan: EditPlan
+    score: float = Field(ge=0, le=100)
+    score_delta: float
+    metric_report: MetricReport
+
+
+class OptimizationIteration(BaseModel):
+    iteration: int = Field(ge=1)
+    diagnoses: DiagnosisReport
+    candidates: List[CandidateEvaluation]
+    selected_candidate_id: Optional[str] = None
+
+
 class OptimizationResult(BaseModel):
     original_lesson: StructuredLesson
     best_lesson: StructuredLesson
@@ -94,3 +120,4 @@ class OptimizationResult(BaseModel):
     best_score: float = Field(ge=0, le=100)
     iterations: int = Field(ge=0)
     edit_history: List[EditPlan]
+    iteration_history: List[OptimizationIteration] = Field(default_factory=list)

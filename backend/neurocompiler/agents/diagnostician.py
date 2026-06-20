@@ -16,8 +16,22 @@ class EducationalDiagnostician:
         "low_multimodal_support": 5,
     }
 
-    def diagnose(self, lesson: StructuredLesson, metric_report: MetricReport) -> DiagnosisReport:
+    def diagnose(self, lesson: StructuredLesson, metric_report: MetricReport,
+                 strict: bool = True) -> DiagnosisReport:
         lesson_ids = {segment.id for segment in lesson.segments}
+        if not lesson_ids:
+            raise ValueError("StructuredLesson must contain at least one segment.")
+        if not metric_report.segment_metrics:
+            raise ValueError("MetricReport must contain at least one segment metric.")
+        unknown_ids = sorted({item.segment_id for item in metric_report.segment_metrics} - lesson_ids)
+        if unknown_ids and strict:
+            raise ValueError(
+                f"MetricReport contains unknown segment_ids: {unknown_ids}. "
+                f"Valid segment_ids include: {sorted(lesson_ids)}"
+            )
+        warnings = []
+        if unknown_ids:
+            warnings.append(f"Skipped metrics for unknown segment_ids: {unknown_ids}")
         diagnoses: List[Diagnosis] = []
         for segment_metric in metric_report.segment_metrics:
             if segment_metric.segment_id not in lesson_ids:
@@ -66,7 +80,7 @@ class EducationalDiagnostician:
         diagnoses.sort(key=lambda diagnosis: self._sort_key(diagnosis))
         for priority, diagnosis in enumerate(diagnoses, start=1):
             diagnosis.priority = priority
-        return DiagnosisReport(diagnoses=diagnoses)
+        return DiagnosisReport(diagnoses=diagnoses, warnings=warnings)
 
     def _diagnosis(self, segment_id: str, issue_type: str, severity: str, explanation: str,
                    evidence: dict, actions: List[str]) -> Diagnosis:

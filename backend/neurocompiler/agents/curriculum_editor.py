@@ -12,12 +12,18 @@ from neurocompiler.schemas import (
 class CurriculumEditor:
     """Generate small, explainable lesson variants without rendering source files."""
 
-    _PRIMARY_ACTION = {
-        "cognitive_overload": "split_section",
-        "poor_concept_flow": "add_transition",
-        "low_retention": "add_retrieval_question",
-        "low_multimodal_support": "add_analogy",
-        "novelty_spike": "add_transition",
+    _ACTIONS_BY_ISSUE = {
+        "cognitive_overload": ["split_section", "simplify_explanation", "add_example"],
+        "poor_concept_flow": ["add_transition"],
+        "low_retention": ["add_retrieval_question"],
+        "low_multimodal_support": ["add_analogy", "add_example"],
+        "novelty_spike": ["add_transition", "add_example"],
+    }
+    ANALOGY_TEMPLATES = {
+        "biology": "Think of {concept} like a living factory: inputs come in, processes happen inside, and useful outputs are produced.",
+        "computer_science": "Think of {concept} like a pipeline: information enters, each step transforms it, and the final output depends on the order of operations.",
+        "math": "Think of {concept} like a map: it shows how one quantity or idea connects to another.",
+        "default": "Think of {concept} like a system with inputs, a process, and outputs. Understanding the parts separately makes the whole idea easier to follow.",
     }
 
     def generate_candidates(self, lesson: StructuredLesson, diagnosis_report: DiagnosisReport,
@@ -25,14 +31,14 @@ class CurriculumEditor:
         candidates: List[EditedLessonCandidate] = []
         seen = set()
         for diagnosis in diagnosis_report.diagnoses:
-            action = self._PRIMARY_ACTION[diagnosis.issue_type]
-            key = (diagnosis.segment_id, action)
-            if key in seen:
-                continue
-            seen.add(key)
-            candidates.append(self._apply(lesson, diagnosis, action, len(candidates) + 1))
-            if len(candidates) >= max_candidates:
-                break
+            for action in self._ACTIONS_BY_ISSUE[diagnosis.issue_type]:
+                key = (diagnosis.segment_id, action)
+                if key in seen:
+                    continue
+                seen.add(key)
+                candidates.append(self._apply(lesson, diagnosis, action, len(candidates) + 1))
+                if len(candidates) >= max_candidates:
+                    return candidates
         return candidates
 
     def _apply(self, lesson: StructuredLesson, diagnosis: Diagnosis, action: str,
@@ -91,9 +97,10 @@ class CurriculumEditor:
     def _add_analogy(self, lesson: StructuredLesson, diagnosis: Diagnosis):
         original = self._target(lesson, diagnosis.segment_id)
         concept = original.concepts[0] if original.concepts else original.title
+        domain = self._infer_domain(lesson, original)
         new = LessonSegment(id=self._unique_id(lesson, f"{original.id}_analogy"),
             title=f"Analogy for {concept}", modality="mixed", concepts=[concept],
-            content=f"Analogy: Think of {concept} like a solar panel that captures useful energy and puts it to work.")
+            content=f"Analogy: {self.ANALOGY_TEMPLATES[domain].format(concept=concept)}")
         return self._insert_after(lesson, original.id, new), EditOperation(
             id=f"edit_{original.id}_analogy", target_segment_id=original.id, action="add_analogy",
             rationale=diagnosis.explanation, new_segments=[new], inserted_after_segment_id=original.id,
@@ -123,9 +130,13 @@ class CurriculumEditor:
 
     def _add_transition(self, lesson: StructuredLesson, diagnosis: Diagnosis):
         original = self._target(lesson, diagnosis.segment_id)
+        original_index = self._index(lesson.segments, original.id)
+        previous = lesson.segments[original_index - 1] if original_index else None
+        prior_concept = previous.concepts[0] if previous and previous.concepts else "the previous idea"
+        next_concept = original.concepts[0] if original.concepts else original.title
         new = LessonSegment(id=self._unique_id(lesson, f"{original.id}_transition"),
-            title=f"Bridge to {original.title}", modality="text", concepts=[],
-            content=f"Before we introduce {original.title}, connect it to the idea we just built. This transition shows why the next concept follows.")
+            title=f"Bridge to {original.title}", modality="text", concepts=[next_concept],
+            content=f"Before we introduce {next_concept}, connect it to {prior_concept}. This transition shows why {next_concept} follows.")
         segments = deepcopy(lesson.segments)
         segments.insert(self._index(segments, original.id), new)
         edited = lesson.model_copy(update={"segments": segments})
@@ -160,3 +171,14 @@ class CurriculumEditor:
         while f"{base}_{suffix}" in existing:
             suffix += 1
         return f"{base}_{suffix}"
+
+    @staticmethod
+    def _infer_domain(lesson: StructuredLesson, segment: LessonSegment) -> str:
+        text = " ".join([lesson.title, *lesson.learning_goals, *segment.concepts]).lower()
+        if any(word in text for word in ("cell", "plant", "biology", "photosynthesis", "organism", "genetic")):
+            return "biology"
+        if any(word in text for word in ("code", "program", "algorithm", "computer", "software", "data structure")):
+            return "computer_science"
+        if any(word in text for word in ("math", "equation", "theorem", "function", "algebra", "geometry")):
+            return "math"
+        return "default"

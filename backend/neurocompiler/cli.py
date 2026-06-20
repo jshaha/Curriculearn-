@@ -25,9 +25,11 @@ def main() -> None:
     payload = {
         "original_score": result.original_score,
         "best_score": result.best_score,
+        "score_delta": round(result.best_score - result.original_score, 2),
         "best_lesson": result.best_lesson.model_dump(mode="json"),
         "diagnoses": diagnoses.model_dump(mode="json"),
         "edit_history": [plan.model_dump(mode="json") for plan in result.edit_history],
+        "iteration_history": [item.model_dump(mode="json") for item in result.iteration_history],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, indent=2) + "\n")

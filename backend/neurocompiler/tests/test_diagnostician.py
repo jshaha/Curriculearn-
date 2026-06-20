@@ -33,3 +33,28 @@ def test_diagnoses_are_priority_sorted():
     diagnoses = EducationalDiagnostician().diagnose(LESSON, report).diagnoses
     assert [item.priority for item in diagnoses] == list(range(1, len(diagnoses) + 1))
     assert diagnoses[0].issue_type == "cognitive_overload"
+
+
+def test_unknown_segment_id_fails_by_default_and_can_be_skipped():
+    bad_report = MetricReport(global_metrics=_report().global_metrics, learning_score=60,
+        segment_metrics=[SegmentMetric(segment_id="slide-1", metrics=_report().global_metrics)])
+    diagnostician = EducationalDiagnostician()
+    try:
+        diagnostician.diagnose(LESSON, bad_report)
+    except ValueError as error:
+        assert "slide-1" in str(error)
+    else:
+        raise AssertionError("Expected unknown segment ID to fail in strict mode")
+    non_strict = diagnostician.diagnose(LESSON, bad_report, strict=False)
+    assert non_strict.diagnoses == []
+    assert non_strict.warnings
+
+
+def test_empty_segment_metrics_fails_cleanly():
+    report = MetricReport(global_metrics=_report().global_metrics, learning_score=60, segment_metrics=[])
+    try:
+        EducationalDiagnostician().diagnose(LESSON, report)
+    except ValueError as error:
+        assert "at least one segment metric" in str(error)
+    else:
+        raise AssertionError("Expected an empty metric report to fail")
