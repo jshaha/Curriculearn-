@@ -36,3 +36,10 @@ def test_optional_integration_metadata_and_iteration_history_validate():
     result = OptimizationResult(original_lesson=lesson, best_lesson=lesson, original_score=48,
         best_score=50, iterations=1, edit_history=[], iteration_history=[history])
     assert result.iteration_history[0].candidates[0].metric_report.confidence == 0.9
+
+
+def test_partner_metric_report_sample_validates_and_matches_sample_lesson():
+    lesson = StructuredLesson.model_validate_json((DATA_DIR / "sample_lesson.json").read_text())
+    report = MetricReport.model_validate_json((DATA_DIR / "partner_metric_report_sample.json").read_text())
+    assert {item.segment_id for item in report.segment_metrics} == {segment.id for segment in lesson.segments}
+    assert report.model_name == "partner_brain_metric_model"

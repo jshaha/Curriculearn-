@@ -55,6 +55,20 @@ Implement the `SimulatorProtocol` in `backend/neurocompiler/adapters/simulator.p
 
 For precomputed partner output, `JsonMetricSimulator` loads a `MetricReport` JSON artifact and validates its segment IDs against the lesson. It is intended for integration and diagnosis testing; candidate optimization needs a simulator that can score each changed lesson.
 
+## Partner Agent 1–3 Integration Contract
+
+The Agent 4–6 optimizer expects the upstream pipeline to return a valid `MetricReport` for the same `StructuredLesson` it receives. The partner pipeline must:
+
+1. Accept or reference the exact `StructuredLesson` JSON used by the optimizer.
+2. Preserve every `segment_id` exactly and return one `SegmentMetric` per lesson segment when possible.
+3. Normalize all `MetricScores` fields to 0–100: engagement, cognitive load, concept flow, retention, novelty, information density, reinforcement, and multimodal support.
+4. Include a top-level `learning_score` and valid JSON matching the `MetricReport` schema.
+5. Include confidence and warnings when output is uncertain.
+
+Agent 4 raises an error for mismatched segment IDs by default. This is intentional: silently associating brain-model output with the wrong lesson section would make diagnoses unreliable. See [partner_metric_report_sample.json](backend/neurocompiler/data/partner_metric_report_sample.json) for a complete handoff example and [PARTNER_INTEGRATION_TODO.md](docs/PARTNER_INTEGRATION_TODO.md) for the questions to resolve before live integration.
+
+`JsonMetricSimulator` is useful for loading a static precomputed report and testing diagnosis against partner output. True optimization of edited candidates requires the upstream simulator to evaluate each newly edited lesson and return a fresh `MetricReport`.
+
 ## Limitations
 
 `MockSimulator` is a development-time text heuristic, not the scientific brain model. Its scores are useful for exercising the pipeline and demoing behavior, not for making educational or scientific claims. Current edits are template-based, and source-file rendering (PDF/PPTX) is intentionally out of scope.

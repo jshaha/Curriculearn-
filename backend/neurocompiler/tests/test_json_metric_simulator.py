@@ -27,3 +27,9 @@ def test_json_metric_simulator_catches_segment_id_mismatch(tmp_path):
     bad_path.write_text(json.dumps(payload))
     with pytest.raises(ValueError, match="do not match"):
         JsonMetricSimulator(bad_path).simulate(_sample_lesson())
+
+
+def test_json_metric_simulator_loads_partner_metric_sample():
+    report_path = Path(__file__).parents[1] / "data" / "partner_metric_report_sample.json"
+    report = JsonMetricSimulator(report_path).simulate(_sample_lesson())
+    assert report.model_version == "placeholder"

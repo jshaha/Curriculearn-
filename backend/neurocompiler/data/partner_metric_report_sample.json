@@ -1,0 +1,56 @@
+{
+  "global_metrics": {
+    "engagement": 62,
+    "cognitive_load": 72,
+    "concept_flow": 51,
+    "retention": 42,
+    "novelty": 64,
+    "information_density": 66,
+    "reinforcement": 32,
+    "multimodal_support": 43
+  },
+  "learning_score": 47.8,
+  "segment_metrics": [
+    {
+      "segment_id": "slide_1",
+      "metrics": {"engagement": 75, "cognitive_load": 42, "concept_flow": 80, "retention": 35, "novelty": 50, "information_density": 45, "reinforcement": 20, "multimodal_support": 60},
+      "confidence": 0.9,
+      "warnings": []
+    },
+    {
+      "segment_id": "slide_2",
+      "metrics": {"engagement": 70, "cognitive_load": 52, "concept_flow": 65, "retention": 40, "novelty": 58, "information_density": 52, "reinforcement": 30, "multimodal_support": 35},
+      "confidence": 0.88,
+      "warnings": []
+    },
+    {
+      "segment_id": "slide_3",
+      "metrics": {"engagement": 45, "cognitive_load": 94, "concept_flow": 31, "retention": 30, "novelty": 96, "information_density": 91, "reinforcement": 20, "multimodal_support": 20},
+      "confidence": 0.86,
+      "warnings": ["High concept density may reduce metric confidence."]
+    },
+    {
+      "segment_id": "slide_4",
+      "metrics": {"engagement": 56, "cognitive_load": 72, "concept_flow": 38, "retention": 34, "novelty": 89, "information_density": 70, "reinforcement": 26, "multimodal_support": 33},
+      "confidence": 0.87,
+      "warnings": []
+    },
+    {
+      "segment_id": "slide_5",
+      "metrics": {"engagement": 64, "cognitive_load": 45, "concept_flow": 55, "retention": 38, "novelty": 49, "information_density": 40, "reinforcement": 30, "multimodal_support": 44},
+      "confidence": 0.91,
+      "warnings": []
+    },
+    {
+      "segment_id": "slide_6",
+      "metrics": {"engagement": 68, "cognitive_load": 40, "concept_flow": 62, "retention": 46, "novelty": 45, "information_density": 39, "reinforcement": 43, "multimodal_support": 65},
+      "confidence": 0.92,
+      "warnings": []
+    }
+  ],
+  "model_name": "partner_brain_metric_model",
+  "model_version": "placeholder",
+  "raw_output_path": null,
+  "confidence": 0.88,
+  "warnings": ["Example integration artifact; values are illustrative."]
+}
