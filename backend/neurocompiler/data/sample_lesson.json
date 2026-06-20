@@ -1,0 +1,53 @@
+{
+  "id": "photosynthesis_intro",
+  "title": "Introduction to Photosynthesis",
+  "learning_goals": [
+    "Explain how plants turn light energy into stored chemical energy.",
+    "Describe the roles of chlorophyll, glucose, carbon dioxide, and water."
+  ],
+  "target_audience": "Middle-school science students",
+  "segments": [
+    {
+      "id": "slide_1",
+      "title": "What plants need",
+      "content": "Plants need sunlight, water, and carbon dioxide. They use these ingredients to make food.",
+      "concepts": ["sunlight", "water", "carbon dioxide"],
+      "modality": "slide"
+    },
+    {
+      "id": "slide_2",
+      "title": "The job of chlorophyll",
+      "content": "Chlorophyll is the green pigment in leaves that absorbs energy from sunlight.",
+      "concepts": ["chlorophyll", "light energy"],
+      "modality": "text"
+    },
+    {
+      "id": "slide_3",
+      "title": "Photosynthesis all at once",
+      "content": "Chlorophyll captures photons, water splits, oxygen leaves, ATP carries energy, carbon fixation uses carbon dioxide, and glucose stores the energy for later. These light reactions and chemical equation describe several connected steps at the same time.",
+      "concepts": ["chlorophyll", "photons", "water splitting", "oxygen", "ATP", "carbon fixation", "glucose", "light reactions"],
+      "modality": "text"
+    },
+    {
+      "id": "slide_4",
+      "title": "The chemical equation",
+      "content": "6CO2 plus 6H2O becomes C6H12O6 plus 6O2. This equation summarizes photosynthesis.",
+      "concepts": ["chemical equation", "glucose", "oxygen"],
+      "modality": "slide"
+    },
+    {
+      "id": "slide_5",
+      "title": "Why light matters",
+      "content": "Less sunlight means less energy is available to make glucose.",
+      "concepts": ["sunlight", "glucose"],
+      "modality": "slide"
+    },
+    {
+      "id": "slide_6",
+      "title": "Summary",
+      "content": "Photosynthesis helps plants make sugar using energy from light.",
+      "concepts": ["photosynthesis", "glucose"],
+      "modality": "text"
+    }
+  ]
+}
