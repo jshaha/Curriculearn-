@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Bayes' Theorem - Lesson Plan</title>
+    <style>
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            line-height: 1.6;
+            background: white;
+        }
+        .slide {
+            page-break-after: always;
+            margin-bottom: 60px;
+            padding: 30px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            min-height: 500px;
+        }
+        .slide-number {
+            background: #9F7AEA;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2D3748;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #9F7AEA;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #2D3748;
+            font-size: 22px;
+            margin-top: 30px;
+        }
+        p {
+            color: #4A5568;
+            font-size: 16px;
+            margin: 15px 0;
+        }
+        ul {
+            color: #4A5568;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .equation {
+            background: #FAF5FF;
+            padding: 20px;
+            border-left: 4px solid #9F7AEA;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .example {
+            background: #E6FFFA;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .objective {
+            background: #C6F6D5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .warning {
+            background: #FED7D7;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #CBD5E0;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #EDF2F7;
+            font-weight: bold;
+        }
+        @media print {
+            .slide {
+                page-break-after: always;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide">
+    <div class="slide-number">Slide 1</div>
+    <h1>Introduction to Bayes' Theorem</h1>
+    <p style="font-size: 20px; color: #718096; margin-top: 40px;">
+        Using Probability to Update Beliefs with New Evidence
+    </p>
+    <p style="margin-top: 80px; font-size: 18px;">
+        <strong>Course:</strong> Statistics 201<br>
+        <strong>Grade Level:</strong> College / AP Statistics<br>
+        <strong>Duration:</strong> 60 minutes<br>
+        <strong>Topic:</strong> Conditional Probability
+    </p>
+    <div class="objective" style="margin-top: 60px;">
+        <strong>Learning Objectives:</strong>
+        <ul>
+            <li>Understand conditional probability</li>
+            <li>Apply Bayes' Theorem to real-world problems</li>
+            <li>Interpret and update probabilities with new evidence</li>
+        </ul>
+    </div>
+</div>
+
+<!-- SLIDE 2: Motivation -->
+<div class="slide">
+    <div class="slide-number">Slide 2</div>
+    <h2>Why Bayes' Theorem Matters</h2>
+    <p>
+        Imagine you take a medical test that claims to be "95% accurate." You test positive. Should you panic?
+    </p>
+    <p>
+        The answer might surprise you - it depends on how rare the disease is! This is where Bayes' Theorem becomes crucial.
+    </p>
+    <div class="example">
+        <strong>Real-World Applications:</strong>
+        <ul>
+            <li>Medical diagnosis and testing</li>
+            <li>Spam email filtering</li>
+            <li>Criminal trial evidence evaluation</li>
+            <li>Machine learning algorithms</li>
+            <li>Weather forecasting updates</li>
+        </ul>
+    </div>
+</div>
+
+<!-- SLIDE 3: Building Intuition -->
+<div class="slide">
+    <div class="slide-number">Slide 3</div>
+    <h2>The Big Idea: Updating Beliefs</h2>
+    <p>
+        Bayes' Theorem is fundamentally about updating what you believe as you get new information.
+    </p>
+    <div class="example">
+        <strong>Simple Example:</strong>
+        <p>
+            You hear footsteps in your house at night.
+        </p>
+        <ul>
+            <li><strong>Initial belief:</strong> It's probably my cat (90% sure)</li>
+            <li><strong>New evidence:</strong> The footsteps are heavy and slow</li>
+            <li><strong>Updated belief:</strong> It's probably a person, not my cat (new probability)</li>
+        </ul>
+        <p>
+            Bayes' Theorem gives us a mathematical way to do this updating formally.
+        </p>
+    </div>
+</div>
+
+<!-- SLIDE 4: Prerequisites - Good Scaffolding -->
+<div class="slide">
+    <div class="slide-number">Slide 4</div>
+    <h2>Quick Review: Conditional Probability</h2>
+    <p>
+        Before we get to Bayes' Theorem, let's review conditional probability:
+    </p>
+    <div class="equation">
+        P(A|B) = "Probability of A given that B happened"
+    </div>
+    <div class="example">
+        <strong>Example:</strong>
+        <ul>
+            <li>P(Rain | Dark Clouds) = Probability it rains, given there are dark clouds</li>
+            <li>P(Flu | Fever) = Probability you have flu, given you have a fever</li>
+        </ul>
+    </div>
+    <p>
+        The "|" symbol means "given" - it tells us we have new information to consider.
+    </p>
+</div>
+
+<!-- SLIDE 5: COGNITIVE OVERLOAD - Formula Dump -->
+<div class="slide">
+    <div class="slide-number">Slide 5</div>
+    <h2>The Formula</h2>
+    <div class="equation">
+        P(A|B) = [P(B|A) × P(A)] / P(B)
+    </div>
+    <p>Where:</p>
+    <ul>
+        <li><strong>P(A|B)</strong> = Posterior probability - what we want to find (probability of A given evidence B)</li>
+        <li><strong>P(B|A)</strong> = Likelihood - probability of seeing evidence B if A is true</li>
+        <li><strong>P(A)</strong> = Prior probability - our initial belief about A before seeing evidence</li>
+        <li><strong>P(B)</strong> = Marginal probability - total probability of seeing evidence B</li>
+    </ul>
+    <p>The formula can also be expanded:</p>
+    <div class="equation">
+        P(A|B) = [P(B|A) × P(A)] / [P(B|A) × P(A) + P(B|¬A) × P(¬A)]
+    </div>
+    <p>
+        Where ¬A means "not A" and represents all cases where A doesn't happen.
+    </p>
+    <div class="equation">
+        Odds Form: O(A|B) = O(A) × [P(B|A) / P(B|¬A)]
+    </div>
+</div>
+
+<!-- SLIDE 6: Too Abstract -->
+<div class="slide">
+    <div class="slide-number">Slide 6</div>
+    <h2>Mathematical Derivation</h2>
+    <p>
+        Bayes' Theorem can be derived from the definition of conditional probability:
+    </p>
+    <div class="equation">
+        P(A|B) = P(A ∩ B) / P(B)
+    </div>
+    <p>And:</p>
+    <div class="equation">
+        P(B|A) = P(A ∩ B) / P(A)
+    </div>
+    <p>From the second equation:</p>
+    <div class="equation">
+        P(A ∩ B) = P(B|A) × P(A)
+    </div>
+    <p>Substituting into the first equation:</p>
+    <div class="equation">
+        P(A|B) = [P(B|A) × P(A)] / P(B)
+    </div>
+    <p>
+        Therefore, we've proven Bayes' Theorem from first principles.
+    </p>
+</div>
+
+<!-- SLIDE 7: Better - Concrete Example -->
+<div class="slide">
+    <div class="slide-number">Slide 7</div>
+    <h2>Example 1: Medical Testing</h2>
+    <div class="example">
+        <strong>Scenario:</strong>
+        <ul>
+            <li>A disease affects 1% of the population</li>
+            <li>A test for the disease is 95% accurate (both for positives and negatives)</li>
+            <li>You test positive. What's the probability you actually have the disease?</li>
+        </ul>
+    </div>
+    <p><strong>Let's define our events:</strong></p>
+    <ul>
+        <li>A = You have the disease</li>
+        <li>B = You test positive</li>
+    </ul>
+    <p><strong>What we know:</strong></p>
+    <ul>
+        <li>P(A) = 0.01 (1% have disease)</li>
+        <li>P(B|A) = 0.95 (95% of sick people test positive)</li>
+        <li>P(B|¬A) = 0.05 (5% of healthy people test positive - false positive rate)</li>
+    </ul>
+</div>
+
+<!-- SLIDE 8: Working Through Example -->
+<div class="slide">
+    <div class="slide-number">Slide 8</div>
+    <h2>Solution: Step by Step</h2>
+    <p><strong>Step 1:</strong> Calculate P(B) using the law of total probability:</p>
+    <div class="equation">
+        P(B) = P(B|A) × P(A) + P(B|¬A) × P(¬A)
+    </div>
+    <div class="equation">
+        P(B) = (0.95 × 0.01) + (0.05 × 0.99) = 0.0095 + 0.0495 = 0.059
+    </div>
+    <p><strong>Step 2:</strong> Apply Bayes' Theorem:</p>
+    <div class="equation">
+        P(A|B) = [P(B|A) × P(A)] / P(B)
+    </div>
+    <div class="equation">
+        P(A|B) = (0.95 × 0.01) / 0.059 = 0.0095 / 0.059 ≈ 0.161
+    </div>
+    <p><strong>Answer:</strong> Only about 16% chance you actually have the disease!</p>
+</div>
+
+<!-- SLIDE 9: Good Explanation of Result -->
+<div class="slide">
+    <div class="slide-number">Slide 9</div>
+    <h2>Why Is It Only 16%?</h2>
+    <p>
+        This surprising result happens because the disease is <strong>rare</strong>.
+    </p>
+    <div class="example">
+        <strong>Imagine testing 10,000 people:</strong>
+        <ul>
+            <li>100 actually have the disease (1%)</li>
+            <li>Of those 100, about 95 test positive (true positives)</li>
+            <li>9,900 are healthy</li>
+            <li>Of those 9,900, about 495 test positive anyway (false positives)</li>
+        </ul>
+        <p>
+            <strong>Total positives:</strong> 95 + 495 = 590 people
+        </p>
+        <p>
+            <strong>Actually sick:</strong> 95 people
+        </p>
+        <p>
+            <strong>Probability:</strong> 95/590 ≈ 16%
+        </p>
+    </div>
+    <p>
+        Most positive tests are false positives because the disease is so rare!
+    </p>
+</div>
+
+<!-- SLIDE 10: Another Example -->
+<div class="slide">
+    <div class="slide-number">Slide 10</div>
+    <h2>Example 2: Spam Filtering</h2>
+    <div class="example">
+        <strong>Scenario:</strong>
+        <p>
+            An email contains the word "FREE". What's the probability it's spam?
+        </p>
+        <ul>
+            <li>40% of all emails are spam</li>
+            <li>70% of spam emails contain "FREE"</li>
+            <li>5% of legitimate emails contain "FREE"</li>
+        </ul>
+    </div>
+    <p><strong>Define events:</strong></p>
+    <ul>
+        <li>S = Email is spam</li>
+        <li>F = Email contains "FREE"</li>
+    </ul>
+    <p><strong>Apply Bayes:</strong></p>
+    <div class="equation">
+        P(S|F) = [P(F|S) × P(S)] / P(F)
+    </div>
+</div>
+
+<!-- SLIDE 11: Practice Problem -->
+<div class="slide">
+    <div class="slide-number">Slide 11</div>
+    <h2>Your Turn: Solve the Spam Problem</h2>
+    <div class="example">
+        <strong>Given:</strong>
+        <ul>
+            <li>P(S) = 0.40</li>
+            <li>P(F|S) = 0.70</li>
+            <li>P(F|¬S) = 0.05</li>
+        </ul>
+        <p><strong>Find P(S|F)</strong></p>
+        <p style="margin-top: 40px;"><em>Work it out before moving to the next slide!</em></p>
+    </div>
+</div>
+
+<!-- SLIDE 12: Solution -->
+<div class="slide">
+    <div class="slide-number">Slide 12</div>
+    <h2>Solution: Spam Example</h2>
+    <p><strong>Step 1:</strong> Calculate P(F):</p>
+    <div class="equation">
+        P(F) = P(F|S) × P(S) + P(F|¬S) × P(¬S)
+    </div>
+    <div class="equation">
+        P(F) = (0.70 × 0.40) + (0.05 × 0.60) = 0.28 + 0.03 = 0.31
+    </div>
+    <p><strong>Step 2:</strong> Apply Bayes:</p>
+    <div class="equation">
+        P(S|F) = (0.70 × 0.40) / 0.31 = 0.28 / 0.31 ≈ 0.903
+    </div>
+    <p><strong>Answer:</strong> About 90% chance it's spam!</p>
+    <p>
+        The word "FREE" is strong evidence for spam because it appears much more often in spam (70%) than in legitimate emails (5%).
+    </p>
+</div>
+
+<!-- SLIDE 13: Summary and Key Takeaways -->
+<div class="slide">
+    <div class="slide-number">Slide 13</div>
+    <h2>Key Takeaways</h2>
+    <div class="objective">
+        <strong>Remember:</strong>
+        <ul>
+            <li>Bayes' Theorem helps us update probabilities with new evidence</li>
+            <li>Rare events can make test results surprising (medical test example)</li>
+            <li>The formula: P(A|B) = [P(B|A) × P(A)] / P(B)</li>
+            <li>Always consider <strong>base rates</strong> (how common something is initially)</li>
+        </ul>
+    </div>
+    <div class="warning">
+        <strong>Common Mistake:</strong> Ignoring the base rate! Even highly accurate tests can be misleading when testing for rare conditions.
+    </div>
+</div>
+
+<!-- SLIDE 14: Homework -->
+<div class="slide">
+    <div class="slide-number">Slide 14</div>
+    <h2>Practice Problems</h2>
+    <div class="example">
+        <strong>Problem 1:</strong>
+        <p>
+            A factory has two machines. Machine A makes 60% of parts, Machine B makes 40%. Machine A produces 2% defective parts, Machine B produces 5% defective parts. If you pick a random defective part, what's the probability it came from Machine A?
+        </p>
+    </div>
+    <div class="example">
+        <strong>Problem 2:</strong>
+        <p>
+            In a certain city, 30% of people are vegetarian. 90% of vegetarians support a particular environmental policy, while only 40% of non-vegetarians support it. If someone supports the policy, what's the probability they're vegetarian?
+        </p>
+    </div>
+    <p><strong>Due:</strong> Next class</p>
+</div>
+
+</body>
+</html>
