@@ -14,8 +14,12 @@ class LessonOptimizer:
         self.editor = editor or CurriculumEditor()
 
     def optimize(self, lesson: StructuredLesson, simulator: SimulatorProtocol,
-                 max_iterations: int = 2, max_candidates: int = 3) -> OptimizationResult:
+                 max_iterations: int = 2, max_candidates: int = 3,
+                 max_added_segments: int = 3, max_total_segments: int = 12) -> OptimizationResult:
+        if max_added_segments < 0 or max_total_segments < 1:
+            raise ValueError("Optimization segment budgets must be non-negative and non-zero.")
         original_metrics = simulator.simulate(lesson)
+        original_segment_count = len(lesson.segments)
         current_lesson, current_metrics = lesson, original_metrics
         best_lesson, best_score = lesson, original_metrics.learning_score
         edit_history = []
@@ -27,6 +31,11 @@ class LessonOptimizer:
             if not diagnoses.diagnoses:
                 break
             candidates = self.editor.generate_candidates(current_lesson, diagnoses, max_candidates)
+            candidates = [
+                candidate for candidate in candidates
+                if len(candidate.lesson.segments) <= max_total_segments
+                and len(candidate.lesson.segments) <= original_segment_count + max_added_segments
+            ]
             if not candidates:
                 break
             actual_iterations += 1

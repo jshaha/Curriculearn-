@@ -86,6 +86,8 @@ class EditOperation(BaseModel):
     rationale: str
     new_segments: Optional[List[LessonSegment]] = None
     inserted_after_segment_id: Optional[str] = None
+    source_diagnosis_id: Optional[str] = None
+    expected_metric_impact: Dict[str, float] = Field(default_factory=dict)
 
 
 class EditPlan(BaseModel):

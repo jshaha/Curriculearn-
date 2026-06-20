@@ -49,6 +49,9 @@ def test_one_overload_diagnosis_generates_diverse_candidates_within_limit():
     for candidate in candidates:
         ids = [segment.id for segment in candidate.lesson.segments]
         assert len(ids) == len(set(ids))
+        operation = candidate.edit_plan.edits[0]
+        assert operation.source_diagnosis_id == "d"
+        assert operation.expected_metric_impact
 
 
 def test_non_biology_analogy_is_not_solar_panel_based():
@@ -61,3 +64,10 @@ def test_non_biology_analogy_is_not_solar_panel_based():
     content = candidate.lesson.segments[1].content.lower()
     assert "map" in content
     assert "solar panel" not in content
+
+
+def test_max_candidates_is_respected():
+    diagnosis = Diagnosis(id="d", segment_id="s1", issue_type="cognitive_overload", severity="high",
+        explanation="Fix it", metric_evidence={}, recommended_actions=[], priority=1)
+    candidates = CurriculumEditor().generate_candidates(LESSON, DiagnosisReport(diagnoses=[diagnosis]), max_candidates=2)
+    assert len(candidates) == 2

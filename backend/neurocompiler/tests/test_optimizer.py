@@ -30,3 +30,15 @@ def test_optimizer_stops_when_no_diagnoses_are_found():
     result = LessonOptimizer().optimize(lesson, MockSimulator())
     assert result.iterations == 0
     assert result.edit_history == []
+
+
+def test_optimizer_respects_total_segment_budget():
+    lesson = _sample_lesson()
+    result = LessonOptimizer().optimize(lesson, MockSimulator(), max_total_segments=len(lesson.segments))
+    assert len(result.best_lesson.segments) <= len(lesson.segments)
+
+
+def test_mock_metrics_are_normalized():
+    report = MockSimulator().simulate(_sample_lesson())
+    for value in report.global_metrics.model_dump().values():
+        assert 0 <= value <= 100

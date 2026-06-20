@@ -82,6 +82,8 @@ class CurriculumEditor:
         return edited, EditOperation(
             id=f"edit_{original.id}_split", target_segment_id=original.id, action="split_section",
             rationale=diagnosis.explanation, new_segments=[first, second],
+            source_diagnosis_id=diagnosis.id,
+            expected_metric_impact={"cognitive_load": -18, "information_density": -15, "concept_flow": 8},
         )
 
     def _simplify_explanation(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -91,7 +93,8 @@ class CurriculumEditor:
         })
         return self._replace(lesson, original.id, simplified), EditOperation(
             id=f"edit_{original.id}_simplify", target_segment_id=original.id, action="simplify_explanation",
-            rationale=diagnosis.explanation, new_segments=[simplified],
+            rationale=diagnosis.explanation, new_segments=[simplified], source_diagnosis_id=diagnosis.id,
+            expected_metric_impact={"cognitive_load": -12, "information_density": -10},
         )
 
     def _add_analogy(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -104,6 +107,8 @@ class CurriculumEditor:
         return self._insert_after(lesson, original.id, new), EditOperation(
             id=f"edit_{original.id}_analogy", target_segment_id=original.id, action="add_analogy",
             rationale=diagnosis.explanation, new_segments=[new], inserted_after_segment_id=original.id,
+            source_diagnosis_id=diagnosis.id,
+            expected_metric_impact={"multimodal_support": 20, "concept_flow": 5},
         )
 
     def _add_example(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -115,6 +120,8 @@ class CurriculumEditor:
         return self._insert_after(lesson, original.id, new), EditOperation(
             id=f"edit_{original.id}_example", target_segment_id=original.id, action="add_example",
             rationale=diagnosis.explanation, new_segments=[new], inserted_after_segment_id=original.id,
+            source_diagnosis_id=diagnosis.id,
+            expected_metric_impact={"multimodal_support": 14, "concept_flow": 5},
         )
 
     def _add_retrieval_question(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -126,6 +133,8 @@ class CurriculumEditor:
         return self._insert_after(lesson, original.id, new), EditOperation(
             id=f"edit_{original.id}_retrieval", target_segment_id=original.id, action="add_retrieval_question",
             rationale=diagnosis.explanation, new_segments=[new], inserted_after_segment_id=original.id,
+            source_diagnosis_id=diagnosis.id,
+            expected_metric_impact={"retention": 20, "reinforcement": 30},
         )
 
     def _add_transition(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -142,7 +151,8 @@ class CurriculumEditor:
         edited = lesson.model_copy(update={"segments": segments})
         return edited, EditOperation(
             id=f"edit_{original.id}_transition", target_segment_id=original.id, action="add_transition",
-            rationale=diagnosis.explanation, new_segments=[new],
+            rationale=diagnosis.explanation, new_segments=[new], source_diagnosis_id=diagnosis.id,
+            expected_metric_impact={"concept_flow": 20, "novelty": -12},
         )
 
     def _target(self, lesson: StructuredLesson, segment_id: str) -> LessonSegment:

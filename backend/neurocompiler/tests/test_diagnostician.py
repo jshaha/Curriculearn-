@@ -58,3 +58,13 @@ def test_empty_segment_metrics_fails_cleanly():
         assert "at least one segment metric" in str(error)
     else:
         raise AssertionError("Expected an empty metric report to fail")
+
+
+def test_empty_lesson_segments_fail_cleanly():
+    empty_lesson = StructuredLesson(id="empty", title="Empty", learning_goals=["Learn"], segments=[])
+    try:
+        EducationalDiagnostician().diagnose(empty_lesson, _report())
+    except ValueError as error:
+        assert "at least one segment" in str(error)
+    else:
+        raise AssertionError("Expected an empty lesson to fail")

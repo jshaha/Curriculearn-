@@ -24,6 +24,8 @@ class MockSimulator:
     """
 
     def simulate(self, lesson: StructuredLesson) -> MetricReport:
+        if not lesson.segments:
+            raise ValueError("MockSimulator requires a lesson with at least one segment.")
         segment_metrics: List[SegmentMetric] = []
         previous_concepts = set()
         lesson_concepts = {concept.lower() for segment in lesson.segments for concept in segment.concepts}

@@ -43,6 +43,8 @@ Implement the `SimulatorProtocol` in `backend/neurocompiler/adapters/simulator.p
 
 `MetricReport` and `SegmentMetric` also accept optional model name/version, confidence, warnings, timings, and raw artifact paths. This enables a brain-model or voxel-output pipeline to preserve provenance without coupling this package to TRIBE or another specific backend.
 
+For precomputed partner output, `JsonMetricSimulator` loads a `MetricReport` JSON artifact and validates its segment IDs against the lesson. It is intended for integration and diagnosis testing; candidate optimization needs a simulator that can score each changed lesson.
+
 ## Limitations
 
 `MockSimulator` is a development-time text heuristic, not the scientific brain model. Its scores are useful for exercising the pipeline and demoing behavior, not for making educational or scientific claims. Current edits are template-based, and source-file rendering (PDF/PPTX) is intentionally out of scope.
