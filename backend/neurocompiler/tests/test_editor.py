@@ -71,3 +71,30 @@ def test_max_candidates_is_respected():
         explanation="Fix it", metric_evidence={}, recommended_actions=[], priority=1)
     candidates = CurriculumEditor().generate_candidates(LESSON, DiagnosisReport(diagnoses=[diagnosis]), max_candidates=2)
     assert len(candidates) == 2
+
+
+def test_round_robin_candidates_cover_multiple_diagnoses():
+    lesson = StructuredLesson(id="multi", title="Multi", learning_goals=["Learn"], segments=[
+        LessonSegment(id="s1", title="Dense", content="Details", concepts=["a", "b", "c", "d"]),
+        LessonSegment(id="s2", title="Recall", content="Content", concepts=["e"]),
+        LessonSegment(id="s3", title="Flow", content="Content", concepts=["f"]),
+    ])
+    report = DiagnosisReport(diagnoses=[
+        Diagnosis(id="d1", segment_id="s1", issue_type="cognitive_overload", severity="high", explanation="Fix", metric_evidence={}, recommended_actions=[], priority=1),
+        Diagnosis(id="d2", segment_id="s2", issue_type="low_retention", severity="high", explanation="Fix", metric_evidence={}, recommended_actions=[], priority=2),
+        Diagnosis(id="d3", segment_id="s3", issue_type="poor_concept_flow", severity="high", explanation="Fix", metric_evidence={}, recommended_actions=[], priority=3),
+    ])
+    candidates = CurriculumEditor().generate_candidates(lesson, report, max_candidates=3)
+    assert [candidate.edit_plan.edits[0].target_segment_id for candidate in candidates] == ["s1", "s2", "s3"]
+
+
+def test_edit_operations_include_diff_data_for_split_and_insertions():
+    split = _candidate("cognitive_overload").edit_plan.edits[0]
+    assert split.before_segment.id == "s1"
+    assert split.removed_segment_ids == ["s1"]
+    assert split.inserted_segment_ids == ["s1_a", "s1_b"]
+
+    insertion = _candidate("low_retention").edit_plan.edits[0]
+    assert insertion.before_segment.id == "s1"
+    assert insertion.removed_segment_ids == []
+    assert insertion.inserted_segment_ids == ["s1_retrieval"]

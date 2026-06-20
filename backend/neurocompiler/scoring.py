@@ -13,3 +13,8 @@ def compute_learning_score(metrics: MetricScores) -> float:
         + 0.05 * metrics.multimodal_support,
         2,
     )
+
+
+def compute_segment_score(metrics: MetricScores) -> float:
+    """Use the shared objective for an individual segment's local quality score."""
+    return compute_learning_score(metrics)

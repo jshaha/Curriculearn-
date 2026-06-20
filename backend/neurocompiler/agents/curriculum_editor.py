@@ -30,8 +30,15 @@ class CurriculumEditor:
                             max_candidates: int = 3) -> List[EditedLessonCandidate]:
         candidates: List[EditedLessonCandidate] = []
         seen = set()
-        for diagnosis in diagnosis_report.diagnoses:
-            for action in self._ACTIONS_BY_ISSUE[diagnosis.issue_type]:
+        diagnoses = sorted(diagnosis_report.diagnoses, key=lambda diagnosis: diagnosis.priority)
+        max_actions = max((len(self._ACTIONS_BY_ISSUE[diagnosis.issue_type]) for diagnosis in diagnoses), default=0)
+        # Give each diagnosis its first useful edit before exploring alternates.
+        for action_index in range(max_actions):
+            for diagnosis in diagnoses:
+                actions = self._ACTIONS_BY_ISSUE[diagnosis.issue_type]
+                if action_index >= len(actions):
+                    continue
+                action = actions[action_index]
                 key = (diagnosis.segment_id, action)
                 if key in seen:
                     continue
@@ -84,6 +91,8 @@ class CurriculumEditor:
             rationale=diagnosis.explanation, new_segments=[first, second],
             source_diagnosis_id=diagnosis.id,
             expected_metric_impact={"cognitive_load": -18, "information_density": -15, "concept_flow": 8},
+            before_segment=original, removed_segment_ids=[original.id],
+            inserted_segment_ids=[first.id, second.id],
         )
 
     def _simplify_explanation(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -95,6 +104,7 @@ class CurriculumEditor:
             id=f"edit_{original.id}_simplify", target_segment_id=original.id, action="simplify_explanation",
             rationale=diagnosis.explanation, new_segments=[simplified], source_diagnosis_id=diagnosis.id,
             expected_metric_impact={"cognitive_load": -12, "information_density": -10},
+            before_segment=original,
         )
 
     def _add_analogy(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -109,6 +119,7 @@ class CurriculumEditor:
             rationale=diagnosis.explanation, new_segments=[new], inserted_after_segment_id=original.id,
             source_diagnosis_id=diagnosis.id,
             expected_metric_impact={"multimodal_support": 20, "concept_flow": 5},
+            before_segment=original, inserted_segment_ids=[new.id],
         )
 
     def _add_example(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -122,6 +133,7 @@ class CurriculumEditor:
             rationale=diagnosis.explanation, new_segments=[new], inserted_after_segment_id=original.id,
             source_diagnosis_id=diagnosis.id,
             expected_metric_impact={"multimodal_support": 14, "concept_flow": 5},
+            before_segment=original, inserted_segment_ids=[new.id],
         )
 
     def _add_retrieval_question(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -135,6 +147,7 @@ class CurriculumEditor:
             rationale=diagnosis.explanation, new_segments=[new], inserted_after_segment_id=original.id,
             source_diagnosis_id=diagnosis.id,
             expected_metric_impact={"retention": 20, "reinforcement": 30},
+            before_segment=original, inserted_segment_ids=[new.id],
         )
 
     def _add_transition(self, lesson: StructuredLesson, diagnosis: Diagnosis):
@@ -153,6 +166,7 @@ class CurriculumEditor:
             id=f"edit_{original.id}_transition", target_segment_id=original.id, action="add_transition",
             rationale=diagnosis.explanation, new_segments=[new], source_diagnosis_id=diagnosis.id,
             expected_metric_impact={"concept_flow": 20, "novelty": -12},
+            before_segment=original, inserted_segment_ids=[new.id],
         )
 
     def _target(self, lesson: StructuredLesson, segment_id: str) -> LessonSegment:

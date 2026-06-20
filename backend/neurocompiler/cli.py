@@ -26,10 +26,21 @@ def main() -> None:
         "original_score": result.original_score,
         "best_score": result.best_score,
         "score_delta": round(result.best_score - result.original_score, 2),
+        "original_metrics": result.original_metrics.global_metrics.model_dump(mode="json"),
+        "best_metrics": result.best_metrics.global_metrics.model_dump(mode="json"),
         "best_lesson": result.best_lesson.model_dump(mode="json"),
         "diagnoses": diagnoses.model_dump(mode="json"),
         "edit_history": [plan.model_dump(mode="json") for plan in result.edit_history],
         "iteration_history": [item.model_dump(mode="json") for item in result.iteration_history],
+        "num_candidates_evaluated": sum(len(item.candidates) for item in result.iteration_history),
+        "winning_edits_summary": [
+            {
+                "action": operation.action,
+                "target_segment_id": operation.target_segment_id,
+                "rationale": operation.rationale,
+            }
+            for plan in result.edit_history for operation in plan.edits
+        ],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, indent=2) + "\n")

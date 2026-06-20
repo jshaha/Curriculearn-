@@ -16,6 +16,16 @@ Optimizer (Agent 6) ← Curriculum editor (Agent 5) ← Diagnoses
 - Agent 5 produces structured JSON lesson variants; it does not render `.pptx` files.
 - Agent 6 evaluates a bounded set of candidates, selects improvements, and retains a complete iteration trace.
 
+## Optimization loop
+
+Curriculearn does not currently use autonomous LLM agents debating with each other. It uses a controlled optimization loop:
+
+```text
+diagnose → generate candidates → simulate → score → select → repeat
+```
+
+The diagnostician identifies bottlenecks, the editor proposes bounded structured edits, and the optimizer performs greedy discrete search over those alternatives. `MockSimulator` supports fast local development and control-loop demos. `JsonMetricSimulator` loads precomputed partner metrics for diagnosis and integration testing. `ExternalSimulatorClient` is the future boundary where newly edited lessons can be evaluated by a partner’s real brain-model service.
+
 ## Setup
 
 ```bash

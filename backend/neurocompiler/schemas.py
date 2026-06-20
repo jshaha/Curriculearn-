@@ -88,6 +88,9 @@ class EditOperation(BaseModel):
     inserted_after_segment_id: Optional[str] = None
     source_diagnosis_id: Optional[str] = None
     expected_metric_impact: Dict[str, float] = Field(default_factory=dict)
+    before_segment: Optional[LessonSegment] = None
+    removed_segment_ids: List[str] = Field(default_factory=list)
+    inserted_segment_ids: List[str] = Field(default_factory=list)
 
 
 class EditPlan(BaseModel):
@@ -106,6 +109,10 @@ class CandidateEvaluation(BaseModel):
     score: float = Field(ge=0, le=100)
     score_delta: float
     metric_report: MetricReport
+    target_segment_id: Optional[str] = None
+    target_segment_score_before: Optional[float] = None
+    target_segment_score_after: Optional[float] = None
+    target_segment_score_delta: Optional[float] = None
 
 
 class OptimizationIteration(BaseModel):
@@ -123,3 +130,5 @@ class OptimizationResult(BaseModel):
     iterations: int = Field(ge=0)
     edit_history: List[EditPlan]
     iteration_history: List[OptimizationIteration] = Field(default_factory=list)
+    original_metrics: Optional[MetricReport] = None
+    best_metrics: Optional[MetricReport] = None
