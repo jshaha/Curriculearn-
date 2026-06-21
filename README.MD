@@ -31,7 +31,7 @@ It does this by converting each lesson segment into a semantic "brain state," sc
 Lesson file  →  Brain Simulation  →  Learning Metrics  →  Diagnosis  →  AI Rewrite  →  Re-simulate  →  Improved Lesson
 ```
 
-Instead of generating lesson content from scratch, NeuroCompiler takes a lesson you already have and **optimizes it against a model of how a student's mind would move through it** — flagging cognitive overload, abrupt topic jumps, missing reinforcement, and low engagement stretches, then rewriting those specific spots and checking whether the rewrite actually helped before keeping it.
+Instead of generating lesson content from scratch, CurricuLearn takes a lesson you already have and **optimizes it against a model of how a student's mind would move through it** — flagging cognitive overload, abrupt topic jumps, missing reinforcement, and low engagement stretches, then rewriting those specific spots and checking whether the rewrite actually helped before keeping it.
 
 ## Architecture
 
