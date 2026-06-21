@@ -1,0 +1,69 @@
+{
+  "original_score": 15.711381295323376,
+  "best_score": 25.07204116199698,
+  "improvement": 9.360659866673606,
+  "iterations": 2,
+  "best_lesson": {
+    "title": "Introduction to Photosynthesis",
+    "segments": [
+      {
+        "id": "slide_1_a_a",
+        "title": "What is photosynthesis?: intuition: intuition",
+        "content": "Start with the big idea: photosynthesis. Focus on why it matters before adding detail.",
+        "concepts": [
+          "photosynthesis"
+        ]
+      },
+      {
+        "id": "slide_1_a_b",
+        "title": "What is photosynthesis?: intuition: core idea",
+        "content": "Now add the core detail: the supporting detail. Start with the big idea: photosynthesis. Focus on why it matters before adding detail.",
+        "concepts": []
+      },
+      {
+        "id": "slide_1_b",
+        "title": "What is photosynthesis?: core idea",
+        "content": "Now add the core detail: the supporting detail. Photosynthesis is how plants make food.",
+        "concepts": []
+      },
+      {
+        "id": "slide_2",
+        "title": "Plants need sunlight",
+        "content": "Plants use sunlight to create energy.",
+        "concepts": [
+          "sunlight",
+          "energy"
+        ]
+      },
+      {
+        "id": "slide_3",
+        "title": "OVERLOAD: All concepts at once",
+        "content": "Chlorophyll captures photons, water splits, oxygen leaves, ATP carries energy, carbon fixation uses carbon dioxide, glucose stores energy, light reactions happen in thylakoids, dark reactions in stroma, photosystem I and II, electron transport chains, and NADPH.",
+        "concepts": [
+          "chlorophyll",
+          "photons",
+          "ATP",
+          "carbon fixation",
+          "glucose",
+          "light reactions"
+        ]
+      },
+      {
+        "id": "slide_4",
+        "title": "The equation",
+        "content": "The chemical equation is 6CO2 + 6H2O + light \u2192 C6H12O6 + 6O2.",
+        "concepts": [
+          "chemical equation"
+        ]
+      },
+      {
+        "id": "slide_5",
+        "title": "Analogy",
+        "content": "Think of photosynthesis like a solar panel: it converts light energy into stored energy.",
+        "concepts": [
+          "analogy"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCompiler — AI-Powered Curriculum Optimization</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;1,6..72,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Neural Network Background -->
+    <canvas id="neuralCanvas" class="neural-bg"></canvas>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+        <!-- Upload View (Initial State) -->
+        <section id="uploadView" class="view active">
+            <div class="upload-hero">
+                <div class="logo-section">
+                    <svg class="brain-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F0FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#FF006E;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M60 20 C35 20 20 35 20 55 C20 65 25 73 30 78 C28 82 27 87 30 92 C33 97 40 100 47 98 C50 105 58 110 67 110 C76 110 84 105 87 98 C94 100 101 97 104 92 C107 87 106 82 104 78 C109 73 114 65 114 55 C114 35 99 20 74 20 C70 20 65 21 60 20 Z M45 45 C48 45 51 48 51 51 C51 54 48 57 45 57 C42 57 39 54 39 51 C39 48 42 45 45 45 Z M75 45 C78 45 81 48 81 51 C81 54 78 57 75 57 C72 57 69 54 69 51 C69 48 72 45 75 45 Z M45 70 C50 70 55 72 60 75 C65 72 70 70 75 70"
+                              fill="none"
+                              stroke="url(#brainGrad)"
+                              stroke-width="3"
+                              stroke-linecap="round"/>
+                    </svg>
+                    <h1 class="hero-title">
+                        <span class="title-main">NeuroCompiler</span>
+                        <span class="title-sub">Optimize lessons with brain-based AI</span>
+                    </h1>
+                </div>
+
+                <!-- Upload Dropzone -->
+                <div class="upload-zone" id="dropzone">
+                    <div class="upload-content">
+                        <svg class="upload-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32 16 L32 42 M20 28 L32 16 L44 28" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 48 L48 48" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                        <p class="upload-text-main">Drop your lesson here</p>
+                        <p class="upload-text-sub">or click to browse files</p>
+                        <div class="supported-formats">
+                            <span class="format-badge">PDF</span>
+                            <span class="format-badge">PPTX</span>
+                            <span class="format-badge">DOCX</span>
+                            <span class="format-badge">TXT</span>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" hidden accept=".pdf,.pptx,.docx,.txt">
+                </div>
+
+                <!-- Sample Lessons -->
+                <div class="sample-lessons">
+                    <p class="sample-intro">or try a sample lesson</p>
+                    <div class="sample-grid">
+                        <button class="sample-card" data-sample="photosynthesis">
+                            <span class="sample-icon">🌱</span>
+                            <span class="sample-name">Photosynthesis</span>
+                            <span class="sample-meta">Biology · 18 slides</span>
+                        </button>
+                        <button class="sample-card" data-sample="bayes">
+                            <span class="sample-icon">📊</span>
+                            <span class="sample-name">Bayes' Theorem</span>
+                            <span class="sample-meta">Statistics · 12 slides</span>
+                        </button>
+                        <button class="sample-card" data-sample="revolution">
+                            <span class="sample-icon">🏛️</span>
+                            <span class="sample-name">French Revolution</span>
+                            <span class="sample-meta">History · 24 slides</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objectives Modal -->
+        <div id="objectivesModal" class="modal">
+            <div class="modal-content">
+                <h2 class="modal-title">Select optimization objectives</h2>
+                <p class="modal-subtitle">Choose what matters most for this lesson</p>
+
+                <div class="objectives-grid">
+                    <button class="objective-card" data-objective="learning">
+                        <div class="objective-icon">⚡</div>
+                        <div class="objective-name">Maximize Learning</div>
+                        <div class="objective-desc">Optimize overall knowledge acquisition</div>
+                    </button>
+                    <button class="objective-card" data-objective="engagement">
+                        <div class="objective-icon">🎯</div>
+                        <div class="objective-name">Maximize Engagement</div>
+                        <div class="objective-desc">Keep students cognitively involved</div>
+                    </button>
+                    <button class="objective-card" data-objective="overload">
+                        <div class="objective-icon">🧘</div>
+                        <div class="objective-name">Reduce Cognitive Overload</div>
+                        <div class="objective-desc">Prevent information overwhelm</div>
+                    </button>
+                    <button class="objective-card" data-objective="retention">
+                        <div class="objective-icon">💾</div>
+                        <div class="objective-name">Improve Retention</div>
+                        <div class="objective-desc">Enhance long-term memory formation</div>
+                    </button>
+                    <button class="objective-card" data-objective="intuition">
+                        <div class="objective-icon">💡</div>
+                        <div class="objective-name">Build Intuition First</div>
+                        <div class="objective-desc">Conceptual before procedural</div>
+                    </button>
+                    <button class="objective-card" data-objective="rigor">
+                        <div class="objective-icon">📐</div>
+                        <div class="objective-name">Increase Rigor</div>
+                        <div class="objective-desc">Deepen complexity appropriately</div>
+                    </button>
+                </div>
+
+                <button class="btn-primary" id="continueBtn">
+                    Continue to Analysis
+                    <svg class="btn-arrow" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 8 L15 8 M9 2 L15 8 L9 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard View -->
+        <section id="dashboardView" class="view">
+            <header class="dashboard-header">
+                <div class="file-info">
+                    <h2 class="file-name">Photosynthesis.pptx</h2>
+                    <div class="status-badge analyzing">
+                        <span class="pulse-dot"></span>
+                        Analyzing with brain simulation
+                    </div>
+                </div>
+                <button class="btn-secondary" id="newLessonBtn">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 2 L8 14 M2 8 L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    New Lesson
+                </button>
+            </header>
+
+            <!-- Metrics Overview -->
+            <div class="metrics-overview">
+                <div class="metric-card metric-primary">
+                    <div class="metric-label">Learning Score</div>
+                    <div class="metric-value" data-value="72">00</div>
+                    <div class="metric-visual">
+                        <div class="metric-dots">
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                    <div class="metric-status warning">Can improve by +23 points</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Engagement</div>
+                    <div class="metric-value" data-value="76">00</div>
+                    <div class="metric-visual">
+                        <div class="metric-dots">
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card inverted">
+                    <div class="metric-label">Cognitive Load</div>
+                    <div class="metric-value" data-value="84">00</div>
+                    <div class="metric-visual">
+                        <div class="metric-dots">
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                        </div>
+                    </div>
+                    <div class="metric-status error">Too high</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Concept Flow</div>
+                    <div class="metric-value" data-value="58">00</div>
+                    <div class="metric-visual">
+                        <div class="metric-dots">
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+
+                <!-- Left Panel: Timeline & Issues -->
+                <div class="panel-main">
+                    <div class="panel-header">
+                        <h3 class="panel-title">Cognitive Journey</h3>
+                        <div class="panel-tabs">
+                            <button class="tab active" data-tab="timeline">Timeline</button>
+                            <button class="tab" data-tab="issues">Issues</button>
+                        </div>
+                    </div>
+
+                    <!-- Timeline View -->
+                    <div class="tab-content active" id="timelineTab">
+                        <div class="timeline-chart">
+                            <canvas id="cognitiveChart" width="800" height="300"></canvas>
+                        </div>
+
+                        <div class="issue-details">
+                            <div class="issue-header">
+                                <div class="issue-location">Slide 5 · 18:32</div>
+                                <div class="issue-severity high">High Impact</div>
+                            </div>
+                            <h4 class="issue-title">Cognitive Overload Detected</h4>
+                            <p class="issue-description">Five concepts introduced simultaneously</p>
+                            <ul class="concept-list">
+                                <li>Chlorophyll</li>
+                                <li>ATP</li>
+                                <li>Carbon fixation</li>
+                                <li>Light reactions</li>
+                                <li>Chemical equation: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂</li>
+                            </ul>
+                            <div class="recommendation">
+                                <div class="rec-icon">💡</div>
+                                <div class="rec-content">
+                                    <div class="rec-label">Recommendation</div>
+                                    <div class="rec-text">Break into two sections. Split at "Light Reactions" to create a new slide.</div>
+                                </div>
+                            </div>
+                            <div class="issue-actions">
+                                <button class="btn-secondary-sm">View Slide</button>
+                                <button class="btn-primary-sm">Apply Fix</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Issues List View -->
+                    <div class="tab-content" id="issuesTab">
+                        <div class="issues-list">
+                            <div class="issue-item high">
+                                <div class="issue-item-header">
+                                    <div class="issue-item-title">Slide 5 · Cognitive Overload</div>
+                                    <div class="issue-impact">-12 pts</div>
+                                </div>
+                                <div class="issue-item-desc">Five concepts introduced at once</div>
+                                <button class="issue-expand">View Details →</button>
+                            </div>
+
+                            <div class="issue-item medium">
+                                <div class="issue-item-header">
+                                    <div class="issue-item-title">Slide 8 · Poor Sequencing</div>
+                                    <div class="issue-impact">-6 pts</div>
+                                </div>
+                                <div class="issue-item-desc">Equation before intuition</div>
+                                <button class="issue-expand">View Details →</button>
+                            </div>
+
+                            <div class="issue-item medium">
+                                <div class="issue-item-header">
+                                    <div class="issue-item-title">Minute 19 · No Reinforcement</div>
+                                    <div class="issue-impact">-4 pts</div>
+                                </div>
+                                <div class="issue-item-desc">Prior material not revisited</div>
+                                <button class="issue-expand">View Details →</button>
+                            </div>
+
+                            <div class="issue-item low">
+                                <div class="issue-item-header">
+                                    <div class="issue-item-title">Slide 12 · Low Multimodal Support</div>
+                                    <div class="issue-impact">-2 pts</div>
+                                </div>
+                                <div class="issue-item-desc">Text-heavy without visuals</div>
+                                <button class="issue-expand">View Details →</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button class="btn-secondary-large" id="visualizeBtn" style="flex: 1;">
+                            <span class="btn-generate-icon">🎨</span>
+                            <span class="btn-generate-text">Generate Visuals</span>
+                        </button>
+                        <button class="btn-generate" id="generateBtn" style="flex: 1;">
+                            <span class="btn-generate-icon">✨</span>
+                            <span class="btn-generate-text">Generate Optimized Lesson</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Slide Preview -->
+                <div class="panel-sidebar">
+                    <div class="panel-header">
+                        <h3 class="panel-title">Lesson Preview</h3>
+                    </div>
+
+                    <div class="slide-preview">
+                        <div class="slide-frame">
+                            <div class="slide-content">
+                                <h3 class="slide-title">Photosynthesis Process</h3>
+                                <ul class="slide-bullets">
+                                    <li>Chlorophyll absorbs light</li>
+                                    <li>ATP stores energy</li>
+                                    <li>Carbon fixation occurs</li>
+                                    <li>Light reactions split water</li>
+                                    <li class="slide-equation">6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂</li>
+                                </ul>
+                            </div>
+                            <div class="slide-problem-indicator">
+                                <span class="problem-badge">⚠ Problem detected</span>
+                            </div>
+                        </div>
+
+                        <div class="slide-nav">
+                            <button class="slide-nav-btn" id="prevSlide">
+                                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 2 L4 8 L10 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <span class="slide-counter">Slide <span class="tabular">5</span> of <span class="tabular">18</span></span>
+                            <button class="slide-nav-btn" id="nextSlide">
+                                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 2 L12 8 L6 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="slide-thumbnails">
+                            <div class="thumbnail active">
+                                <div class="thumb-number">1</div>
+                            </div>
+                            <div class="thumbnail">
+                                <div class="thumb-number">2</div>
+                            </div>
+                            <div class="thumbnail">
+                                <div class="thumb-number">3</div>
+                            </div>
+                            <div class="thumbnail">
+                                <div class="thumb-number">4</div>
+                            </div>
+                            <div class="thumbnail has-problem">
+                                <div class="thumb-number">5</div>
+                                <div class="thumb-indicator">⚠</div>
+                            </div>
+                            <div class="thumbnail">
+                                <div class="thumb-number">6</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results View -->
+        <section id="resultsView" class="view">
+            <div class="results-hero">
+                <div class="results-status">
+                    <svg class="checkmark" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark-check" fill="none" d="M14 27 L22 35 L38 19"/>
+                    </svg>
+                    <h2 class="results-title">Optimization Complete</h2>
+                </div>
+
+                <div class="results-score-change">
+                    <div class="score-before">
+                        <div class="score-label">Original</div>
+                        <div class="score-number tabular">61</div>
+                    </div>
+                    <svg class="arrow-right" viewBox="0 0 60 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 12 L55 12 M45 4 L55 12 L45 20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="score-after">
+                        <div class="score-label">Optimized</div>
+                        <div class="score-number tabular">83</div>
+                    </div>
+                    <div class="score-improvement">+36% improvement</div>
+                </div>
+
+                <div class="results-metrics">
+                    <div class="result-metric positive">
+                        <div class="result-metric-label">Engagement</div>
+                        <div class="result-metric-value">+18%</div>
+                    </div>
+                    <div class="result-metric positive">
+                        <div class="result-metric-label">Cognitive Load</div>
+                        <div class="result-metric-value">-23%</div>
+                    </div>
+                    <div class="result-metric positive">
+                        <div class="result-metric-label">Retention</div>
+                        <div class="result-metric-value">+31%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison View -->
+            <div class="comparison-container">
+                <div class="comparison-header">
+                    <h3 class="section-title">Before & After Comparison</h3>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-column">
+                        <div class="column-header">Original</div>
+                        <div class="slide-comparison">
+                            <div class="comparison-slide">
+                                <div class="comparison-slide-label">Slide 5</div>
+                                <div class="comparison-slide-content dense">
+                                    <p><strong>5 concepts</strong></p>
+                                    <p>Dense information</p>
+                                    <p>No visual support</p>
+                                </div>
+                                <div class="comparison-metric bad">Cognitive Load: 84</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-divider"></div>
+
+                    <div class="comparison-column">
+                        <div class="column-header">Optimized</div>
+                        <div class="slide-comparison">
+                            <div class="comparison-slide">
+                                <div class="comparison-slide-label">Slide 5a</div>
+                                <div class="comparison-slide-content improved">
+                                    <p><strong>2 concepts</strong></p>
+                                    <p>+ Solar panel analogy</p>
+                                </div>
+                                <div class="comparison-annotation">← Split into two</div>
+                            </div>
+
+                            <div class="comparison-slide">
+                                <div class="comparison-slide-label">Slide 5b</div>
+                                <div class="comparison-slide-content improved">
+                                    <p><strong>3 concepts</strong></p>
+                                    <p>+ Diagram visual</p>
+                                </div>
+                                <div class="comparison-annotation">← New slide</div>
+                            </div>
+                        </div>
+                        <div class="comparison-metric good">Cognitive Load: 52</div>
+                    </div>
+                </div>
+
+                <!-- Changes Summary -->
+                <div class="changes-summary">
+                    <h4 class="changes-title">Changes Made</h4>
+                    <ul class="changes-list">
+                        <li class="change-item">
+                            <span class="change-icon">✂️</span>
+                            Split Slide 5 into two sections
+                        </li>
+                        <li class="change-item">
+                            <span class="change-icon">💡</span>
+                            Added "solar panel" analogy to Slide 3
+                        </li>
+                        <li class="change-item">
+                            <span class="change-icon">🔄</span>
+                            Moved equation to Slide 9 (after animation)
+                        </li>
+                        <li class="change-item">
+                            <span class="change-icon">❓</span>
+                            Inserted retrieval question after Slide 6
+                        </li>
+                        <li class="change-item">
+                            <span class="change-icon">📝</span>
+                            Added recap activity at end
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Download Actions -->
+                <div class="results-actions">
+                    <button class="btn-primary-large">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3 L12 16 M6 10 L12 16 L18 10 M4 20 L20 20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Download Optimized Lesson
+                    </button>
+                    <button class="btn-secondary-large">Compare Side by Side</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="utils/neural-bg.js"></script>
+    <script src="utils/animations.js"></script>
+    <script src="utils/app.js"></script>
+</body>
+</html>

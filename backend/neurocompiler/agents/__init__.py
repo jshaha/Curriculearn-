@@ -1,7 +1,13 @@
-"""Agents 4--6: diagnosis, curriculum editing, and optimization."""
+"""Agents 4--7: diagnosis, curriculum editing, optimization, and visualization."""
 
 from .curriculum_editor import CurriculumEditor
 from .diagnostician import EducationalDiagnostician
 from .optimizer import LessonOptimizer
+from .visualization_generator import VisualizationGenerator
 
-__all__ = ["CurriculumEditor", "EducationalDiagnostician", "LessonOptimizer"]
+__all__ = [
+    "CurriculumEditor",
+    "EducationalDiagnostician",
+    "LessonOptimizer",
+    "VisualizationGenerator"
+]

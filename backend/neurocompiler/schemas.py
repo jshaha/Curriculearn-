@@ -1,5 +1,6 @@
 """Stable data contracts shared by the curriculum optimization agents."""
 
+from enum import Enum
 from typing import Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
@@ -132,3 +133,24 @@ class OptimizationResult(BaseModel):
     iteration_history: List[OptimizationIteration] = Field(default_factory=list)
     original_metrics: Optional[MetricReport] = None
     best_metrics: Optional[MetricReport] = None
+
+
+class VisualizationType(str, Enum):
+    """Types of educational visualizations."""
+    DIAGRAM = "diagram"
+    CONCEPT_MAP = "concept_map"
+    CHART = "chart"
+    ILLUSTRATION = "illustration"
+    METAPHOR = "metaphor"
+
+
+class Visualization(BaseModel):
+    """A generated visual aid for a lesson segment."""
+    id: str
+    segment_id: str
+    type: VisualizationType
+    prompt: str
+    image_data: str  # Base64 encoded image or data URI
+    alt_text: str
+    width: Optional[int] = 1024
+    height: Optional[int] = 768

@@ -291,6 +291,9 @@ class CurriculumParser:
             else:
                 text = str(section)
 
+            # Remove common PDF/HTML artifacts
+            text = self._remove_artifacts(text)
+
             # Clean whitespace
             text = ' '.join(text.split())
 
@@ -306,6 +309,36 @@ class CurriculumParser:
 
         return cleaned
 
+    def _remove_artifacts(self, text: str) -> str:
+        """
+        Remove PDF/HTML parsing artifacts and metadata.
+
+        Args:
+            text: Raw extracted text
+
+        Returns:
+            Cleaned text with artifacts removed
+        """
+        # Remove file paths
+        text = re.sub(r'file:///[^\s]+', '', text)
+        text = re.sub(r'/Users/[^\s]+\.html', '', text)
+        text = re.sub(r'[A-Za-z]:\\[^\s]+\.html', '', text)  # Windows paths
+
+        # Remove page numbers like "1/18", "2/18"
+        text = re.sub(r'\s*\d+/\d+\s*$', '', text)
+
+        # Remove timestamps
+        text = re.sub(r'\d{1,2}/\d{1,2}/\d{2,4},?\s+\d{1,2}:\d{2}\s*[AP]M', '', text)
+
+        # Remove common PDF metadata
+        text = re.sub(r'Page \d+ of \d+', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'Slide \d+', '', text)
+
+        # Remove repetitive document titles (common in headers)
+        text = re.sub(r'(Introduction to \w+ - Lesson Plan)+', 'Introduction to Lesson', text)
+
+        return text.strip()
+
     def _is_noise(self, text: str) -> bool:
         """
         Check if text segment is likely noise/metadata.
@@ -318,11 +351,19 @@ class CurriculumParser:
             r'^\d+$',
             r'^[A-Z\s]{2,}$',  # ALL CAPS headers
             r'^Slide \d+$',
+            r'^file:///',  # File paths
+            r'^\d+/\d+$',  # Page numbers like "1/18"
+            r'^[A-Z]:\\',  # Windows paths
+            r'^/Users/',  # Mac paths
         ]
 
         for pattern in noise_patterns:
             if re.match(pattern, text, re.IGNORECASE):
                 return True
+
+        # Also filter very short text that's just numbers or single words
+        if len(text.split()) < 3:
+            return True
 
         return False
 

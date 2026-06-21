@@ -103,39 +103,44 @@ class BrainSimulatorAdapter:
             multimodal_support=metrics_dict.get('multimodal_support', 50.0)
         )
 
-        # Create per-segment metrics
+        # Create per-segment metrics using temporal_metrics data
         segment_metrics: List[SegmentMetric] = []
+        temporal_metrics = metrics_dict.get('temporal_metrics', {})
 
-        # If we have per-segment metrics, use them
-        if 'segment_metrics' in metrics_dict:
-            for i, seg_metrics in enumerate(metrics_dict['segment_metrics']):
-                if i < len(lesson.segments):
-                    segment_id = lesson.segments[i].id
+        # Extract per-segment values from temporal_metrics
+        for i, segment in enumerate(lesson.segments):
+            # Get temporal values for this segment
+            seg_engagement = temporal_metrics.get('engagement', [50.0] * len(lesson.segments))[i]
+            seg_cognitive_load = temporal_metrics.get('cognitive_load', [50.0] * len(lesson.segments))[i]
+            seg_concept_flow = temporal_metrics.get('concept_flow', [50.0] * len(lesson.segments))[i]
+            seg_retention = temporal_metrics.get('retention', [50.0] * len(lesson.segments))[i]
+            seg_info_density = temporal_metrics.get('information_density', [50.0] * len(lesson.segments))[i]
 
-                    segment_metric = SegmentMetric(
-                        segment_id=segment_id,
-                        metrics=MetricScores(
-                            engagement=seg_metrics.get('engagement', 50.0),
-                            cognitive_load=seg_metrics.get('cognitive_load', 50.0),
-                            concept_flow=seg_metrics.get('concept_flow', 50.0),
-                            retention=seg_metrics.get('retention', 50.0),
-                            novelty=seg_metrics.get('novelty', 50.0),
-                            information_density=seg_metrics.get('information_density', 50.0),
-                            reinforcement=seg_metrics.get('reinforcement', 50.0),
-                            multimodal_support=seg_metrics.get('multimodal_support', 50.0)
-                        ),
-                        confidence=0.85  # Reasonable confidence for sentence transformers
-                    )
-                    segment_metrics.append(segment_metric)
-        else:
-            # Fallback: use global metrics for all segments
-            for segment in lesson.segments:
-                segment_metric = SegmentMetric(
-                    segment_id=segment.id,
-                    metrics=global_metrics,
-                    confidence=0.85
-                )
-                segment_metrics.append(segment_metric)
+            # For metrics without temporal data, use reasonable defaults
+            # Novelty should be high for first segment, moderate later
+            seg_novelty = 85.0 if i == 0 else max(30.0, 60.0 - (i * 2))
+
+            # Reinforcement should be low at start, increase over time
+            seg_reinforcement = min(80.0, 20.0 + (i * 5))
+
+            # Multimodal support is content-dependent, use moderate default
+            seg_multimodal = 50.0
+
+            segment_metric = SegmentMetric(
+                segment_id=segment.id,
+                metrics=MetricScores(
+                    engagement=seg_engagement,
+                    cognitive_load=seg_cognitive_load,
+                    concept_flow=seg_concept_flow,
+                    retention=seg_retention,
+                    novelty=seg_novelty,
+                    information_density=seg_info_density,
+                    reinforcement=seg_reinforcement,
+                    multimodal_support=seg_multimodal
+                ),
+                confidence=0.85
+            )
+            segment_metrics.append(segment_metric)
 
         # Create final report
         report = MetricReport(
