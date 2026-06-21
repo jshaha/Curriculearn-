@@ -274,10 +274,6 @@ All metrics are normalized 0–100.
 | **Engagement** | Higher | How cognitively "alive" a stretch of content is, vs. flat/disengaging | Variance in the representational (embedding) space |
 | **Concept Flow** | Higher | Whether ideas build naturally on one another vs. jumping abruptly | Similarity between consecutive segment embeddings |
 | **Retention** | Higher | Whether earlier concepts get reinforced rather than abandoned | Detection of concept reactivation across the lesson |
-| Novelty | Neutral | How much genuinely new material a segment introduces | Distance from prior concept centroids |
-| Information Density | Neutral | How much representational change is packed per unit of content | Same embedding-change signal as cognitive load, on a different timescale |
-| Reinforcement | Higher | Direct measure of concept revisiting | Used by the deterministic diagnostician |
-| Multimodal Support | Higher | Whether text, visuals, and examples reinforce each other | Currently a lighter-weight heuristic; biggest opportunity for the Visualization agent to improve |
 
 ## The agent pipeline, in detail
 
