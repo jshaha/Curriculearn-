@@ -58,6 +58,11 @@ const LOBE_DEFS: LobeDef[] = [
     rot: [0, 0.3, 0],
   },
   {
+    region: "Amygdala",
+    pos: [0.38, -0.16, 0.32],
+    scale: [0.16, 0.14, 0.16],
+  },
+  {
     region: "Broca's area",
     pos: [0.62, 0.06, 0.42],
     scale: [0.2, 0.18, 0.2],

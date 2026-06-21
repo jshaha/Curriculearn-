@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { LessonFormDialog } from "@/components/lesson-form-dialog"
@@ -62,24 +63,21 @@ export function WeekCalendar({
 
             <div className="flex flex-1 flex-col gap-2">
               {dayLessons.map((lesson) => (
-                <LessonFormDialog
+                <Link
                   key={lesson.id}
-                  classId={classId}
-                  editLesson={lesson}
-                  trigger={
-                    <button className="rounded-lg border border-border bg-background p-2.5 text-left transition hover:border-primary/40 hover:shadow-sm">
-                      <p className="text-pretty text-sm font-medium leading-snug">
-                        {lesson.title}
-                      </p>
-                      <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
-                        {lesson.summary}
-                      </p>
-                      <div className="mt-2">
-                        <LessonStatusBadge status={lesson.status} />
-                      </div>
-                    </button>
-                  }
-                />
+                  href={`/class/${classId}/lesson/${lesson.id}`}
+                  className="rounded-lg border border-border bg-background p-2.5 text-left transition hover:border-primary/40 hover:shadow-sm"
+                >
+                  <p className="text-pretty text-sm font-medium leading-snug">
+                    {lesson.title}
+                  </p>
+                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                    {lesson.summary}
+                  </p>
+                  <div className="mt-2">
+                    <LessonStatusBadge status={lesson.status} />
+                  </div>
+                </Link>
               ))}
 
               <LessonFormDialog

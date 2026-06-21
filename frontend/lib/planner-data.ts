@@ -13,11 +13,54 @@ export const BRAIN_REGIONS = [
   "Occipital lobe",
   "Cerebellum",
   "Hippocampus",
+  "Amygdala",
   "Broca's area",
   "Wernicke's area",
 ] as const
 
 export type BrainRegionName = (typeof BRAIN_REGIONS)[number]
+
+/**
+ * Class-level brain metrics shown on the class overview (averaged across
+ * a class's lessons by the backend; today these are demo placeholder
+ * scores — see components/class-brain-overview.tsx). Each metric maps to
+ * the brain regions that light up when you hover its label.
+ */
+export type ClassMetricKey = "learning" | "engagement" | "focus" | "retention"
+
+export type ClassMetric = {
+  key: ClassMetricKey
+  label: string
+  description: string
+  regions: BrainRegionName[]
+}
+
+export const CLASS_METRICS: ClassMetric[] = [
+  {
+    key: "learning",
+    label: "Learning",
+    description: "How effectively new material is being encoded and understood.",
+    regions: ["Prefrontal cortex", "Hippocampus", "Amygdala"],
+  },
+  {
+    key: "engagement",
+    label: "Engagement",
+    description: "How attentive and emotionally invested students are, moment to moment.",
+    regions: ["Frontal lobe", "Prefrontal cortex", "Amygdala"],
+  },
+  {
+    key: "focus",
+    label: "Focus",
+    description: "Sustained attention and resistance to distraction during the lesson.",
+    regions: ["Frontal lobe", "Parietal lobe"],
+  },
+  {
+    key: "retention",
+    label: "Retention",
+    description: "How likely today's material is to stick beyond the lesson itself.",
+    regions: ["Hippocampus", "Temporal lobe"],
+  },
+]
 
 export type LessonStatus = "planned" | "in-progress" | "complete"
 
