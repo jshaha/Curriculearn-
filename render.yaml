@@ -1,8 +1,9 @@
 services:
-  # Backend API (Python/Flask)
+  # Backend API (Python/Flask) - FREE TIER
   - type: web
     name: curriculearn-api
     runtime: python
+    plan: free  # FREE TIER (spins down after 15min inactivity)
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 backend.api_server:app
     envVars:
@@ -17,10 +18,11 @@ services:
       #   sync: false  # Manual entry in dashboard
     healthCheckPath: /health
 
-  # Frontend (Next.js)
+  # Frontend (Next.js) - FREE TIER
   - type: web
     name: curriculearn-frontend
     runtime: node
+    plan: free  # FREE TIER (spins down after 15min inactivity)
     buildCommand: cd frontend-next && npm install && npm run build
     startCommand: cd frontend-next && npm start
     envVars:
