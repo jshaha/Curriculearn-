@@ -65,7 +65,7 @@ DIAGNOSTICIAN_TOOLS = [
                 },
                 "explanation": {
                     "type": "string",
-                    "description": "A contextual explanation of why this is a problem, referencing the specific content"
+                    "description": "A contextual explanation of why this is a problem. MUST reference specific content from the segment (concepts, terms, or facts). Example: 'This segment introduces 8 new biochemistry terms (thylakoid, stroma, NADPH, etc.) in a single dense paragraph, overwhelming learners who just learned basic photosynthesis.'"
                 },
                 "metric_evidence": {
                     "type": "object",
@@ -75,7 +75,7 @@ DIAGNOSTICIAN_TOOLS = [
                 "recommended_actions": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Specific actions to address this issue, tailored to the content"
+                    "description": "Concrete, content-specific actions (NOT generic templates). Each action must describe what content to add/change. Example: 'Split into two segments: (1) big picture - chloroplasts as solar panels, (2) details - light reactions in thylakoids produce ATP and NADPH' NOT 'Split this segment into smaller parts'"
                 }
             },
             "required": ["segment_id", "issue_type", "severity", "explanation", "metric_evidence", "recommended_actions"]

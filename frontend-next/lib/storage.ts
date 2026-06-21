@@ -1,5 +1,7 @@
 // Local storage utilities for document management
 
+import type { Diagnosis } from "./api";
+
 export interface DocumentMetadata {
   id: string;
   filename: string;
@@ -10,6 +12,7 @@ export interface DocumentMetadata {
   metrics?: any;
   optimizedMetrics?: any;
   optimizationResultId?: string;
+  diagnoses?: Diagnosis[];
 }
 
 const STORAGE_KEY = "curriculearn_documents";
@@ -39,6 +42,8 @@ export const updateDocument = (
   if (index >= 0) {
     all[index] = { ...all[index], ...updates };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    // Dispatch custom event for same-window updates
+    window.dispatchEvent(new CustomEvent("curriculearn-storage-change"));
   }
 };
 
@@ -56,6 +61,8 @@ export const addDocument = (doc: DocumentMetadata): void => {
   }
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  // Dispatch custom event for same-window updates
+  window.dispatchEvent(new CustomEvent("curriculearn-storage-change"));
 };
 
 export const deleteDocument = (classId: string, docId: string): void => {
@@ -64,4 +71,6 @@ export const deleteDocument = (classId: string, docId: string): void => {
   const all: DocumentMetadata[] = data ? JSON.parse(data) : [];
   const filtered = all.filter(doc => !(doc.id === docId && doc.classId === classId));
   localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+  // Dispatch custom event for same-window updates
+  window.dispatchEvent(new CustomEvent("curriculearn-storage-change"));
 };

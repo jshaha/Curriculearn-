@@ -54,7 +54,7 @@ EDITOR_TOOLS = [
                 },
                 "first_segment_content": {
                     "type": "string",
-                    "description": "Content for the first segment focusing on the big picture"
+                    "description": "REAL educational content for the first segment focusing on the big picture. Must be substantive content about the subject matter, NOT a template or placeholder. Example: 'Photosynthesis is how plants make their own food using sunlight - think of it as nature's solar power system.'"
                 },
                 "first_segment_concepts": {
                     "type": "array",
@@ -67,7 +67,7 @@ EDITOR_TOOLS = [
                 },
                 "second_segment_content": {
                     "type": "string",
-                    "description": "Content for the second segment with the detailed explanation"
+                    "description": "REAL educational content for the second segment with detailed explanation. Must include actual facts, processes, or mechanisms from the subject. Example: 'Inside chloroplasts, light reactions in thylakoids split water molecules, releasing oxygen and generating ATP energy carriers.'"
                 },
                 "second_segment_concepts": {
                     "type": "array",
@@ -76,7 +76,7 @@ EDITOR_TOOLS = [
                 },
                 "rationale": {
                     "type": "string",
-                    "description": "Why this split improves learning"
+                    "description": "Specific explanation of why this split helps. Reference the actual content and cognitive issue. Example: 'Splitting the dense chloroplast segment reduces cognitive load from 87 to ~60 by separating high-level understanding (solar panels analogy) from biochemical details (thylakoids, ATP synthesis).'"
                 }
             },
             "required": ["target_segment_id", "first_segment_title", "first_segment_content", "first_segment_concepts", "second_segment_title", "second_segment_content", "second_segment_concepts", "rationale"]
@@ -103,7 +103,7 @@ EDITOR_TOOLS = [
                 },
                 "new_segment_content": {
                     "type": "string",
-                    "description": "The actual content - should be substantive educational content, not a placeholder"
+                    "description": "SUBSTANTIVE educational content tailored to the insert_type. ANALOGY: compare to familiar domain with explicit parallels. EXAMPLE: concrete scenario with real numbers/facts. TRANSITION: explicit connections between concepts. QUESTION: test understanding with context. RECAP: summarize key ideas with reinforcement. NO TEMPLATES OR PLACEHOLDERS."
                 },
                 "new_segment_concepts": {
                     "type": "array",

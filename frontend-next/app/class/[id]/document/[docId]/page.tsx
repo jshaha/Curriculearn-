@@ -36,9 +36,11 @@ export default function DocumentPage({
   }, [id, docId, clearSectionTransition]);
 
   const handleOptimized = (optimizedMetrics: AnalysisMetrics) => {
-    // Refresh document data
-    const updatedDoc = getDocument(id, docId);
-    setDocument(updatedDoc);
+    setDocument(prev => prev ? {
+      ...prev,
+      optimizedMetrics,
+      status: "optimized"
+    } : null);
   };
 
   if (isLoading) {
@@ -119,6 +121,7 @@ export default function DocumentPage({
           lessonId={document.lessonId}
           documentId={document.id}
           classId={id}
+          diagnoses={document.diagnoses}
           onOptimized={handleOptimized}
         />
       ) : (

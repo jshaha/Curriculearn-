@@ -36,9 +36,99 @@ BrainSimulatorAdapter = adapter_module.BrainSimulatorAdapter
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend
 
-# Global storage for lessons and results (in production, use a database)
+# Persistent storage file paths
+STORAGE_DIR = project_root / "backend" / "data"
+LESSONS_DB_FILE = STORAGE_DIR / "lessons_db.json"
+RESULTS_DB_FILE = STORAGE_DIR / "results_db.json"
+
+# Ensure storage directory exists
+STORAGE_DIR.mkdir(exist_ok=True)
+
+# Global storage for lessons and results
 lessons_db = {}
 results_db = {}
+
+def save_lessons_db():
+    """Save lessons database to disk."""
+    try:
+        with open(LESSONS_DB_FILE, 'w') as f:
+            # Convert to serializable format
+            serializable = {}
+            for lesson_id, data in lessons_db.items():
+                serializable[lesson_id] = {
+                    "filename": data["filename"],
+                    "uploaded_at": data["uploaded_at"],
+                    "status": data["status"],
+                    "lesson": data["lesson"].model_dump() if hasattr(data["lesson"], "model_dump") else data["lesson"],
+                    "metrics": data.get("metrics"),
+                    "diagnoses": data.get("diagnoses"),
+                    "visualizations": data.get("visualizations"),
+                }
+            json.dump(serializable, f, indent=2, default=str)
+    except Exception as e:
+        print(f"Warning: Failed to save lessons database: {e}")
+
+def load_lessons_db():
+    """Load lessons database from disk."""
+    global lessons_db
+    if not LESSONS_DB_FILE.exists():
+        return
+    try:
+        with open(LESSONS_DB_FILE, 'r') as f:
+            serializable = json.load(f)
+            for lesson_id, data in serializable.items():
+                # Convert back to StructuredLesson objects
+                from neurocompiler.schemas import StructuredLesson
+                lessons_db[lesson_id] = {
+                    "filename": data["filename"],
+                    "uploaded_at": data["uploaded_at"],
+                    "status": data["status"],
+                    "lesson": StructuredLesson(**data["lesson"]),
+                    "metrics": data.get("metrics"),
+                    "diagnoses": data.get("diagnoses"),
+                    "visualizations": data.get("visualizations"),
+                }
+        print(f"✓ Loaded {len(lessons_db)} lessons from persistent storage")
+    except Exception as e:
+        print(f"Warning: Failed to load lessons database: {e}")
+
+def save_results_db():
+    """Save results database to disk."""
+    try:
+        with open(RESULTS_DB_FILE, 'w') as f:
+            # Convert to serializable format
+            serializable = {}
+            for result_id, data in results_db.items():
+                serializable[result_id] = {
+                    "lesson_id": data["lesson_id"],
+                    "created_at": data["created_at"],
+                    "result": {
+                        "original_score": data["result"].original_score,
+                        "best_score": data["result"].best_score,
+                        "iterations": data["result"].iterations,
+                        "original_lesson": data["result"].original_lesson.model_dump(),
+                        "best_lesson": data["result"].best_lesson.model_dump(),
+                    }
+                }
+            json.dump(serializable, f, indent=2, default=str)
+    except Exception as e:
+        print(f"Warning: Failed to save results database: {e}")
+
+def load_results_db():
+    """Load results database from disk."""
+    global results_db
+    if not RESULTS_DB_FILE.exists():
+        return
+    try:
+        with open(RESULTS_DB_FILE, 'r') as f:
+            serializable = json.load(f)
+            # Just store the serializable version for now
+            # Full reconstruction would require OptimizationResult schema
+            for result_id, data in serializable.items():
+                results_db[result_id] = data
+        print(f"✓ Loaded {len(results_db)} results from persistent storage")
+    except Exception as e:
+        print(f"Warning: Failed to load results database: {e}")
 
 # Initialize agents on startup (reuse for all requests)
 print("Initializing NeuroCompiler agents...")
@@ -70,6 +160,10 @@ optimizer = LessonOptimizer(diagnostician=diagnostician, editor=editor)
 visualizer = VisualizationGenerator(model_provider="gemini")  # Uses placeholders if no API key
 parser = CurriculumParser()
 print("✓ Agents initialized")
+
+# Load persisted data
+load_lessons_db()
+load_results_db()
 
 
 @app.route('/health', methods=['GET'])
@@ -133,6 +227,7 @@ def upload_lesson():
             "uploaded_at": datetime.now().isoformat(),
             "status": "uploaded"
         }
+        save_lessons_db()  # Persist to disk
 
         return jsonify({
             "lesson_id": lesson_id,
@@ -207,6 +302,7 @@ def analyze_lesson(lesson_id):
             })
 
         lessons_db[lesson_id]["diagnoses"] = diagnoses
+        save_lessons_db()  # Persist to disk
 
         return jsonify({
             "lesson_id": lesson_id,
@@ -237,8 +333,8 @@ def optimize_lesson(lesson_id):
     lesson = lessons_db[lesson_id]["lesson"]
     body = request.get_json() or {}
 
-    max_iterations = body.get('max_iterations', 2)
-    max_candidates = body.get('max_candidates', 3)
+    max_iterations = body.get('max_iterations', 1)  # Reduced from 2 for faster optimization
+    max_candidates = body.get('max_candidates', 2)  # Reduced from 3 for faster optimization
 
     try:
         print(f"Optimizing lesson: {lesson.title}")
@@ -259,10 +355,12 @@ def optimize_lesson(lesson_id):
             "result": result,
             "created_at": datetime.now().isoformat()
         }
+        save_results_db()  # Persist to disk
 
         # Update lesson status
         lessons_db[lesson_id]["status"] = "optimized"
         lessons_db[lesson_id]["result_id"] = result_id
+        save_lessons_db()  # Persist to disk
 
         return jsonify({
             "result_id": result_id,
@@ -311,6 +409,7 @@ def generate_visualizations(lesson_id):
 
         # Store visualizations
         lessons_db[lesson_id]["visualizations"] = visualizations
+        save_lessons_db()  # Persist to disk
 
         # Convert to JSON-serializable format
         result = {}

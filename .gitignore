@@ -7,6 +7,9 @@ __pycache__/
 .env
 .env.local
 
+# Backend persistent storage (user data)
+backend/data/
+
 frontend/node_modules
 .next
 archived_old_code/frontend/node_modules/

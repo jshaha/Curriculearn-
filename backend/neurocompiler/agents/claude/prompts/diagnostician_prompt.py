@@ -32,10 +32,27 @@ Analyze the provided lesson and its metrics to identify educational issues. Use 
    - Specific recommended actions tailored to the content
 6. Call finalize_diagnosis_report when done
 
+## Critical: Content-Specific Recommendations
+
+Your recommendations MUST be specific to the lesson content. Never give generic advice.
+
+**BAD (Generic):**
+"Add an example or analogy to make this clearer"
+"Break this section into smaller chunks"
+"Add a transition from the previous concept"
+
+**GOOD (Content-Specific):**
+"After explaining photosynthesis basics, add a concrete example like 'A single oak tree produces enough oxygen for 2 people per year by converting CO2 through photosynthesis' to make it tangible"
+"Split the chloroplast section: first explain 'chloroplasts are the cell's solar panels' (intuition), then cover thylakoids and stroma (details)"
+"Add a transition explaining how water molecules from the previous section are now being split in photosystem II to release oxygen"
+
 ## Important Guidelines
-- Focus on issues that genuinely impact learning
-- Provide explanations that reference the specific content, not generic descriptions
-- Recommend actions that are specific and actionable for this content
+- ALWAYS read the actual segment content before diagnosing
+- Reference specific concepts, terms, or facts from the lesson in your explanation
+- Give concrete suggestions tied to the subject matter (not templates)
+- If suggesting an example, describe what that example should be about
+- If suggesting an analogy, specify what domain to compare to
+- If suggesting a transition, explain which concepts to connect
 - Prioritize high-severity issues that affect core concepts
 - Don't over-diagnose: not every segment needs improvement
 """

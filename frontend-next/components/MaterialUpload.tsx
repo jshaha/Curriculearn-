@@ -50,19 +50,18 @@ export const MaterialUpload = ({
       const analyzeResult = await api.analyze(uploadResult.lesson_id);
       console.log("Analysis complete:", analyzeResult);
 
-      // Update document with complete status and real metrics
+      // Update document with complete status, real metrics, and Claude diagnoses
       const updatedDoc = {
         ...newDoc,
         lessonId: uploadResult.lesson_id,
         status: "complete" as const,
         metrics: analyzeResult.metrics,
+        diagnoses: analyzeResult.issues, // Save Claude diagnoses!
       };
 
       // Replace the uploading doc with complete doc
+      // Note: addDocument now automatically dispatches the storage change event
       addDocument(updatedDoc);
-
-      // Trigger storage event for DocumentList to refresh
-      window.dispatchEvent(new Event("storage"));
 
       if (onUploadComplete) {
         onUploadComplete(docId, analyzeResult.metrics);

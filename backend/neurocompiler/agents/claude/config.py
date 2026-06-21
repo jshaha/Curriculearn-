@@ -10,7 +10,7 @@ class ClaudeConfig:
     """Configuration for Claude API interactions."""
 
     api_key: Optional[str] = None
-    model: str = "claude-sonnet-4-20250514"
+    model: str = "claude-sonnet-4-6"
     temperature: float = 0.3
     max_tokens: int = 4096
     fallback_enabled: bool = True
@@ -22,7 +22,7 @@ class ClaudeConfig:
         """Load configuration from environment variables."""
         return cls(
             api_key=os.getenv("ANTHROPIC_API_KEY"),
-            model=os.getenv("CLAUDE_MODEL", "claude-sonnet-4-20250514"),
+            model=os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6"),
             temperature=float(os.getenv("CLAUDE_TEMPERATURE", "0.3")),
             max_tokens=int(os.getenv("CLAUDE_MAX_TOKENS", "4096")),
             fallback_enabled=os.getenv("CLAUDE_FALLBACK_ENABLED", "true").lower() == "true",

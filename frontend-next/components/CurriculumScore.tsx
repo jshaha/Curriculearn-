@@ -35,10 +35,14 @@ export const CurriculumScore = ({ classId }: CurriculumScoreProps): JSX.Element 
 
     calculateScore();
 
-    // Listen for storage changes
+    // Listen for storage changes (both cross-window and same-window)
     const handleStorageChange = () => calculateScore();
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener("curriculearn-storage-change", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("curriculearn-storage-change", handleStorageChange);
+    };
   }, [classId]);
 
   const radius = 32;

@@ -34,13 +34,20 @@ export const DocumentList = ({ classId, sectionId }: DocumentListProps) => {
       loadDocuments();
     };
 
+    // Listen for both cross-window and same-window storage changes
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener("curriculearn-storage-change", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("curriculearn-storage-change", handleStorageChange);
+    };
   }, [classId]);
 
   const loadDocuments = () => {
     const docs = getDocuments(classId);
-    const completedDocs = docs.filter((doc) => doc.status === "complete" && doc.metrics);
+    const completedDocs = docs.filter((doc) =>
+      (doc.status === "complete" || doc.status === "optimized") && doc.metrics
+    );
 
     // Sort by the metric for this section
     const metricKey = SECTION_METRIC_MAP[sectionId];

@@ -25,11 +25,27 @@ Given a set of diagnoses (educational issues), create edit candidates that addre
 
 When creating content, you must write REAL educational content, not templates or placeholders:
 
-**Good Example (Analogy for Photosynthesis)**:
+**MANDATORY: Every edit must contain substantive, subject-specific content**
+
+**Good Examples:**
+
+*Analogy for Photosynthesis:*
 "Think of a leaf as a tiny solar-powered kitchen. Sunlight is the electricity, water and carbon dioxide are the raw ingredients, and glucose is the finished meal. Just as a kitchen transforms ingredients into food using energy, chloroplasts transform simple molecules into sugar using light energy."
 
-**Bad Example (Template)**:
-"Think of [concept] as [familiar thing]. This analogy helps illustrate how [concept] works."
+*Transition between cellular respiration and photosynthesis:*
+"Now here's the beautiful connection: remember how we just learned that animals breathe in oxygen and exhale CO2? Plants do the opposite during photosynthesis—they take in that CO2 we exhale and release the oxygen we need. It's a perfect cycle."
+
+*Retrieval question for density concepts:*
+"Before we move on, try this: Imagine you have a block of wood and a block of metal the same size. If you drop both in water, the wood floats but the metal sinks. Based on what we just learned about density, explain why this happens using the formula density = mass/volume."
+
+*Example for abstract physics concept:*
+"Let's make this concrete: when you push a shopping cart, you're applying a force. An empty cart accelerates quickly (small mass, same force = high acceleration). But a cart full of groceries barely budges with the same push (large mass, same force = low acceleration). This is Newton's Second Law in action: F = ma."
+
+**Bad Examples (Never do this):**
+"Add an analogy comparing [concept] to something familiar"
+"Think of [concept] as [familiar thing]"
+"Insert example demonstrating the concept"
+"Add transition explaining the connection"
 
 ## Creating Edit Candidates
 

@@ -6,6 +6,8 @@ import type { AccordionEntry } from "@/content/editorialTypes";
 import { AccordionList } from "@/components/AccordionList";
 import { api } from "@/lib/api";
 import { updateDocument } from "@/lib/storage";
+import { buildFallbackOptimizedMetrics, getScoreColor } from "@/lib/metrics";
+import { MetricsComparison } from "@/components/MetricsComparison";
 
 interface DocumentAccordionProps {
   metrics: AnalysisMetrics;
@@ -17,11 +19,6 @@ interface DocumentAccordionProps {
   onOptimized?: (optimizedMetrics: AnalysisMetrics) => void;
 }
 
-const getScoreColor = (score: number): string => {
-  if (score >= 75) return "#10b981";
-  if (score >= 50) return "#f59e0b";
-  return "#ef4444";
-};
 
 const getScoreLabel = (score: number): string => {
   if (score >= 85) return "Excellent";
@@ -200,7 +197,6 @@ export const DocumentAccordion = ({
 }: DocumentAccordionProps): JSX.Element => {
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizeError, setOptimizeError] = useState<string | null>(null);
-  const [showComparison, setShowComparison] = useState(false);
 
   const handleOptimize = async () => {
     setIsOptimizing(true);
@@ -210,17 +206,9 @@ export const DocumentAccordion = ({
       updateDocument(classId, documentId, { status: "optimizing" });
       const result = await api.optimize(lessonId);
 
-      const optimized: AnalysisMetrics = {
-        learning_score: result.optimized_score,
-        engagement: Math.min(100, metrics.engagement * 1.15),
-        cognitive_load: Math.max(0, metrics.cognitive_load * 0.9),
-        concept_flow: Math.min(100, metrics.concept_flow * 1.12),
-        retention: Math.min(100, metrics.retention * 1.18),
-        novelty: metrics.novelty,
-        information_density: metrics.information_density,
-        reinforcement: Math.min(100, metrics.reinforcement * 1.1),
-        multimodal_support: Math.min(100, metrics.multimodal_support * 1.05),
-      };
+      // Use backend metrics if available, otherwise fallback
+      const optimized = result.optimized_metrics
+        ?? buildFallbackOptimizedMetrics(metrics, result.optimized_score);
 
       updateDocument(classId, documentId, {
         status: "optimized",
@@ -228,10 +216,7 @@ export const DocumentAccordion = ({
         optimizationResultId: result.result_id,
       });
 
-      setShowComparison(true);
-      if (onOptimized) {
-        onOptimized(optimized);
-      }
+      onOptimized?.(optimized);
     } catch (error) {
       console.error("Optimization failed:", error);
       setOptimizeError(error instanceof Error ? error.message : "Optimization failed");
@@ -241,9 +226,8 @@ export const DocumentAccordion = ({
     }
   };
 
-  const displayMetrics = showComparison && optimizedMetrics ? optimizedMetrics : metrics;
   const hasOptimized = !!optimizedMetrics;
-  const accordionItems = transformMetricsToAccordion(displayMetrics);
+  const accordionItems = transformMetricsToAccordion(optimizedMetrics ?? metrics);
 
   return (
     <div className="mx-auto w-full max-w-[1280px] px-6 pb-20 sm:px-10">
@@ -258,133 +242,132 @@ export const DocumentAccordion = ({
         </p>
       </div>
 
-      {/* Overall Score Card */}
-      <div className="mb-14">
-        <div className="relative overflow-hidden rounded-[22px] border border-fg/12 bg-gradient-to-br from-bg via-[#0d0e11] to-bg p-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
-          <div className="pointer-events-none absolute inset-0 opacity-[0.07]">
-            <div
-              className="h-full w-full"
-              style={{
-                background: `radial-gradient(circle at 30% 50%, ${getScoreColor(displayMetrics.learning_score)}40 0%, transparent 50%)`,
-              }}
+      {optimizedMetrics ? (
+        <>
+          {/* Side-by-side comparison */}
+          <div className="mb-14">
+            <MetricsComparison
+              originalMetrics={metrics}
+              optimizedMetrics={optimizedMetrics}
+              filename={filename}
             />
           </div>
 
-          <div className="relative z-10 flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex-1">
-              <div className="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.28em] text-fg/50">
-                Overall Learning Score
-              </div>
-              <div className="mb-5 flex items-baseline gap-4">
-                <div
-                  className="font-mono text-[5.5rem] font-bold leading-none tracking-tight"
-                  style={{ color: getScoreColor(displayMetrics.learning_score) }}
-                >
-                  {Math.round(displayMetrics.learning_score)}
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="font-mono text-[1.1rem] font-medium text-fg/30">/ 100</div>
-                  {showComparison && optimizedMetrics && (
-                    <div className="font-mono text-[0.85rem] font-semibold text-emerald-500">
-                      +{Math.round(displayMetrics.learning_score - metrics.learning_score)}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div
-                className="inline-block rounded-sm px-4 py-2 font-mono text-[0.72rem] font-semibold uppercase tracking-[0.2em]"
-                style={{
-                  backgroundColor: `${getScoreColor(displayMetrics.learning_score)}15`,
-                  color: getScoreColor(displayMetrics.learning_score),
-                }}
-              >
-                {getScoreLabel(displayMetrics.learning_score)}
-              </div>
-            </div>
+          {/* Scroll Hint */}
+          <div className="mb-8 text-center">
+            <a
+              href="#metrics"
+              className="inline-flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-fg/50 transition-colors hover:text-accent"
+            >
+              <span>↓</span>
+              View Detailed Metrics
+            </a>
           </div>
-        </div>
-      </div>
 
-      {/* Optimize Button / Comparison Toggle */}
-      {!hasOptimized ? (
-        <div className="mb-8">
-          <button
-            onClick={handleOptimize}
-            disabled={isOptimizing}
-            className="group relative overflow-hidden rounded-sm border border-accent/30 bg-gradient-to-r from-accent/10 to-accent/5 px-8 py-4 font-mono text-[0.8rem] font-semibold uppercase tracking-[0.2em] text-accent transition-all duration-300 hover:border-accent/50 hover:from-accent/15 hover:to-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <span className="relative z-10 flex items-center gap-3">
-              {isOptimizing ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-accent/30 border-t-accent" />
-                  Running Optimization Pipeline...
-                </>
-              ) : (
-                <>
-                  <span>⚡</span>
-                  Optimize Learning Experience
-                </>
-              )}
-            </span>
-          </button>
-          {optimizeError && (
-            <div className="mt-3 font-mono text-[0.7rem] text-red-500">
-              Error: {optimizeError}
+          {/* Accordion Section */}
+          <div id="metrics" className="pt-4">
+            <div className="mb-7">
+              <h3 className="font-mono text-[0.68rem] uppercase tracking-[0.26em] text-fg/55">
+                Neural Metric Breakdown
+              </h3>
             </div>
-          )}
-        </div>
+            <AccordionList items={accordionItems} sectionKey="document-metrics" />
+          </div>
+        </>
       ) : (
-        <div className="mb-8 flex items-center gap-4">
-          <div className="flex-1">
-            <div className="font-mono text-[0.65rem] uppercase tracking-[0.24em] text-emerald-500/80">
-              ✓ Optimized
+        <>
+          {/* Overall Score Card */}
+          <div className="mb-14">
+            <div className="relative overflow-hidden rounded-[22px] border border-fg/12 bg-gradient-to-br from-bg via-[#0d0e11] to-bg p-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
+              <div className="pointer-events-none absolute inset-0 opacity-[0.07]">
+                <div
+                  className="h-full w-full"
+                  style={{
+                    background: `radial-gradient(circle at 30% 50%, ${getScoreColor(metrics.learning_score)}40 0%, transparent 50%)`,
+                  }}
+                />
+              </div>
+
+              <div className="relative z-10 flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex-1">
+                  <div className="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.28em] text-fg/50">
+                    Overall Learning Score
+                  </div>
+                  <div className="mb-5 flex items-baseline gap-4">
+                    <div
+                      className="font-mono text-[5.5rem] font-bold leading-none tracking-tight"
+                      style={{ color: getScoreColor(metrics.learning_score) }}
+                    >
+                      {Math.round(metrics.learning_score)}
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <div className="font-mono text-[1.1rem] font-medium text-fg/30">/ 100</div>
+                    </div>
+                  </div>
+                  <div
+                    className="inline-block rounded-sm px-4 py-2 font-mono text-[0.72rem] font-semibold uppercase tracking-[0.2em]"
+                    style={{
+                      backgroundColor: `${getScoreColor(metrics.learning_score)}15`,
+                      color: getScoreColor(metrics.learning_score),
+                    }}
+                  >
+                    {getScoreLabel(metrics.learning_score)}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 rounded-sm border border-fg/10 bg-bg p-1">
+
+          {/* Optimize Button */}
+          <div className="mb-8">
             <button
-              onClick={() => setShowComparison(false)}
-              className={`rounded-sm px-4 py-2 font-mono text-[0.65rem] uppercase tracking-[0.16em] transition-all ${
-                !showComparison
-                  ? "bg-fg/10 text-fg/90"
-                  : "text-fg/50 hover:text-fg/70"
-              }`}
+              onClick={handleOptimize}
+              disabled={isOptimizing}
+              className="group relative overflow-hidden rounded-sm border border-accent/30 bg-gradient-to-r from-accent/10 to-accent/5 px-8 py-4 font-mono text-[0.8rem] font-semibold uppercase tracking-[0.2em] text-accent transition-all duration-300 hover:border-accent/50 hover:from-accent/15 hover:to-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Original
+              <span className="relative z-10 flex items-center gap-3">
+                {isOptimizing ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-accent/30 border-t-accent" />
+                    Running Optimization Pipeline...
+                  </>
+                ) : (
+                  <>
+                    <span>⚡</span>
+                    Optimize Learning Experience
+                  </>
+                )}
+              </span>
             </button>
-            <button
-              onClick={() => setShowComparison(true)}
-              className={`rounded-sm px-4 py-2 font-mono text-[0.65rem] uppercase tracking-[0.16em] transition-all ${
-                showComparison
-                  ? "bg-emerald-500/20 text-emerald-500"
-                  : "text-fg/50 hover:text-fg/70"
-              }`}
-            >
-              Optimized
-            </button>
+            {optimizeError && (
+              <div className="mt-3 font-mono text-[0.7rem] text-red-500">
+                Error: {optimizeError}
+              </div>
+            )}
           </div>
-        </div>
+
+          {/* Scroll Hint */}
+          <div className="mb-8 text-center">
+            <a
+              href="#metrics"
+              className="inline-flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-fg/50 transition-colors hover:text-accent"
+            >
+              <span>↓</span>
+              View Detailed Metrics
+            </a>
+          </div>
+
+          {/* Accordion Section */}
+          <div id="metrics" className="pt-4">
+            <div className="mb-7">
+              <h3 className="font-mono text-[0.68rem] uppercase tracking-[0.26em] text-fg/55">
+                Neural Metric Breakdown
+              </h3>
+            </div>
+            <AccordionList items={accordionItems} sectionKey="document-metrics" />
+          </div>
+        </>
       )}
-
-      {/* Scroll Hint */}
-      <div className="mb-8 text-center">
-        <a
-          href="#metrics"
-          className="inline-flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-fg/50 transition-colors hover:text-accent"
-        >
-          <span>↓</span>
-          View Detailed Metrics
-        </a>
-      </div>
-
-      {/* Accordion Section */}
-      <div id="metrics" className="pt-4">
-        <div className="mb-7">
-          <h3 className="font-mono text-[0.68rem] uppercase tracking-[0.26em] text-fg/55">
-            Neural Metric Breakdown
-          </h3>
-        </div>
-        <AccordionList items={accordionItems} sectionKey="document-metrics" />
-      </div>
     </div>
   );
 };

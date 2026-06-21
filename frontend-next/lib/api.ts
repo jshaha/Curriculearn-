@@ -12,6 +12,17 @@ export interface AnalysisMetrics {
   multimodal_support: number;
 }
 
+export interface Diagnosis {
+  id: string;
+  segment_id: string;
+  issue_type: string;
+  severity: "low" | "medium" | "high";
+  explanation: string;
+  recommended_actions: string[];
+  priority: number;
+  metric_evidence: Record<string, number>;
+}
+
 export interface OptimizeResult {
   result_id: string;
   lesson_id: string;
@@ -19,6 +30,9 @@ export interface OptimizeResult {
   optimized_score: number;
   improvement: number;
   iterations: number;
+  // Optional full metrics from backend
+  optimized_metrics?: AnalysisMetrics;
+  original_metrics?: AnalysisMetrics;
 }
 
 export interface UploadResult {
@@ -31,7 +45,7 @@ export interface UploadResult {
 export interface AnalyzeResult {
   lesson_id: string;
   metrics: AnalysisMetrics;
-  issues: any[];
+  issues: Diagnosis[];
   message: string;
 }
 
