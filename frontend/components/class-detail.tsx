@@ -7,8 +7,6 @@ import {
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
-  CalendarRange,
-  Rows3,
   Plus,
   Users,
   MapPin,
@@ -18,7 +16,6 @@ import {
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { WeekCalendar } from "@/components/week-calendar"
-import { DayTimeline } from "@/components/day-timeline"
+import { ClassBrainOverview } from "@/components/class-brain-overview"
 import { LessonFormDialog } from "@/components/lesson-form-dialog"
 import { ClassFormDialog } from "@/components/class-form-dialog"
 import { usePlanner } from "@/components/planner-provider"
@@ -39,12 +36,9 @@ import {
 } from "@/lib/planner-data"
 import { cn } from "@/lib/utils"
 
-type View = "calendar" | "timeline"
-
 export function ClassDetail({ classId }: { classId: string }) {
   const { getClass, lessonsForClass, deleteClass } = usePlanner()
   const [weekOffset, setWeekOffset] = useState(0)
-  const [view, setView] = useState<View>("calendar")
 
   const classRecord = getClass(classId)
   const todayISO = toISODate(new Date())
@@ -160,7 +154,12 @@ export function ClassDetail({ classId }: { classId: string }) {
         </div>
       </div>
 
-      {/* Controls */}
+      {/* Brain overview — first thing visible after the header */}
+      <div className="mt-6">
+        <ClassBrainOverview classId={classId} />
+      </div>
+
+      {/* Week navigation */}
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <Button
@@ -194,47 +193,21 @@ export function ClassDetail({ classId }: { classId: string }) {
             <ChevronRight className="h-4 w-4" />
           </Button>
           {weekOffset !== 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setWeekOffset(0)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setWeekOffset(0)}>
               Today
             </Button>
           )}
         </div>
-
-        <Tabs value={view} onValueChange={(v) => setView(v as View)}>
-          <TabsList>
-            <TabsTrigger value="calendar" className="gap-1.5">
-              <CalendarRange className="h-4 w-4" />
-              Calendar
-            </TabsTrigger>
-            <TabsTrigger value="timeline" className="gap-1.5">
-              <Rows3 className="h-4 w-4" />
-              Timeline
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
       </div>
 
-      {/* View */}
+      {/* Weekly table */}
       <div className="mt-5">
-        {view === "calendar" ? (
-          <WeekCalendar
-            classId={classId}
-            weekStart={weekStart}
-            lessons={weekLessons}
-            todayISO={todayISO}
-          />
-        ) : (
-          <DayTimeline
-            classId={classId}
-            weekStart={weekStart}
-            lessons={weekLessons}
-            todayISO={todayISO}
-          />
-        )}
+        <WeekCalendar
+          classId={classId}
+          weekStart={weekStart}
+          lessons={weekLessons}
+          todayISO={todayISO}
+        />
       </div>
     </main>
   )

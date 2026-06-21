@@ -23,11 +23,13 @@ import { cn } from "@/lib/utils"
 export function TimelineLessonCard({
   classId,
   lesson,
+  defaultOpen = false,
 }: {
   classId: string
   lesson: Lesson
+  defaultOpen?: boolean
 }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
   const pendingSuggestions = lesson.suggestions.filter(
     (s) => s.status === "pending",
   ).length

@@ -53,104 +53,105 @@
 :root {
   color-scheme: light;
 
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  /* Warm cream/beige base. */
+  --background: #f8f1e4;
+  --foreground: #2b231a;
 
-  --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card: #fffcf5;
+  --card-foreground: #2b231a;
 
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --popover: #fffcf5;
+  --popover-foreground: #2b231a;
 
-  --primary: #2563eb;
+  /* Vivid violet primary — echoes the indigo/violet brain visualization. */
+  --primary: #6d28d9;
   --primary-foreground: #ffffff;
 
-  --secondary: #eef2ff;
-  --secondary-foreground: #1e293b;
+  --secondary: #fbe7cf;
+  --secondary-foreground: #6b4a2b;
 
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --muted: #efe3cd;
+  --muted-foreground: #8a7a63;
 
-  --accent: #ecfeff;
-  --accent-foreground: #155e75;
+  --accent: #ddf4f0;
+  --accent-foreground: #0f6e66;
 
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #2563eb;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #e6d9be;
+  --input: #e6d9be;
+  --ring: #6d28d9;
+
+  /*
+   * NOTE: these five chart colors are the only saturated colors most of
+   * the UI ever uses (status badges, class accent dots, score chips,
+   * suggestion-target tags). They previously were *only* defined inside
+   * `.dark` and an OS-driven `@media (prefers-color-scheme: dark)` block
+   * below — never here in `:root`. Since nothing in the app applies a
+   * `.dark` class, every one of those colorful elements was rendering
+   * with an undefined (effectively transparent/black) color by default.
+   * That's the actual cause of the "black and white" look — defining
+   * them here is the fix, not just the beige background.
+   */
+  --chart-1: #2d6fe0; /* blue */
+  --chart-2: #0ea5a8; /* teal */
+  --chart-3: #f0a23a; /* amber */
+  --chart-4: #3fa66b; /* green */
+  --chart-5: #e0607e; /* rose */
+
+  --sidebar: #fffcf5;
+  --sidebar-foreground: #2b231a;
+  --sidebar-primary: #6d28d9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #efe3cd;
+  --sidebar-accent-foreground: #2b231a;
+  --sidebar-border: #e6d9be;
+  --sidebar-ring: #6d28d9;
 
   --radius: 0.9rem;
 }
 
+/*
+ * Manual dark theme — only applies if something explicitly adds a `.dark`
+ * class (nothing in this app does that today; there's no theme toggle).
+ * Kept colorful on purpose so flipping a future toggle on doesn't land
+ * back on flat grayscale.
+ */
 .dark {
   color-scheme: dark;
-  --background: oklch(0.2 0.02 250);
-  --foreground: oklch(0.96 0.005 95);
-  --card: oklch(0.25 0.02 250);
-  --card-foreground: oklch(0.96 0.005 95);
-  --popover: oklch(0.25 0.02 250);
-  --popover-foreground: oklch(0.96 0.005 95);
-  --primary: oklch(0.7 0.13 240);
-  --primary-foreground: oklch(0.2 0.02 250);
-  --secondary: oklch(0.3 0.02 250);
-  --secondary-foreground: oklch(0.96 0.005 95);
-  --muted: oklch(0.3 0.02 250);
-  --muted-foreground: oklch(0.72 0.02 250);
-  --accent: oklch(0.34 0.05 220);
-  --accent-foreground: oklch(0.92 0.03 200);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.7 0.13 240);
-  --chart-1: oklch(0.7 0.13 240);
-  --chart-2: oklch(0.7 0.12 190);
-  --chart-3: oklch(0.78 0.13 70);
-  --chart-4: oklch(0.7 0.14 150);
-  --chart-5: oklch(0.68 0.16 25);
-  --sidebar: oklch(0.23 0.02 250);
-  --sidebar-foreground: oklch(0.96 0.005 95);
-  --sidebar-primary: oklch(0.7 0.13 240);
-  --sidebar-primary-foreground: oklch(0.2 0.02 250);
-  --sidebar-accent: oklch(0.3 0.02 250);
-  --sidebar-accent-foreground: oklch(0.96 0.005 95);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.7 0.13 240);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    color-scheme: dark;
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-  }
+  --background: #1c1712;
+  --foreground: #f3ecdd;
+  --card: #261f17;
+  --card-foreground: #f3ecdd;
+  --popover: #261f17;
+  --popover-foreground: #f3ecdd;
+  --primary: #a78bfa;
+  --primary-foreground: #1c1712;
+  --secondary: #3a2f22;
+  --secondary-foreground: #f3ecdd;
+  --muted: #332a1f;
+  --muted-foreground: #c2b39a;
+  --accent: #1f3935;
+  --accent-foreground: #8fe3d8;
+  --destructive: #f87171;
+  --destructive-foreground: #1c1712;
+  --border: rgba(243, 236, 221, 0.12);
+  --input: rgba(243, 236, 221, 0.15);
+  --ring: #a78bfa;
+  --chart-1: #5e9bff;
+  --chart-2: #2dd4cf;
+  --chart-3: #fbbf5e;
+  --chart-4: #5fcf8f;
+  --chart-5: #f088a3;
+  --sidebar: #221b14;
+  --sidebar-foreground: #f3ecdd;
+  --sidebar-primary: #a78bfa;
+  --sidebar-primary-foreground: #1c1712;
+  --sidebar-accent: #332a1f;
+  --sidebar-accent-foreground: #f3ecdd;
+  --sidebar-border: rgba(243, 236, 221, 0.12);
+  --sidebar-ring: #a78bfa;
 }
 
 @layer base {
@@ -161,15 +162,15 @@
     background:
       radial-gradient(
         circle at top left,
-        rgba(37, 99, 235, 0.06),
-        transparent 30%
+        rgba(109, 40, 217, 0.07),
+        transparent 32%
       ),
       radial-gradient(
         circle at top right,
-        rgba(20, 184, 166, 0.05),
-        transparent 30%
+        rgba(240, 162, 58, 0.08),
+        transparent 32%
       ),
-      #f8fafc;
+      #f8f1e4;
 
     color: var(--foreground);
     min-height: 100vh;
