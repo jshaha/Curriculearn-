@@ -71,8 +71,8 @@ const Q_FOCUS = new THREE.Quaternion();
 const Q_TARGET = new THREE.Quaternion();
 const Q_WORLD = new THREE.Quaternion();
 const HORIZONTAL_FOCUS_SECTIONS = new Set<SectionId>([
-  "leadership",
-  "interests"
+  "engagement",
+  "flow"
 ]);
 const HORIZONTAL_FOCUS_Y_FACTOR = 0.08;
 
@@ -141,11 +141,11 @@ export const BrainPoints = ({
       return;
     }
 
-    const overlap = (["experience", "projects", "leadership", "interests", "about"] as SectionId[])
+    const overlap = (["learning", "cognitive", "engagement", "flow", "retention"] as SectionId[])
       .map((sectionId) => `${sectionId}:${(spots.overlapRatioBySection[sectionId] * 100).toFixed(1)}%`)
       .join(" | ");
 
-    const sizes = (["experience", "projects", "leadership", "interests", "about"] as SectionId[])
+    const sizes = (["learning", "cognitive", "engagement", "flow", "retention"] as SectionId[])
       .map((sectionId) => `${sectionId}:${spots.spotIndicesBySection[sectionId].length}`)
       .join(" | ");
 
@@ -391,11 +391,11 @@ export const BrainPoints = ({
   }
 
   const sectionList = [
-    "experience",
-    "projects",
-    "leadership",
-    "interests",
-    "about"
+    "learning",
+    "cognitive",
+    "engagement",
+    "flow",
+    "retention"
   ] as SectionId[];
 
   return (

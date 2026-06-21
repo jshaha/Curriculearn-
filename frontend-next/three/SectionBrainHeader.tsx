@@ -70,7 +70,7 @@ const EULER_SCROLL = new THREE.Euler();
 const Q_SCROLL = new THREE.Quaternion();
 const Q_FOCUS = new THREE.Quaternion();
 const Q_TARGET = new THREE.Quaternion();
-const HORIZONTAL_FOCUS_SECTIONS = new Set<SectionId>(["leadership", "interests"]);
+const HORIZONTAL_FOCUS_SECTIONS = new Set<SectionId>(["engagement", "flow"]);
 
 const SectionBrainHeaderBody = ({
   sectionId,
@@ -81,7 +81,7 @@ const SectionBrainHeaderBody = ({
   pointTexture
 }: SectionBrainHeaderBodyProps): JSX.Element | null => {
   const sharedData = useBrainSharedData();
-  const isAboutSection = sectionId === "about";
+  const isAboutSection = sectionId === "retention";
   const targetScale = isAboutSection ? SECTION_HEADER_SCALE * 0.84 : SECTION_HEADER_SCALE;
   const targetY = isAboutSection ? SECTION_HEADER_Y + 0.1 : SECTION_HEADER_Y;
   const targetCameraZ = isAboutSection ? SECTION_HEADER_CAMERA_Z + 0.24 : SECTION_HEADER_CAMERA_Z;
@@ -255,7 +255,7 @@ const SectionBrainHeaderBody = ({
           alphaMap={pointTexture ?? undefined}
           alphaTest={0.08}
           opacity={HALO_OPACITY * 0.18}
-          color="#ffffff"
+          color="#FF8A1A"
           blending={THREE.AdditiveBlending}
           toneMapped={false}
         />
@@ -272,7 +272,7 @@ const SectionBrainHeaderBody = ({
           alphaMap={pointTexture ?? undefined}
           alphaTest={0.08}
           opacity={0.93}
-          color="#f5f5f5"
+          color="#FF8A1A"
           blending={pointBlending}
           toneMapped={false}
         />
@@ -301,7 +301,7 @@ export const SectionBrainHeader = ({
     };
   }, [pointTexture]);
 
-  const isAboutSection = sectionId === "about";
+  const isAboutSection = sectionId === "retention";
   const targetCameraZ = isAboutSection ? SECTION_HEADER_CAMERA_Z + 0.24 : SECTION_HEADER_CAMERA_Z;
   const targetCameraFov = isAboutSection
     ? SECTION_HEADER_CAMERA_FOV + 1.8

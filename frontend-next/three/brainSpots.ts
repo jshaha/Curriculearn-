@@ -5,28 +5,28 @@ import { SPOT_FRACTION } from "./brainTuning";
 type Vec3 = [number, number, number];
 
 const SECTIONS: SectionId[] = [
-  "experience",
-  "projects",
-  "leadership",
-  "interests",
-  "about"
+  "learning",
+  "cognitive",
+  "engagement",
+  "flow",
+  "retention"
 ];
 
 const SEEDS_PCA: Record<SectionId, Vec3> = {
   // [left-right, anterior-posterior, inferior-superior] in normalized PCA space (0..1).
-  experience: [0.24, 0.82, 0.7],
-  projects: [0.76, 0.82, 0.7],
-  leadership: [0.3, 0.2, 0.3],
-  interests: [0.7, 0.2, 0.3],
-  about: [0.5, 0.58, 0.9]
+  learning: [0.24, 0.82, 0.7],
+  cognitive: [0.76, 0.82, 0.7],
+  engagement: [0.3, 0.2, 0.3],
+  flow: [0.7, 0.2, 0.3],
+  retention: [0.5, 0.58, 0.9]
 };
 
 export const SECTION_SPOT_MAP: Record<SectionId, string> = {
-  experience: "front-left",
-  projects: "front-right",
-  leadership: "rear-left",
-  interests: "rear-right",
-  about: "top-mid"
+  learning: "front-left",
+  cognitive: "front-right",
+  engagement: "rear-left",
+  flow: "rear-right",
+  retention: "top-mid"
 };
 
 type Mat3 = [number, number, number, number, number, number, number, number, number];
@@ -118,11 +118,11 @@ const powerIteration = (matrix: Mat3, seed: Vec3, orthogonals: Vec3[]): Vec3 => 
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
 
 const createSectionRecord = <T>(factory: () => T): Record<SectionId, T> => ({
-  experience: factory(),
-  projects: factory(),
-  leadership: factory(),
-  interests: factory(),
-  about: factory()
+  learning: factory(),
+  cognitive: factory(),
+  engagement: factory(),
+  flow: factory(),
+  retention: factory()
 });
 
 const sectionByOrder = (index: number): SectionId => SECTIONS[index];
@@ -338,11 +338,11 @@ export const buildBrainSpots = (
   });
 
   const spotIndicesBySection: Record<SectionId, Uint32Array> = {
-    experience: Uint32Array.from(buckets.experience),
-    projects: Uint32Array.from(buckets.projects),
-    leadership: Uint32Array.from(buckets.leadership),
-    interests: Uint32Array.from(buckets.interests),
-    about: Uint32Array.from(buckets.about)
+    learning: Uint32Array.from(buckets.learning),
+    cognitive: Uint32Array.from(buckets.cognitive),
+    engagement: Uint32Array.from(buckets.engagement),
+    flow: Uint32Array.from(buckets.flow),
+    retention: Uint32Array.from(buckets.retention)
   };
 
   const anchorIndexBySection = createSectionRecord<number>(() => 0);
@@ -405,11 +405,11 @@ export const buildBrainSpots = (
 
 export const getSpotSectionColor = (sectionId: SectionId): string => {
   const palette: Record<SectionId, string> = {
-    experience: "#ffad66",
-    projects: "#ffd082",
-    leadership: "#ff7f50",
-    interests: "#ffb347",
-    about: "#ff9f1c"
+    learning: "#FF8A1A",
+    cognitive: "#FF8A1A",
+    engagement: "#FF8A1A",
+    flow: "#FF8A1A",
+    retention: "#FF8A1A"
   };
 
   return palette[sectionId];

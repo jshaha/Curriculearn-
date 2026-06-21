@@ -1,9 +1,9 @@
 export type SectionId =
-  | "experience"
-  | "projects"
-  | "leadership"
-  | "interests"
-  | "about";
+  | "learning"
+  | "cognitive"
+  | "engagement"
+  | "flow"
+  | "retention";
 
 export interface SiteConfig {
   name: string;
@@ -32,7 +32,7 @@ export interface SiteContent {
 // Keep this file focused on global site configuration only.
 export const siteContent: SiteContent = {
   siteConfig: {
-    name: "Kazuma Hakushi",
+    name: "",
     tagline: "Building controlled intelligence interfaces for real-world systems.",
     accentColor: "#FF8A1A",
     links: {

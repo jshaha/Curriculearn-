@@ -136,7 +136,7 @@ export const AppHeader = ({ className }: { className?: string }): JSX.Element =>
         className
       )}
     >
-      <div className="hidden w-full items-start justify-between sm:flex">
+      <div className="flex w-full items-start justify-between">
         <Link
           href="/"
           onClick={() => setHover(null)}
@@ -144,61 +144,7 @@ export const AppHeader = ({ className }: { className?: string }): JSX.Element =>
         >
           {siteContent.siteConfig.name}
         </Link>
-
-        <nav
-          className="flex items-center gap-4 font-mono text-[0.68rem] uppercase tracking-[0.18em] text-fg/72 sm:gap-5"
-          aria-label="Social links"
-        >
-          <a href={siteContent.siteConfig.links.blog} target="_blank" rel="noreferrer" className="transition-colors duration-150 hover:text-accent">
-            Blog
-          </a>
-          <a href={siteContent.siteConfig.links.github} target="_blank" rel="noreferrer" className="transition-colors duration-150 hover:text-accent">
-            GitHub
-          </a>
-          <a href={siteContent.siteConfig.links.linkedin} target="_blank" rel="noreferrer" className="transition-colors duration-150 hover:text-accent">
-            LinkedIn
-          </a>
-          {renderCopyEmailButton(false)}
-        </nav>
       </div>
-
-      <div className="flex w-full flex-col gap-2.5 sm:hidden">
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            onClick={() => setHover(null)}
-            className="font-mono text-[0.78rem] uppercase tracking-[0.24em] text-fg/82 transition-colors duration-150 hover:text-accent"
-          >
-            {siteContent.siteConfig.name}
-          </Link>
-          {renderCopyEmailButton(true)}
-        </div>
-        <nav
-          className="flex items-center gap-4 font-mono text-[0.66rem] uppercase tracking-[0.18em] text-fg/72"
-          aria-label="Social links"
-        >
-          <a href={siteContent.siteConfig.links.blog} target="_blank" rel="noreferrer" className="transition-colors duration-150 hover:text-accent">
-            Blog
-          </a>
-          <a href={siteContent.siteConfig.links.github} target="_blank" rel="noreferrer" className="transition-colors duration-150 hover:text-accent">
-            GitHub
-          </a>
-          <a href={siteContent.siteConfig.links.linkedin} target="_blank" rel="noreferrer" className="transition-colors duration-150 hover:text-accent">
-            LinkedIn
-          </a>
-        </nav>
-      </div>
-
-      {copyToast ? (
-        <div
-          className="pointer-events-none fixed z-[70] whitespace-nowrap rounded-md border border-fg/20 bg-bg/92 px-2.5 py-1 font-mono text-[0.6rem] uppercase leading-none tracking-[0.1em] text-fg/86 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-[2px]"
-          style={{ left: copyToast.x, top: copyToast.y - 12, transform: "translate(-50%, -100%)" }}
-          role="status"
-          aria-live="polite"
-        >
-          {copyToast.text}
-        </div>
-      ) : null}
     </header>
   );
 };

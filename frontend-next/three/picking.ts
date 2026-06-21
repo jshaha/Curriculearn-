@@ -16,11 +16,11 @@ export interface PickSectionInput {
 }
 
 const sections: SectionId[] = [
-  "experience",
-  "projects",
-  "leadership",
-  "interests",
-  "about"
+  "learning",
+  "cognitive",
+  "engagement",
+  "flow",
+  "retention"
 ];
 
 const workingVector = new THREE.Vector3();

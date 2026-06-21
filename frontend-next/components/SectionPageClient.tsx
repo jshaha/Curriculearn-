@@ -21,16 +21,16 @@ interface SectionPageClientProps {
 
 export const SectionPageClient = ({ sectionId }: SectionPageClientProps): JSX.Element => {
   const section = sectionPages[sectionId];
-  const isInterestsSection = section.id === "interests";
+  const isInterestsSection = section.id === "flow";
   const prefersReducedMotion = usePrefersReducedMotion();
   const { progress, velocity } = useScrollMotion(1600);
-  const isAboutSection = section.id === "about";
+  const isAboutSection = section.id === "retention";
   const scrollLabelBySection: Record<SectionId, string> = {
-    experience: "View roles",
-    projects: "View projects",
-    leadership: "View roles",
-    interests: "View interests",
-    about: "View sections"
+    learning: "View metrics",
+    cognitive: "View analysis",
+    engagement: "View metrics",
+    flow: "View analysis",
+    retention: "View metrics"
   };
 
   const hero = (

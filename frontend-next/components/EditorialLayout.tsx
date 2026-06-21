@@ -79,9 +79,9 @@ export const EditorialLayout = ({
           {meta ? <div className="mb-6">{meta}</div> : null}
 
           <section>
-            <h1 className="max-w-[12ch] text-[clamp(3.8rem,11vw,6.9rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-fg">
+            <h1 className="max-w-[12ch] text-[clamp(3.8rem,11vw,6.9rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-accent">
               {title}
-              <span className="text-accent">.</span>
+              <span>.</span>
             </h1>
             {dek ? (
               <p className="mt-6 max-w-[68ch] text-[1.02rem] leading-[1.78] text-fg/74 sm:text-[1.1rem]">

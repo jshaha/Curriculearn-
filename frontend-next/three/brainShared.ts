@@ -27,11 +27,11 @@ let cachedData: SharedBrainData | null = null;
 let loadPromise: Promise<SharedBrainData> | null = null;
 
 const SECTION_IDS: SectionId[] = [
-  "experience",
-  "projects",
-  "leadership",
-  "interests",
-  "about"
+  "learning",
+  "cognitive",
+  "engagement",
+  "flow",
+  "retention"
 ];
 
 const countMeshes = (root: THREE.Object3D): number => {

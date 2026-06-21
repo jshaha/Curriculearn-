@@ -7,27 +7,27 @@ type Axis3 = [number, number, number];
 type LobeId = "frontal" | "parietal" | "temporal" | "occipital";
 
 const SECTION_ORDER: SectionId[] = [
-  "experience",
-  "projects",
-  "leadership",
-  "interests",
-  "about"
+  "learning",
+  "cognitive",
+  "engagement",
+  "flow",
+  "retention"
 ];
 
 export const SECTION_LOBE_MAP: Record<SectionId, string> = {
-  experience: "frontal-left",
-  projects: "frontal-right",
-  leadership: "parietal",
-  interests: "temporal",
-  about: "occipital"
+  learning: "frontal-left",
+  cognitive: "frontal-right",
+  engagement: "parietal",
+  flow: "temporal",
+  retention: "occipital"
 };
 
 const SECTION_TO_REGION_INDEX: Record<SectionId, number> = {
-  experience: 0,
-  projects: 1,
-  leadership: 2,
-  interests: 3,
-  about: 4
+  learning: 0,
+  cognitive: 1,
+  engagement: 2,
+  flow: 3,
+  retention: 4
 };
 
 const dot = (a: Axis3, b: Axis3): number => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -103,11 +103,11 @@ const cross = (a: Axis3, b: Axis3): Axis3 => [
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
 
 const createRecord = <T>(factory: () => T): Record<SectionId, T> => ({
-  experience: factory(),
-  projects: factory(),
-  leadership: factory(),
-  interests: factory(),
-  about: factory()
+  learning: factory(),
+  cognitive: factory(),
+  engagement: factory(),
+  flow: factory(),
+  retention: factory()
 });
 
 const powerIteration = (
@@ -194,18 +194,18 @@ const classifyLobe = (lr: number, ap: number, si: number): LobeId => {
 const sectionFromLobe = (lobe: LobeId, lr: number): SectionId => {
   if (lobe === "frontal") {
     // Split frontal lobe into left/right halves to create 5 deterministic regions.
-    return lr <= 0.5 ? "experience" : "projects";
+    return lr <= 0.5 ? "learning" : "cognitive";
   }
 
   if (lobe === "parietal") {
-    return "leadership";
+    return "engagement";
   }
 
   if (lobe === "temporal") {
-    return "interests";
+    return "flow";
   }
 
-  return "about";
+  return "retention";
 };
 
 export interface BrainRegionsData {
@@ -355,7 +355,7 @@ export const buildBrainRegions = (positions: Float32Array): BrainRegionsData => 
   const rangeSI = Math.max(maxSI - minSI, 1e-6);
 
   const regionIndexForPoint = new Uint8Array(pointCount);
-  const sectionByPoint: Array<SectionId> = Array.from({ length: pointCount }, () => "about");
+  const sectionByPoint: Array<SectionId> = Array.from({ length: pointCount }, () => "retention");
   const buckets = createRecord<number[]>(() => []);
 
   for (let i = 0; i < pointCount; i += 1) {
@@ -377,7 +377,7 @@ export const buildBrainRegions = (positions: Float32Array): BrainRegionsData => 
       return;
     }
 
-    let largest: SectionId = "experience";
+    let largest: SectionId = "learning";
     SECTION_ORDER.forEach((candidate) => {
       if (buckets[candidate].length > buckets[largest].length) {
         largest = candidate;
@@ -393,11 +393,11 @@ export const buildBrainRegions = (positions: Float32Array): BrainRegionsData => 
   });
 
   const regionPointIndices: Record<SectionId, Uint32Array> = {
-    experience: Uint32Array.from(buckets.experience),
-    projects: Uint32Array.from(buckets.projects),
-    leadership: Uint32Array.from(buckets.leadership),
-    interests: Uint32Array.from(buckets.interests),
-    about: Uint32Array.from(buckets.about)
+    learning: Uint32Array.from(buckets.learning),
+    cognitive: Uint32Array.from(buckets.cognitive),
+    engagement: Uint32Array.from(buckets.engagement),
+    flow: Uint32Array.from(buckets.flow),
+    retention: Uint32Array.from(buckets.retention)
   };
 
   const regionCentroids = createRecord<Vec3Tuple>(() => [0, 0, 0]);

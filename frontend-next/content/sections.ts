@@ -20,11 +20,11 @@ export type {
 } from "@/content/editorialTypes";
 
 export const sectionPageOrder: SectionId[] = [
-  "experience",
-  "projects",
-  "leadership",
-  "interests",
-  "about"
+  "learning",
+  "cognitive",
+  "engagement",
+  "flow",
+  "retention"
 ];
 
 const experienceItems: AccordionEntry[] = [
@@ -236,10 +236,10 @@ I am especially interested in work that involves:
 ];
 
 export const sectionPages: Record<SectionId, SectionPageDefinition> = {
-  experience: {
-    id: "experience",
-    title: "Experience",
-    route: "/experience",
+  learning: {
+    id: "learning",
+    title: "Learning Score",
+    route: "/learning",
     dek:
       "Applied software engineering across LLM systems, signal pipelines, and runtime interface design.",
     chips: ["ML Systems", "Signal Processing", "Runtime Interfaces"],
@@ -247,20 +247,20 @@ export const sectionPages: Record<SectionId, SectionPageDefinition> = {
       "I work on systems where reliability, runtime performance, and interpretation quality all matter at the same time.",
     items: experienceItems
   },
-  projects: {
-    id: "projects",
-    title: "Projects",
-    route: "/projects",
+  cognitive: {
+    id: "cognitive",
+    title: "Cognitive Load",
+    route: "/cognitive",
     dek:
       "Selected builds across neural decoding, retrieval systems, AR robotics, and local multimodal agents.",
     chips: ["Full-Stack", "ML Systems", "Interactive Tools"],
     intro:
       "These projects are where I test ideas quickly, then tighten them into usable systems with clear tradeoffs and measurable behavior."
   },
-  leadership: {
-    id: "leadership",
-    title: "Leadership",
-    route: "/leadership",
+  engagement: {
+    id: "engagement",
+    title: "Engagement",
+    route: "/engagement",
     dek:
       "Technical leadership focused on system clarity, execution quality, and decision accountability.",
     chips: ["Project Leadership", "Architecture", "Mentorship"],
@@ -268,20 +268,20 @@ export const sectionPages: Record<SectionId, SectionPageDefinition> = {
       "I focus leadership effort on reducing ambiguity and improving decision quality so teams can move faster with fewer reversals.",
     items: leadershipItems
   },
-  interests: {
-    id: "interests",
-    title: "Interests",
-    route: "/interests",
+  flow: {
+    id: "flow",
+    title: "Concept Flow",
+    route: "/flow",
     dek:
       "Intellectual themes I return to when designing systems, interfaces, and human-AI workflows.",
     chips: ["Decision Quality", "Legibility", "Human-AI"],
     intro:
       "These are the intellectual threads I return to across product work and systems design: recurring lenses that shape how I frame problems, scope tradeoffs, and evaluate interface decisions."
   },
-  about: {
-    id: "about",
-    title: "About",
-    route: "/about",
+  retention: {
+    id: "retention",
+    title: "Retention",
+    route: "/retention",
     dek:
       "Computer Science + Neuroscience perspective on software systems, interfaces, and decision-making under constraints.",
     chips: ["System Clarity", "Human Factors", "Maintainability"],

@@ -95,11 +95,11 @@ export const BrainScene = ({
 
     const previewOrder: Array<SectionId | null> = [
       null,
-      "experience",
-      "projects",
-      "leadership",
-      "interests",
-      "about"
+      "learning",
+      "cognitive",
+      "engagement",
+      "flow",
+      "retention"
     ];
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -125,11 +125,11 @@ export const BrainScene = ({
 
   const previewOrder: Array<SectionId | null> = [
     null,
-    "experience",
-    "projects",
-    "leadership",
-    "interests",
-    "about"
+    "learning",
+    "cognitive",
+    "engagement",
+    "flow",
+    "retention"
   ];
 
   const debugPreviewSectionId = previewOrder[previewRegionStep];

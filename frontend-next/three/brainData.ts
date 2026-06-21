@@ -16,19 +16,19 @@ interface RegionHit {
 }
 
 const SECTION_IDS: SectionId[] = [
-  "experience",
-  "projects",
-  "leadership",
-  "interests",
-  "about"
+  "learning",
+  "cognitive",
+  "engagement",
+  "flow",
+  "retention"
 ];
 
 const ANCHOR_TARGETS: Record<SectionId, Vec3> = {
-  experience: [-0.5, 0.18, 0.22],
-  projects: [0.5, 0.18, 0.22],
-  leadership: [-0.36, -0.22, 0.18],
-  interests: [0.36, -0.22, 0.18],
-  about: [0, 0.54, 0.16]
+  learning: [-0.5, 0.18, 0.22],
+  cognitive: [0.5, 0.18, 0.22],
+  engagement: [-0.36, -0.22, 0.18],
+  flow: [0.36, -0.22, 0.18],
+  retention: [0, 0.54, 0.16]
 };
 
 const ANCHOR_CLUSTER_SIZE = 1;
@@ -427,11 +427,11 @@ export const focusVectorBySection: Record<SectionId, Vec3> =
       return accumulator;
     },
     {
-      experience: [0, 0, 1],
-      projects: [0, 0, 1],
-      leadership: [0, 0, 1],
-      interests: [0, 0, 1],
-      about: [0, 0, 1]
+      learning: [0, 0, 1],
+      cognitive: [0, 0, 1],
+      engagement: [0, 0, 1],
+      flow: [0, 0, 1],
+      retention: [0, 0, 1]
     } as Record<SectionId, Vec3>
   );
 
@@ -442,10 +442,10 @@ export const anchorCentersBySection: Record<SectionId, Vec3> =
       return accumulator;
     },
     {
-      experience: [0, 0, 0],
-      projects: [0, 0, 0],
-      leadership: [0, 0, 0],
-      interests: [0, 0, 0],
-      about: [0, 0, 0]
+      learning: [0, 0, 0],
+      cognitive: [0, 0, 0],
+      engagement: [0, 0, 0],
+      flow: [0, 0, 0],
+      retention: [0, 0, 0]
     } as Record<SectionId, Vec3>
   );

@@ -25,11 +25,11 @@ const TITLE_BY_SECTION = sectionMeta.reduce(
     return accumulator;
   },
   {
-    experience: "EXPERIENCE",
-    projects: "PROJECTS",
-    leadership: "LEADERSHIP",
-    interests: "INTERESTS",
-    about: "ABOUT"
+    learning: "LEARNING",
+    cognitive: "COGNITIVE",
+    engagement: "ENGAGEMENT",
+    flow: "FLOW",
+    retention: "RETENTION"
   } as Record<SectionId, string>
 );
 
@@ -55,16 +55,16 @@ const LABEL_OUTSIDE_MARGIN_NDC = 0.08;
 const LABEL_TOP_CLAMP_NDC = 0.74;
 const LABEL_LINE_MAX_MULTIPLIER = 1.9;
 const LONG_LINE_SECTIONS = new Set<SectionId>([
-  "experience",
-  "projects",
-  "leadership",
-  "interests",
-  "about"
+  "learning",
+  "cognitive",
+  "engagement",
+  "flow",
+  "retention"
 ]);
 const LONG_LINE_EXTRA_MARGIN_NDC = 0.1;
 const LONG_LINE_TOP_CLAMP_NDC = 0.84;
 const LONG_LINE_MAX_MULTIPLIER = 2.6;
-const EXTRA_LONG_LINE_SECTIONS = new Set<SectionId>(["leadership", "interests"]);
+const EXTRA_LONG_LINE_SECTIONS = new Set<SectionId>(["engagement", "flow"]);
 const EXTRA_LONG_LINE_MARGIN_NDC = 0.06;
 const EXTRA_LONG_LINE_TOP_CLAMP_NDC = 0.9;
 const EXTRA_LONG_LINE_MAX_MULTIPLIER = 3.1;
@@ -163,7 +163,7 @@ export const BrainLeaderLabel = ({
       <Html transform={false} occlude={false} style={{ pointerEvents: "none" }}>
         <div ref={containerRef} className="select-none will-change-transform">
           <div className="flex flex-col items-center">
-            <span className="rounded border border-fg/30 bg-black/90 px-2 py-1 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-fg">
+            <span className="rounded border border-accent/30 bg-black/90 px-2 py-1 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-accent">
               {TITLE_BY_SECTION[sectionId]}
             </span>
             <span

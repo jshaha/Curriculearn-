@@ -7,19 +7,19 @@ import { BRAIN_RADIUS, POINT_COUNT_TOTAL, TARGET_SIZE } from "./brainTuning";
 type Vec3Tuple = [number, number, number];
 
 const SECTION_IDS: SectionId[] = [
-  "experience",
-  "projects",
-  "leadership",
-  "interests",
-  "about"
+  "learning",
+  "cognitive",
+  "engagement",
+  "flow",
+  "retention"
 ];
 
 const ANCHOR_TARGETS: Record<SectionId, Vec3Tuple> = {
-  experience: [-0.56, 0.1, 0.16],
-  projects: [0.56, 0.1, 0.16],
-  leadership: [-0.42, -0.38, 0.12],
-  interests: [0.42, -0.38, 0.12],
-  about: [0, 0.58, 0.08]
+  learning: [-0.56, 0.1, 0.16],
+  cognitive: [0.56, 0.1, 0.16],
+  engagement: [-0.42, -0.38, 0.12],
+  flow: [0.42, -0.38, 0.12],
+  retention: [0, 0.58, 0.08]
 };
 
 const ANCHOR_CLUSTER_SIZE = 1;
@@ -747,11 +747,11 @@ export const sampleCortexSurface = (
       return accumulator;
     },
     {
-      experience: [],
-      projects: [],
-      leadership: [],
-      interests: [],
-      about: []
+      learning: [],
+      cognitive: [],
+      engagement: [],
+      flow: [],
+      retention: []
     } as Record<SectionId, number[]>
   );
 
@@ -770,11 +770,11 @@ export const sampleCortexSurface = (
       return accumulator;
     },
     {
-      experience: [0, 0, 0],
-      projects: [0, 0, 0],
-      leadership: [0, 0, 0],
-      interests: [0, 0, 0],
-      about: [0, 0, 0]
+      learning: [0, 0, 0],
+      cognitive: [0, 0, 0],
+      engagement: [0, 0, 0],
+      flow: [0, 0, 0],
+      retention: [0, 0, 0]
     } as Record<SectionId, Vec3Tuple>
   );
 
@@ -785,11 +785,11 @@ export const sampleCortexSurface = (
       return accumulator;
     },
     {
-      experience: [0, 0, 1],
-      projects: [0, 0, 1],
-      leadership: [0, 0, 1],
-      interests: [0, 0, 1],
-      about: [0, 0, 1]
+      learning: [0, 0, 1],
+      cognitive: [0, 0, 1],
+      engagement: [0, 0, 1],
+      flow: [0, 0, 1],
+      retention: [0, 0, 1]
     } as Record<SectionId, Vec3Tuple>
   );
 
