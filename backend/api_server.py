@@ -6,6 +6,7 @@ Exposes backend optimization pipeline as REST API for frontend.
 
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
+import os
 import sys
 import json
 import tempfile
@@ -13,10 +14,14 @@ import uuid
 from pathlib import Path
 from datetime import datetime
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).parent.parent / ".env")
+
 # Add paths
 project_root = Path(__file__).parent.parent
-sys.path.insert(0, str(project_root / 'src'))
-sys.path.insert(0, str(project_root / 'backend'))
+sys.path.insert(0, str(project_root))  # For src.* imports
+sys.path.insert(0, str(project_root / 'backend'))  # For neurocompiler.* imports
 
 from neurocompiler.schemas import StructuredLesson, LessonSegment
 from neurocompiler.agents import EducationalDiagnostician, CurriculumEditor, LessonOptimizer, VisualizationGenerator
@@ -38,8 +43,29 @@ results_db = {}
 # Initialize agents on startup (reuse for all requests)
 print("Initializing NeuroCompiler agents...")
 simulator = BrainSimulatorAdapter()
-diagnostician = EducationalDiagnostician()
-editor = CurriculumEditor()
+
+# Use Claude-powered agents if enabled via environment variable
+use_claude_agents = os.getenv("USE_CLAUDE_AGENTS", "false").lower() == "true"
+
+if use_claude_agents:
+    try:
+        from neurocompiler.agents.claude import ClaudeDiagnostician, ClaudeCurriculumEditor
+        diagnostician = ClaudeDiagnostician()
+        editor = ClaudeCurriculumEditor()
+        if diagnostician.is_available:
+            print("✓ Using Claude-powered agents (API key found)")
+        else:
+            print("⚠ Claude agents enabled but no API key - will fall back to deterministic")
+    except ImportError as e:
+        print(f"⚠ Could not import Claude agents: {e}")
+        print("  Falling back to deterministic agents")
+        diagnostician = EducationalDiagnostician()
+        editor = CurriculumEditor()
+else:
+    diagnostician = EducationalDiagnostician()
+    editor = CurriculumEditor()
+    print("✓ Using deterministic agents")
+
 optimizer = LessonOptimizer(diagnostician=diagnostician, editor=editor)
 visualizer = VisualizationGenerator(model_provider="gemini")  # Uses placeholders if no API key
 parser = CurriculumParser()
@@ -412,6 +438,9 @@ def list_lessons():
 
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5001))
+    debug = os.environ.get("FLASK_DEBUG", "true").lower() == "true"
+
     print("\n" + "="*70)
     print(" NeuroCompiler API Server")
     print(" Real Brain Simulation + Curriculum Optimization")
@@ -425,7 +454,7 @@ if __name__ == "__main__":
     print("  GET  /api/result/<id>         - Get optimization result")
     print("  GET  /api/download/<id>       - Download optimized lesson")
     print("  GET  /api/lessons             - List all lessons")
-    print("\nStarting server on http://localhost:5000")
+    print(f"\nStarting server on http://0.0.0.0:{port}")
     print("="*70 + "\n")
 
-    app.run(debug=True, port=5001, host='0.0.0.0')
+    app.run(debug=debug, port=port, host='0.0.0.0')

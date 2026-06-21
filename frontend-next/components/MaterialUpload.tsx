@@ -27,41 +27,35 @@ export const MaterialUpload = ({
 
     try {
       const docId = `doc-${Date.now()}`;
-      const lessonId = `lesson-${Date.now()}`;
 
       // Add document to storage immediately with "uploading" status
       const newDoc = {
         id: docId,
         filename: file.name,
         classId,
-        lessonId,
+        lessonId: "", // Will be set after upload
         uploadDate: new Date().toISOString(),
         status: "uploading" as const,
       };
       addDocument(newDoc);
 
-      // Simulate backend upload and analysis
-      console.log("Uploading file:", file.name, "for class:", classId);
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log("Uploading file to backend:", file.name);
 
-      // Generate mock metrics for demo
-      const mockMetrics = {
-        learning_score: Math.floor(Math.random() * 30) + 70,
-        engagement: Math.floor(Math.random() * 30) + 65,
-        cognitive_load: Math.floor(Math.random() * 40) + 50,
-        concept_flow: Math.floor(Math.random() * 30) + 65,
-        retention: Math.floor(Math.random() * 30) + 60,
-        novelty: Math.floor(Math.random() * 30) + 60,
-        information_density: Math.floor(Math.random() * 30) + 65,
-        reinforcement: Math.floor(Math.random() * 30) + 60,
-        multimodal_support: Math.floor(Math.random() * 30) + 55,
-      };
+      // Upload to backend and get real lesson_id
+      const uploadResult = await api.upload(file);
+      console.log("Upload successful, lesson_id:", uploadResult.lesson_id);
 
-      // Update document with complete status and metrics
+      // Analyze to get real metrics
+      console.log("Analyzing lesson...");
+      const analyzeResult = await api.analyze(uploadResult.lesson_id);
+      console.log("Analysis complete:", analyzeResult);
+
+      // Update document with complete status and real metrics
       const updatedDoc = {
         ...newDoc,
+        lessonId: uploadResult.lesson_id,
         status: "complete" as const,
-        metrics: mockMetrics,
+        metrics: analyzeResult.metrics,
       };
 
       // Replace the uploading doc with complete doc
@@ -71,7 +65,7 @@ export const MaterialUpload = ({
       window.dispatchEvent(new Event("storage"));
 
       if (onUploadComplete) {
-        onUploadComplete(docId, mockMetrics);
+        onUploadComplete(docId, analyzeResult.metrics);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
@@ -84,33 +78,62 @@ export const MaterialUpload = ({
   };
 
   return (
-    <div className="fixed top-8 right-8 z-50">
-      <label className="group relative flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg border border-[#FF8A1A] bg-[#FF8A1A] px-5 py-3 font-mono text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-black shadow-lg transition-all duration-300 hover:bg-[#FF8A1A]/90 hover:shadow-[0_0_20px_rgba(255,138,26,0.4)]">
+    <div className="z-50">
+      <label className="group relative flex cursor-pointer items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-lg border border-[#FF8A1A]/30 bg-gradient-to-br from-[#FF8A1A]/90 via-[#FF8A1A]/80 to-[#FF9A2A]/90 px-5 py-2.5 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-white shadow-[0_4px_24px_rgba(255,138,26,0.25)] backdrop-blur-xl transition-all duration-300 hover:border-[#FF8A1A]/50 hover:shadow-[0_8px_32px_rgba(255,138,26,0.35)] disabled:cursor-not-allowed disabled:opacity-60">
+        {/* Glass reflection effect */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
+
+        {/* Animated shimmer */}
+        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        </div>
+
         <input
           type="file"
           onChange={handleFileChange}
           disabled={isUploading}
           className="hidden"
-          accept=".pdf,.txt,.md,.doc,.docx"
+          accept=".pdf,.txt,.md,.doc,.docx,.pptx"
         />
-        {isUploading ? (
-          <>
-            <div className="h-3 w-3 animate-spin rounded-full border-2 border-black/30 border-t-black" />
-            <span>Uploading...</span>
-          </>
-        ) : (
-          <>
-            <span className="text-lg">+</span>
-            <span>Upload Material</span>
-          </>
-        )}
+
+        <div className="relative z-10 flex items-center gap-2.5">
+          {isUploading ? (
+            <>
+              <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+              <span>Uploading...</span>
+            </>
+          ) : (
+            <>
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              <span>Upload Material</span>
+            </>
+          )}
+        </div>
       </label>
 
       {error && (
-        <div className="mt-2 rounded-sm border border-red-500/30 bg-red-500/10 px-3 py-2 font-mono text-[0.65rem] text-red-500">
-          {error}
+        <div className="mt-3 overflow-hidden rounded-lg border border-red-500/30 bg-red-500/10 backdrop-blur-xl">
+          <div className="px-4 py-2.5 font-mono text-[0.68rem] text-red-400">
+            {error}
+          </div>
         </div>
       )}
+
+      <style jsx>{`
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(200%);
+          }
+        }
+        .animate-shimmer {
+          animation: shimmer 2.5s infinite;
+        }
+      `}</style>
     </div>
   );
 };

@@ -3,6 +3,10 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 
+# Environment variables (contains secrets)
+.env
+.env.local
+
 frontend/node_modules
 .next
 archived_old_code/frontend/node_modules/

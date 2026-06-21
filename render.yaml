@@ -1,0 +1,32 @@
+services:
+  # Backend API (Python/Flask)
+  - type: web
+    name: curriculearn-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 backend.api_server:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.4"
+      - key: FLASK_DEBUG
+        value: "false"
+      - key: USE_CLAUDE_AGENTS
+        value: "false"
+      # Add your Anthropic API key in Render dashboard if you want Claude agents:
+      # - key: ANTHROPIC_API_KEY
+      #   sync: false  # Manual entry in dashboard
+    healthCheckPath: /health
+
+  # Frontend (Next.js)
+  - type: web
+    name: curriculearn-frontend
+    runtime: node
+    buildCommand: cd frontend-next && npm install && npm run build
+    startCommand: cd frontend-next && npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      # IMPORTANT: Set this manually in Render dashboard after backend deploys
+      # Format: https://curriculearn-api.onrender.com
+      - key: NEXT_PUBLIC_API_URL
+        value: ""

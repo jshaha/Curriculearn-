@@ -4,7 +4,7 @@ import { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { getDocument, type DocumentMetadata } from "@/lib/storage";
-import { DocumentAccordion } from "@/components/DocumentAccordion";
+import { DocumentAnalysis } from "@/components/DocumentAnalysis";
 import { SectionBrainHeader } from "@/three/SectionBrainHeader";
 import { useScrollMotion } from "@/hooks/useScrollMotion";
 import { usePrefersReducedMotion } from "@/lib/hooks";
@@ -86,7 +86,7 @@ export default function DocumentPage({
           {document.metrics && (
             <div className="text-right">
               <div className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-fg/40">
-                Learning Score
+                Learning
               </div>
               <div className="mt-1 font-mono text-[1.1rem] font-medium text-accent">
                 {Math.round(document.metrics.learning_score)}
@@ -110,9 +110,9 @@ export default function DocumentPage({
         </div>
       </div>
 
-      {/* Document Analysis with Accordion */}
+      {/* Document Analysis */}
       {document.metrics ? (
-        <DocumentAccordion
+        <DocumentAnalysis
           metrics={document.metrics}
           optimizedMetrics={document.optimizedMetrics}
           filename={document.filename}

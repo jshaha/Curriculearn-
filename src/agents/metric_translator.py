@@ -48,7 +48,7 @@ class MetricTranslator:
         print(f"Analyzing {len(embeddings)} segments...")
 
         # Compute all metrics
-        cognitive_load = self._compute_cognitive_load(embeddings)
+        cognitive_load = self._compute_cognitive_load(embeddings, segment_texts)
         engagement = self._compute_engagement(embeddings)
         concept_flow = self._compute_concept_flow(embeddings)
         retention = self._compute_retention(embeddings)
@@ -56,7 +56,7 @@ class MetricTranslator:
         information_density = self._compute_information_density(embeddings)
 
         # Compute temporal trajectories (for visualizations)
-        temporal_metrics = self._compute_temporal_metrics(embeddings)
+        temporal_metrics = self._compute_temporal_metrics(embeddings, segment_texts)
 
         # Identify problem segments
         problem_segments = self._identify_problem_segments(
@@ -99,52 +99,73 @@ class MetricTranslator:
 
         return metrics
 
-    def _compute_cognitive_load(self, embeddings: np.ndarray) -> float:
+    def _compute_cognitive_load(self, embeddings: np.ndarray, segment_texts: List[str]) -> float:
         """
-        Cognitive load = rate of representational change
+        Cognitive load = mental effort required to process information
 
-        High cognitive load occurs when the brain must rapidly update its
-        internal representations (too much new information too fast).
-
-        Measured by: average distance between consecutive embeddings
+        Measured by text complexity: sentence length + word difficulty
         """
-        if len(embeddings) < 2:
-            return 50.0
+        if not segment_texts:
+            # Fallback to reduced scaling if no text
+            if len(embeddings) < 2:
+                return 50.0
+            changes = []
+            for i in range(1, len(embeddings)):
+                dist = cosine(embeddings[i-1], embeddings[i])
+                changes.append(dist)
+            avg_change = np.mean(changes)
+            return float(min(100, avg_change * 100))
 
-        changes = []
-        for i in range(1, len(embeddings)):
-            dist = cosine(embeddings[i-1], embeddings[i])
-            changes.append(dist)
+        scores = []
+        for text in segment_texts:
+            words = [w.strip('.,!?;:()[]{}\"\'') for w in text.split() if w.strip()]
+            if not words:
+                scores.append(50.0)
+                continue
 
-        avg_change = np.mean(changes)
+            word_count = len(words)
+            if word_count <= 5:
+                length_score = 15.0
+            elif word_count <= 10:
+                length_score = 30.0 + (word_count - 5) * 4
+            elif word_count <= 20:
+                length_score = 50.0 + (word_count - 10) * 3
+            else:
+                length_score = min(100, 80.0 + (word_count - 20) * 2)
 
-        # Scale to 0-100 (higher = more load)
-        # Typical cosine distance range: 0-0.5 for similar concepts
-        score = min(100, avg_change * 200)
+            avg_word_len = np.mean([len(w) for w in words])
+            if avg_word_len <= 4:
+                word_score = 20.0
+            elif avg_word_len <= 6:
+                word_score = 40.0 + (avg_word_len - 4) * 10
+            else:
+                word_score = min(100, 60.0 + (avg_word_len - 6) * 15)
 
-        return float(score)
+            segment_score = 0.6 * length_score + 0.4 * word_score
+            scores.append(segment_score)
+
+        return float(np.mean(scores))
 
     def _compute_engagement(self, embeddings: np.ndarray) -> float:
         """
-        Engagement = richness and diversity of representations
+        Engagement = diversity of topics covered
 
-        High engagement occurs when content activates diverse cognitive features,
-        indicating active processing and involvement.
-
-        Measured by: variance in the representational space
+        Measured by: average pairwise distance between all segments
         """
         if len(embeddings) < 2:
             return 50.0
 
-        # Variance across all dimensions and segments
-        total_variance = np.var(embeddings)
+        distances = []
+        for i in range(len(embeddings)):
+            for j in range(i + 1, len(embeddings)):
+                dist = cosine(embeddings[i], embeddings[j])
+                distances.append(dist)
 
-        # Also consider within-segment activation strength
-        activation_strengths = np.linalg.norm(embeddings, axis=1)
-        strength_variance = np.var(activation_strengths)
+        if not distances:
+            return 50.0
 
-        # Combine both measures
-        score = min(100, (total_variance * 500 + strength_variance * 100) / 2)
+        avg_distance = np.mean(distances)
+        score = min(100, avg_distance * 150)
 
         return float(score)
 
@@ -238,41 +259,70 @@ class MetricTranslator:
 
     def _compute_information_density(self, embeddings: np.ndarray) -> float:
         """
-        Information density = amount of representational change per unit time
+        Information density = conceptual change per segment
 
-        Similar to cognitive load but focuses on information content.
+        Measures how much new information is introduced on average.
         """
         if len(embeddings) < 2:
             return 50.0
 
-        # Measure total path length in embedding space
-        total_distance = 0
+        distances = []
         for i in range(1, len(embeddings)):
-            dist = euclidean(embeddings[i-1], embeddings[i])
-            total_distance += dist
+            dist = cosine(embeddings[i-1], embeddings[i])
+            distances.append(dist)
 
-        # Normalize by number of segments
-        avg_density = total_distance / len(embeddings)
-
-        score = min(100, avg_density * 5)
+        avg_distance = np.mean(distances)
+        score = min(100, avg_distance * 120)
 
         return float(score)
 
-    def _compute_temporal_metrics(self, embeddings: np.ndarray) -> Dict[str, List[float]]:
+    def _compute_temporal_metrics(self, embeddings: np.ndarray, segment_texts: List[str]) -> Dict[str, List[float]]:
         """
         Compute metrics over time (for visualization).
 
-        Returns metrics for each segment transition.
+        Returns per-segment values and transition trajectories.
         """
-        if len(embeddings) < 2:
-            return {}
+        result = {}
 
+        if len(embeddings) < 2:
+            return result
+
+        # Per-segment cognitive load (text complexity)
+        cognitive_load_per_segment = []
+        for text in segment_texts:
+            words = [w.strip('.,!?;:()[]{}\"\'') for w in text.split() if w.strip()]
+            if not words:
+                cognitive_load_per_segment.append(50.0)
+                continue
+
+            word_count = len(words)
+            if word_count <= 5:
+                length_score = 15.0
+            elif word_count <= 10:
+                length_score = 30.0 + (word_count - 5) * 4
+            elif word_count <= 20:
+                length_score = 50.0 + (word_count - 10) * 3
+            else:
+                length_score = min(100, 80.0 + (word_count - 20) * 2)
+
+            avg_word_len = np.mean([len(w) for w in words])
+            if avg_word_len <= 4:
+                word_score = 20.0
+            elif avg_word_len <= 6:
+                word_score = 40.0 + (avg_word_len - 4) * 10
+            else:
+                word_score = min(100, 60.0 + (avg_word_len - 6) * 15)
+
+            segment_score = 0.6 * length_score + 0.4 * word_score
+            cognitive_load_per_segment.append(segment_score)
+
+        # Topic shift trajectory (transitions)
         cognitive_load_trajectory = []
         novelty_trajectory = []
 
         for i in range(1, len(embeddings)):
-            # Cognitive load at each transition
-            load = cosine(embeddings[i-1], embeddings[i]) * 100
+            # Topic shift at each transition
+            load = cosine(embeddings[i-1], embeddings[i]) * 80
             cognitive_load_trajectory.append(load)
 
             # Novelty at each point
@@ -282,6 +332,7 @@ class MetricTranslator:
                 novelty_trajectory.append(nov)
 
         return {
+            'cognitive_load': cognitive_load_per_segment,
             'cognitive_load_trajectory': cognitive_load_trajectory,
             'novelty_trajectory': novelty_trajectory,
             'segment_indices': list(range(1, len(embeddings)))

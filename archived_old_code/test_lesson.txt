@@ -1,0 +1,15 @@
+Introduction to Machine Learning
+
+Machine learning is a type of artificial intelligence that allows computers to learn from data without being explicitly programmed. Instead of following rigid rules, machine learning systems can identify patterns and make decisions based on examples.
+
+There are three main types of machine learning: supervised learning, unsupervised learning, and reinforcement learning. Each approach has different use cases and strengths.
+
+Supervised learning uses labeled training data where each example has a known correct answer. The algorithm learns to map inputs to outputs by studying these examples. Common applications include email spam detection, image recognition, and predicting house prices.
+
+Unsupervised learning works with unlabeled data where the algorithm must find patterns on its own. It discovers hidden structures without being told what to look for. Examples include customer segmentation, anomaly detection, and recommendation systems.
+
+Reinforcement learning involves an agent that learns by interacting with an environment and receiving rewards or penalties. The agent tries different actions and learns which ones lead to better outcomes over time. This approach powers game-playing AI, robotics, and autonomous vehicles.
+
+Neural networks are a powerful tool in machine learning inspired by the human brain. They consist of layers of interconnected nodes that process information. Deep learning uses neural networks with many layers to solve complex problems like natural language processing and computer vision.
+
+The future of machine learning includes more efficient algorithms, better interpretability, and applications in healthcare, climate science, and creative fields. As the technology advances, understanding these fundamentals becomes increasingly important.

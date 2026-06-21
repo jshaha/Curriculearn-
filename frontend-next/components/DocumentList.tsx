@@ -85,23 +85,57 @@ export const DocumentList = ({ classId, sectionId }: DocumentListProps) => {
   }
 
   const metricKey = SECTION_METRIC_MAP[sectionId];
-  const metricLabel = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+  const metricLabels: Record<SectionId, string> = {
+    learning: "Learning",
+    cognitive: "Cognitive Load",
+    engagement: "Engagement",
+    flow: "Concept Flow",
+    retention: "Retention",
+  };
+  const metricLabel = metricLabels[sectionId];
+
+  // Calculate average score for this metric
+  const avgScore = documents.length > 0
+    ? Math.round(documents.reduce((sum, doc) => sum + (doc.metrics?.[metricKey] || 0), 0) / documents.length)
+    : 0;
+
+  const getScoreColor = (score: number) => {
+    if (score >= 75) return "text-emerald-500";
+    if (score >= 50) return "text-amber-500";
+    return "text-red-500";
+  };
+
+  const getScoreBgColor = (score: number) => {
+    if (score >= 75) return "bg-emerald-500";
+    if (score >= 50) return "bg-amber-500";
+    return "bg-red-500";
+  };
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-6 pb-24 pt-12 sm:px-10">
-      <div className="mx-auto max-w-[760px]">
-        {/* Header */}
-        <div className="mb-8 border-b border-fg/10 pb-4">
-          <div className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-fg/50">
-            Course Materials
+      <div className="mx-auto max-w-[900px]">
+        {/* Header with Average Score */}
+        <div className="mb-8 flex items-end justify-between border-b border-fg/10 pb-6">
+          <div>
+            <div className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-fg/40">
+              {metricLabel} Analysis
+            </div>
+            <div className="mt-1 font-mono text-[0.8rem] text-fg/60">
+              {documents.length} document{documents.length !== 1 ? "s" : ""}
+            </div>
           </div>
-          <div className="mt-1 text-[0.85rem] text-fg/70">
-            Sorted by {metricLabel} optimization score
+          <div className="text-right">
+            <div className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-fg/40">
+              Average
+            </div>
+            <div className={`font-mono text-2xl font-semibold ${getScoreColor(avgScore)}`}>
+              {avgScore}
+            </div>
           </div>
         </div>
 
-        {/* Document Grid */}
-        <div className="grid gap-4 sm:grid-cols-2">
+        {/* Document Score Cards */}
+        <div className="flex flex-col gap-3">
           {documents.map((doc, index) => {
             const score = doc.metrics?.[metricKey] || 0;
             const scorePercent = Math.round(score);
@@ -111,24 +145,59 @@ export const DocumentList = ({ classId, sectionId }: DocumentListProps) => {
                 key={doc.id}
                 href={`/class/${classId}/document/${doc.id}?section=${sectionId}`}
                 className={cn(
-                  "group relative overflow-hidden rounded-sm border border-fg/10 bg-bg p-6 transition-all duration-300",
+                  "group relative flex items-center gap-6 overflow-hidden rounded-sm border border-fg/10 bg-bg px-6 py-5 transition-all duration-300",
                   "hover:border-fg/20 hover:bg-fg/[0.02] hover:shadow-lg hover:shadow-fg/5",
-                  "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+                  "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent",
+                  "animate-fade-in"
                 )}
                 style={{
-                  animationDelay: `${index * 50}ms`,
-                  animation: "fadeIn 0.5s ease-out forwards",
-                  opacity: 0,
+                  ["--animation-delay" as string]: `${index * 50}ms`,
                 }}
               >
+                {/* Featured Score */}
+                <div className="flex-shrink-0">
+                  <div className={`font-mono text-3xl font-bold ${getScoreColor(scorePercent)}`}>
+                    {scorePercent}
+                  </div>
+                  <div className="font-mono text-[0.55rem] uppercase tracking-[0.15em] text-fg/40">
+                    / 100
+                  </div>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="flex-1">
+                  <div className="mb-2 flex items-center justify-between">
+                    <div className="truncate text-[0.85rem] font-medium text-fg/90 transition-colors group-hover:text-accent">
+                      {doc.filename}
+                    </div>
+                    <div className="ml-4 font-mono text-[0.6rem] uppercase tracking-[0.1em] text-fg/40">
+                      {metricLabel}
+                    </div>
+                  </div>
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-fg/10">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${getScoreBgColor(scorePercent)}`}
+                      style={{ width: `${scorePercent}%` }}
+                    />
+                  </div>
+                  <div className="mt-2 flex items-center gap-4">
+                    <div className="font-mono text-[0.6rem] text-fg/40">
+                      Learning: {Math.round(doc.metrics?.learning_score || 0)}
+                    </div>
+                    <div className="font-mono text-[0.6rem] text-fg/40">
+                      Engagement: {Math.round(doc.metrics?.engagement || 0)}
+                    </div>
+                  </div>
+                </div>
+
                 {/* Delete button */}
                 <button
                   onClick={(e) => handleDelete(e, doc.id)}
-                  className="absolute left-2 top-2 z-10 rounded-sm border border-fg/10 bg-bg p-1.5 opacity-0 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-500 group-hover:opacity-100"
+                  className="flex-shrink-0 rounded-sm border border-fg/10 bg-bg p-2 opacity-0 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-500 group-hover:opacity-100"
                   title="Delete document"
                 >
                   <svg
-                    className="h-3.5 w-3.5"
+                    className="h-4 w-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -141,82 +210,6 @@ export const DocumentList = ({ classId, sectionId }: DocumentListProps) => {
                     />
                   </svg>
                 </button>
-
-                {/* Score indicator */}
-                <div className="absolute right-0 top-0 flex h-16 w-16 items-center justify-center">
-                  <div className="relative">
-                    {/* Background circle */}
-                    <svg className="h-14 w-14 -rotate-90 transform">
-                      <circle
-                        cx="28"
-                        cy="28"
-                        r="24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        fill="none"
-                        className="text-fg/10"
-                      />
-                      <circle
-                        cx="28"
-                        cy="28"
-                        r="24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        fill="none"
-                        strokeDasharray={`${2 * Math.PI * 24}`}
-                        strokeDashoffset={`${2 * Math.PI * 24 * (1 - scorePercent / 100)}`}
-                        className="text-accent transition-all duration-500 group-hover:text-accent/80"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="font-mono text-[0.7rem] font-medium text-fg/90">
-                        {scorePercent}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Document info */}
-                <div className="pr-16">
-                  <div className="mb-2 truncate text-[0.9rem] font-medium text-fg/90 transition-colors group-hover:text-accent">
-                    {doc.filename}
-                  </div>
-                  <div className="font-mono text-[0.65rem] uppercase tracking-[0.15em] text-fg/50">
-                    {new Date(doc.uploadedAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </div>
-                </div>
-
-                {/* Bottom metrics */}
-                <div className="mt-4 flex gap-4 border-t border-fg/5 pt-4">
-                  <div>
-                    <div className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-fg/40">
-                      Overall
-                    </div>
-                    <div className="mt-0.5 font-mono text-[0.75rem] text-fg/80">
-                      {Math.round(doc.metrics?.learning_score || 0)}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-fg/40">
-                      Engagement
-                    </div>
-                    <div className="mt-0.5 font-mono text-[0.75rem] text-fg/80">
-                      {Math.round(doc.metrics?.engagement || 0)}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-fg/40">
-                      Retention
-                    </div>
-                    <div className="mt-0.5 font-mono text-[0.75rem] text-fg/80">
-                      {Math.round(doc.metrics?.retention || 0)}
-                    </div>
-                  </div>
-                </div>
 
                 {/* Hover indicator */}
                 <div className="absolute bottom-0 left-0 h-px w-full bg-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -236,6 +229,11 @@ export const DocumentList = ({ classId, sectionId }: DocumentListProps) => {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.5s ease-out forwards;
+          animation-delay: var(--animation-delay, 0ms);
+          opacity: 0;
         }
       `}</style>
     </div>

@@ -246,26 +246,37 @@ export const DocumentAnalysis = ({
           <button
             onClick={handleOptimize}
             disabled={isOptimizing}
-            className="group relative overflow-hidden rounded-sm border border-accent/30 bg-gradient-to-r from-accent/10 to-accent/5 px-8 py-4 font-mono text-[0.8rem] font-semibold uppercase tracking-[0.2em] text-accent transition-all duration-300 hover:border-accent/50 hover:from-accent/15 hover:to-accent/10 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="group relative overflow-hidden rounded-lg border border-accent/30 bg-gradient-to-br from-accent/90 via-accent/80 to-[#7c7ef5]/90 px-8 py-4 font-mono text-[0.8rem] font-semibold uppercase tracking-[0.2em] text-white shadow-[0_4px_24px_rgba(99,102,241,0.25)] backdrop-blur-xl transition-all duration-300 hover:border-accent/50 hover:shadow-[0_8px_32px_rgba(99,102,241,0.35)] disabled:cursor-not-allowed disabled:opacity-60"
           >
+            {/* Glass reflection effect */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
+
+            {/* Animated shimmer */}
+            <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+            </div>
+
             <span className="relative z-10 flex items-center gap-3">
               {isOptimizing ? (
                 <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-accent/30 border-t-accent" />
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
                   Running Optimization Pipeline...
                 </>
               ) : (
                 <>
-                  <span>⚡</span>
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
                   Optimize Learning Experience
                 </>
               )}
             </span>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-accent/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           </button>
           {optimizeError && (
-            <div className="mt-3 font-mono text-[0.7rem] text-red-500">
-              Error: {optimizeError}
+            <div className="mt-3 overflow-hidden rounded-lg border border-red-500/30 bg-red-500/10 backdrop-blur-xl">
+              <div className="px-4 py-2.5 font-mono text-[0.68rem] text-red-400">
+                Error: {optimizeError}
+              </div>
             </div>
           )}
         </div>
@@ -319,7 +330,7 @@ export const DocumentAnalysis = ({
             {/* Left: Score Details */}
             <div className="flex-1">
               <div className="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.28em] text-fg/50">
-                Overall Learning Score
+                Overall Learning
               </div>
 
               <div className="mb-5 flex items-baseline gap-4">
@@ -658,6 +669,10 @@ export const DocumentAnalysis = ({
           100% {
             transform: translateX(200%);
           }
+        }
+
+        .animate-shimmer {
+          animation: shimmer 2.5s infinite;
         }
       `}</style>
     </div>

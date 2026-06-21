@@ -1,30 +1,18 @@
 {
-  "original_score": 15.711381295323376,
-  "best_score": 25.07204116199698,
-  "improvement": 9.360659866673606,
+  "original_score": 55.79245781925747,
+  "best_score": 57.426605693588094,
+  "improvement": 1.6341478743306226,
   "iterations": 2,
   "best_lesson": {
     "title": "Introduction to Photosynthesis",
     "segments": [
       {
-        "id": "slide_1_a_a",
-        "title": "What is photosynthesis?: intuition: intuition",
-        "content": "Start with the big idea: photosynthesis. Focus on why it matters before adding detail.",
+        "id": "slide_1",
+        "title": "What is photosynthesis?",
+        "content": "Photosynthesis is how plants make food.",
         "concepts": [
           "photosynthesis"
         ]
-      },
-      {
-        "id": "slide_1_a_b",
-        "title": "What is photosynthesis?: intuition: core idea",
-        "content": "Now add the core detail: the supporting detail. Start with the big idea: photosynthesis. Focus on why it matters before adding detail.",
-        "concepts": []
-      },
-      {
-        "id": "slide_1_b",
-        "title": "What is photosynthesis?: core idea",
-        "content": "Now add the core detail: the supporting detail. Photosynthesis is how plants make food.",
-        "concepts": []
       },
       {
         "id": "slide_2",
@@ -36,13 +24,20 @@
         ]
       },
       {
-        "id": "slide_3",
-        "title": "OVERLOAD: All concepts at once",
-        "content": "Chlorophyll captures photons, water splits, oxygen leaves, ATP carries energy, carbon fixation uses carbon dioxide, glucose stores energy, light reactions happen in thylakoids, dark reactions in stroma, photosystem I and II, electron transport chains, and NADPH.",
+        "id": "slide_3_a",
+        "title": "OVERLOAD: All concepts at once: intuition",
+        "content": "Start with the big idea: chlorophyll, photons, ATP. Focus on why it matters before adding detail.",
         "concepts": [
           "chlorophyll",
           "photons",
-          "ATP",
+          "ATP"
+        ]
+      },
+      {
+        "id": "slide_3_b",
+        "title": "OVERLOAD: All concepts at once: core idea",
+        "content": "Now add the core detail: carbon fixation, glucose, light reactions. Chlorophyll captures photons, water splits, oxygen leaves, ATP carries energy, carbon fixation uses carbon dioxide, glucose stores energy, light reactions happen in thylakoids, dark reactions in stroma, photosystem I and II, electron transport chains, and NADPH.",
+        "concepts": [
           "carbon fixation",
           "glucose",
           "light reactions"

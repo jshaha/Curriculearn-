@@ -238,7 +238,7 @@ I am especially interested in work that involves:
 export const sectionPages: Record<SectionId, SectionPageDefinition> = {
   learning: {
     id: "learning",
-    title: "Learning Score",
+    title: "Learning",
     route: "/learning",
     dek:
       "Applied software engineering across LLM systems, signal pipelines, and runtime interface design.",

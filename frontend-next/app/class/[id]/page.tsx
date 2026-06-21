@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BrainScene } from "@/three/BrainScene";
 import { EdgeNav } from "@/components/EdgeNav";
 import { MaterialUpload } from "@/components/MaterialUpload";
+import { CurriculumScore } from "@/components/CurriculumScore";
 import { sectionPageOrder } from "@/content/sections";
 import type { SectionId } from "@/content/siteContent";
 import { useState, useEffect, useRef } from "react";
@@ -108,6 +109,18 @@ export default function ClassPage({
                   {className}
                 </div>
               </div>
+
+              {/* Curriculum Score & Upload - Top Right */}
+              <div className="flex flex-col items-center gap-4">
+                <CurriculumScore classId={id} />
+                <MaterialUpload
+                  classId={id}
+                  className={className}
+                  onUploadComplete={(fileId, analysis) => {
+                    console.log("Upload complete:", fileId, analysis);
+                  }}
+                />
+              </div>
             </div>
           </header>
         </div>
@@ -117,14 +130,6 @@ export default function ClassPage({
           selectedSectionId={navigatingSectionId}
           onHover={handleHover}
           onSelect={handleSectionSelect}
-        />
-
-        <MaterialUpload
-          classId={id}
-          className={className}
-          onUploadComplete={(fileId, analysis) => {
-            console.log("Upload complete:", fileId, analysis);
-          }}
         />
       </div>
     </main>
