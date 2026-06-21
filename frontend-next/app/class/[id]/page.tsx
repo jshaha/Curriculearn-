@@ -4,6 +4,7 @@ import { use } from "react";
 import Link from "next/link";
 import { BrainScene } from "@/three/BrainScene";
 import { EdgeNav } from "@/components/EdgeNav";
+import { MaterialUpload } from "@/components/MaterialUpload";
 import { sectionPageOrder } from "@/content/sections";
 import type { SectionId } from "@/content/siteContent";
 import { useState, useEffect, useRef } from "react";
@@ -11,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useTransitionProvider } from "@/components/TransitionProvider";
 import { useUIStore } from "@/lib/store";
 import { preloadBrainSharedData } from "@/three/brainShared";
+import { logNavigationEvent } from "@/lib/webgl-diagnostics";
 
 const CLASS_NAMES: Record<string, string> = {
   "1": "Cognitive Science",
@@ -35,28 +37,36 @@ export default function ClassPage({
 
   const hoveredSectionId = useUIStore((state) => state.hoveredSectionId);
   const setHover = useUIStore((state) => state.setHover);
-  const { isTransitioning, startSectionTransition } = useTransitionProvider();
+  const { isTransitioning, startSectionTransition, clearSectionTransition } = useTransitionProvider();
 
   useEffect(() => {
+    console.log(`[ClassPage] MOUNTED for class ${id}`);
     void preloadBrainSharedData();
-    sectionPageOrder.forEach((sectionId) => {
-      router.prefetch(`/${sectionId}`);
-      prefetchedRoutesRef.current.add(sectionId);
-    });
-  }, [router]);
+
+    // Clear any lingering transition state when returning to class page
+    clearSectionTransition();
+    setNavigatingSectionId(null);
+  }, [id, clearSectionTransition]);
+
+  useEffect(() => {
+    return () => {
+      console.log(`[ClassPage] UNMOUNTED for class ${id}`);
+    };
+  }, [id]);
 
   const handleSectionSelect = (sectionId: SectionId) => {
     if (navigatingSectionId) {
       return;
     }
 
+    logNavigationEvent(`class/${id}`, sectionId);
     startSectionTransition(sectionId);
     setHover(sectionId);
     setNavigatingSectionId(sectionId);
     void preloadBrainSharedData();
 
     navigationTimeoutRef.current = window.setTimeout(() => {
-      router.push(`/${sectionId}`);
+      router.push(`/${sectionId}?classId=${id}`);
     }, 70);
   };
 
@@ -77,6 +87,7 @@ export default function ClassPage({
         }`}
       >
         <BrainScene
+          key={`class-${id}`}
           navigationSectionId={navigatingSectionId}
           mobileMode={false}
         />
@@ -86,12 +97,17 @@ export default function ClassPage({
         <div className="absolute inset-x-0 top-0 z-30">
           <header className="mx-auto min-h-[72px] w-full max-w-[1440px] px-6 pt-6 sm:min-h-[80px] sm:px-10 sm:pt-8">
             <div className="flex w-full items-start justify-between">
-              <Link
-                href="/"
-                className="font-mono text-[0.78rem] uppercase tracking-[0.24em] text-fg/82 transition-colors duration-150 hover:text-accent"
-              >
-                {className}
-              </Link>
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/"
+                  className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-fg/60 transition-colors duration-150 hover:text-accent"
+                >
+                  ← Back to Home
+                </Link>
+                <div className="font-mono text-[0.78rem] uppercase tracking-[0.24em] text-fg/82">
+                  {className}
+                </div>
+              </div>
             </div>
           </header>
         </div>
@@ -101,6 +117,14 @@ export default function ClassPage({
           selectedSectionId={navigatingSectionId}
           onHover={handleHover}
           onSelect={handleSectionSelect}
+        />
+
+        <MaterialUpload
+          classId={id}
+          className={className}
+          onUploadComplete={(fileId, analysis) => {
+            console.log("Upload complete:", fileId, analysis);
+          }}
         />
       </div>
     </main>
