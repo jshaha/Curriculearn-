@@ -8,7 +8,7 @@ backend_path = Path(__file__).parent / "backend"
 sys.path.insert(0, str(backend_path))
 
 from neurocompiler.schemas import StructuredLesson, LessonSegment
-from src.adapters import BrainSimulatorAdapter
+from src.adapters.brain_simulator_adapter import BrainSimulatorAdapter
 
 
 def test_adapter():

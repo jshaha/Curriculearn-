@@ -48,6 +48,8 @@ class SegmentMetric(BaseModel):
 
 
 class MetricReport(BaseModel):
+    model_config = {"protected_namespaces": ()}
+
     global_metrics: MetricScores
     learning_score: float = Field(ge=0, le=100)
     segment_metrics: List[SegmentMetric]

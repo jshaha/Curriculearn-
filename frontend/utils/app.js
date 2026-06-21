@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.app = new NeuroCompilerApp();
 
     // Check if API is available
-    fetch('http://localhost:5000/health')
+    fetch('http://localhost:5001/health')
         .then(res => res.json())
         .then(data => {
             console.log('✅ API server is running:', data.message);

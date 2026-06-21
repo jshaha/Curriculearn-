@@ -25,7 +25,7 @@ if __name__ == "__main__":
     print("  GET  /api/result/<id>         - Get optimization result")
     print("  GET  /api/download/<id>       - Download optimized lesson")
     print("  GET  /api/lessons             - List all lessons")
-    print("\nStarting server on http://localhost:5000")
+    print("\nStarting server on http://localhost:5001")
     print("="*70 + "\n")
 
-    app.run(debug=True, port=5000, host='0.0.0.0')
+    app.run(debug=True, port=5001, host='0.0.0.0')
