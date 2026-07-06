@@ -15,7 +15,7 @@ import { LABEL_LINE_PX, LABEL_OFFSET_PX } from "@/three/brainTuning";
 interface BrainLeaderLabelProps {
   sectionId: SectionId | null;
   anchorRef: RefObject<THREE.Vector3>;
-  brainGroupRef: RefObject<THREE.Group>;
+  brainGroupRef: RefObject<THREE.Group | null>;
   brainRadius: number;
 }
 

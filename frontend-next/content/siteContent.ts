@@ -42,16 +42,16 @@ export const siteContent: SiteContent = {
       email: "kazuh@berkeley.edu"
     },
     seo: {
-      title: "Kazuma Hakushi | Portfolio",
+      title: "Curriculearn",
       description:
-        "Personal portfolio with focused work in engineering, leadership, and deep-tech interface design.",
+        "AI-powered curriculum optimization platform using neural analysis to enhance learning outcomes.",
       keywords: [
-        "portfolio",
-        "full stack",
-        "frontend",
-        "three.js",
-        "react",
-        "engineering"
+        "education",
+        "curriculum",
+        "learning optimization",
+        "AI education",
+        "neural analysis",
+        "pedagogy"
       ]
     }
   }

@@ -39,7 +39,7 @@ export function MetricsComparison({
 
   const getDetailedChanges = () => {
     const allMetrics = [
-      { key: 'learning_score', label: 'Learning Score', lowerIsBetter: false },
+      { key: 'learning_score' as const, label: 'Learning Score', lowerIsBetter: false },
       ...KEY_METRICS,
     ];
 

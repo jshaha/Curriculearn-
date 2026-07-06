@@ -22,6 +22,7 @@ interface Recommendation {
   title: string;
   description: string;
   priority: "high" | "medium" | "low";
+  actions?: string[];
 }
 
 const getRecommendations = (metrics: AnalysisMetrics): Recommendation[] => {

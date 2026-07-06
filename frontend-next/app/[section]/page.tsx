@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { SectionPageClient } from "@/components/SectionPageClient";
 import { isSectionId, sectionPageOrder, sectionPages } from "@/content/sections";
@@ -29,9 +30,13 @@ export const generateMetadata = async ({ params }: SectionRouteProps): Promise<M
 
 export default async function SectionPage({ params }: SectionRouteProps): Promise<JSX.Element> {
   const resolvedParams = await params;
-  if (!isSectionId(resolvedParams.section)) {
-    notFound();
+  if (isSectionId(resolvedParams.section)) {
+    return (
+      <Suspense fallback={null}>
+        <SectionPageClient sectionId={resolvedParams.section} />
+      </Suspense>
+    );
   }
 
-  return <SectionPageClient sectionId={resolvedParams.section} />;
+  notFound();
 }

@@ -49,7 +49,10 @@ export interface AnalyzeResult {
   message: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
+// Render injects the backend host (e.g. "curriculearn-api.onrender.com") via
+// `fromService`, which has no protocol — prepend https:// when one is missing.
+const RAW_API_BASE = process.env.NEXT_PUBLIC_API_URL?.trim() || "http://localhost:5001";
+const API_BASE = /^https?:\/\//.test(RAW_API_BASE) ? RAW_API_BASE : `https://${RAW_API_BASE}`;
 
 export const api = {
   async upload(file: File): Promise<UploadResult> {
