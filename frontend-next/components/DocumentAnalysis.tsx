@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { AnalysisMetrics, Diagnosis } from "@/lib/api";
+import type { AnalysisMetrics, Diagnosis, LessonContent } from "@/lib/api";
 import { api } from "@/lib/api";
 import { updateDocument } from "@/lib/storage";
 import { buildFallbackOptimizedMetrics, getScoreColor, getScoreColorClass } from "@/lib/metrics";
@@ -11,7 +11,7 @@ interface DocumentAnalysisProps {
   metrics: AnalysisMetrics;
   optimizedMetrics?: AnalysisMetrics;
   filename: string;
-  lessonId: string;
+  content: LessonContent;
   documentId: string;
   classId: string;
   diagnoses?: Diagnosis[];
@@ -117,7 +117,7 @@ export const DocumentAnalysis = ({
   metrics,
   optimizedMetrics,
   filename,
-  lessonId,
+  content,
   documentId,
   classId,
   diagnoses = [],
@@ -132,20 +132,19 @@ export const DocumentAnalysis = ({
 
     try {
       // Update status to optimizing
-      updateDocument(classId, documentId, { status: "optimizing" });
+      await updateDocument(documentId, { status: "optimizing" });
 
-      // Call the optimize API
-      const result = await api.optimize(lessonId);
+      // Call the optimize API with the lesson content (backend is stateless)
+      const result = await api.optimize(content);
 
       // Use backend metrics if available, otherwise fallback
       const optimized = result.optimized_metrics
         ?? buildFallbackOptimizedMetrics(metrics, result.optimized_score);
 
       // Update document with optimized metrics
-      updateDocument(classId, documentId, {
+      await updateDocument(documentId, {
         status: "optimized",
         optimizedMetrics: optimized,
-        optimizationResultId: result.result_id,
       });
 
       // Callback to parent
@@ -153,7 +152,7 @@ export const DocumentAnalysis = ({
     } catch (error) {
       console.error("Optimization failed:", error);
       setOptimizeError(error instanceof Error ? error.message : "Optimization failed");
-      updateDocument(classId, documentId, { status: "complete" });
+      await updateDocument(documentId, { status: "complete" });
     } finally {
       setIsOptimizing(false);
     }

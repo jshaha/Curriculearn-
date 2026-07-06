@@ -233,6 +233,9 @@ def upload_lesson():
             "lesson_id": lesson_id,
             "title": lesson.title,
             "segments_count": len(lesson.segments),
+            # Return the full parsed content so the client can persist it and
+            # pass it back to /api/analyze and /api/optimize (stateless backend).
+            "content": lesson.model_dump(),
             "message": "File uploaded and parsed successfully"
         })
 
@@ -246,6 +249,99 @@ def upload_lesson():
         # Clean up temp file
         if file_path.exists():
             file_path.unlink()
+
+
+def _run_analysis(lesson):
+    """Simulate + diagnose a lesson. Returns (metrics_dict, diagnoses_list)."""
+    metric_report = simulator.simulate(lesson)
+    metrics = {
+        "learning_score": metric_report.learning_score,
+        "engagement": metric_report.global_metrics.engagement,
+        "cognitive_load": metric_report.global_metrics.cognitive_load,
+        "concept_flow": metric_report.global_metrics.concept_flow,
+        "retention": metric_report.global_metrics.retention,
+        "novelty": metric_report.global_metrics.novelty,
+        "information_density": metric_report.global_metrics.information_density,
+        "reinforcement": metric_report.global_metrics.reinforcement,
+        "multimodal_support": metric_report.global_metrics.multimodal_support,
+    }
+    diagnosis_report = diagnostician.diagnose(lesson, metric_report)
+    diagnoses = [
+        {
+            "id": diag.id,
+            "segment_id": diag.segment_id,
+            "issue_type": diag.issue_type,
+            "severity": diag.severity,
+            "explanation": diag.explanation,
+            "recommended_actions": diag.recommended_actions,
+            "priority": diag.priority,
+        }
+        for diag in diagnosis_report.diagnoses
+    ]
+    return metrics, diagnoses
+
+
+@app.route('/api/analyze', methods=['POST'])
+def analyze_lesson_stateless():
+    """
+    Stateless analysis: the client sends the parsed lesson content in the body,
+    so nothing needs to be stored server-side.
+
+    Body: { "lesson": <StructuredLesson dict from /api/upload> }
+    """
+    body = request.get_json(silent=True) or {}
+    content = body.get('lesson')
+    if not content:
+        return jsonify({"error": "Missing 'lesson' content in request body"}), 400
+
+    try:
+        lesson = StructuredLesson.model_validate(content)
+        print(f"Analyzing lesson (stateless): {lesson.title}")
+        metrics, diagnoses = _run_analysis(lesson)
+        return jsonify({"metrics": metrics, "issues": diagnoses, "message": "Analysis complete"})
+    except Exception as e:
+        import traceback
+        print(f"ERROR: {str(e)}")
+        print(traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/optimize', methods=['POST'])
+def optimize_lesson_stateless():
+    """
+    Stateless optimization: the client sends the parsed lesson content in the body.
+
+    Body: { "lesson": <StructuredLesson dict>, "max_iterations"?, "max_candidates"? }
+    """
+    body = request.get_json(silent=True) or {}
+    content = body.get('lesson')
+    if not content:
+        return jsonify({"error": "Missing 'lesson' content in request body"}), 400
+
+    max_iterations = body.get('max_iterations', 1)
+    max_candidates = body.get('max_candidates', 2)
+
+    try:
+        lesson = StructuredLesson.model_validate(content)
+        print(f"Optimizing lesson (stateless): {lesson.title}")
+        result = optimizer.optimize(
+            lesson=lesson,
+            simulator=simulator,
+            max_iterations=max_iterations,
+            max_candidates=max_candidates,
+        )
+        return jsonify({
+            "original_score": result.original_score,
+            "optimized_score": result.best_score,
+            "improvement": result.best_score - result.original_score,
+            "iterations": result.iterations,
+            "message": "Optimization complete",
+        })
+    except Exception as e:
+        import traceback
+        print(f"ERROR: {str(e)}")
+        print(traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route('/api/analyze/<lesson_id>', methods=['POST'])

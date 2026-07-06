@@ -35,3 +35,9 @@ services:
           type: web
           name: curriculearn-api
           property: host
+      # Supabase (Postgres + anonymous auth). The publishable/anon key is safe
+      # to expose in client bundles; row-level security enforces per-user access.
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: "https://hjjixpgxmiswnkjzbtgw.supabase.co"
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        value: "sb_publishable_3EPkp8H3avOUSPvxt7ywaA_gvyD00hL"

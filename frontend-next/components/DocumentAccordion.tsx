@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { AnalysisMetrics } from "@/lib/api";
+import type { AnalysisMetrics, LessonContent } from "@/lib/api";
 import type { AccordionEntry } from "@/content/editorialTypes";
 import { AccordionList } from "@/components/AccordionList";
 import { api } from "@/lib/api";
@@ -13,7 +13,7 @@ interface DocumentAccordionProps {
   metrics: AnalysisMetrics;
   optimizedMetrics?: AnalysisMetrics;
   filename: string;
-  lessonId: string;
+  content: LessonContent;
   documentId: string;
   classId: string;
   onOptimized?: (optimizedMetrics: AnalysisMetrics) => void;
@@ -190,7 +190,7 @@ export const DocumentAccordion = ({
   metrics,
   optimizedMetrics,
   filename,
-  lessonId,
+  content,
   documentId,
   classId,
   onOptimized
@@ -203,24 +203,23 @@ export const DocumentAccordion = ({
     setOptimizeError(null);
 
     try {
-      updateDocument(classId, documentId, { status: "optimizing" });
-      const result = await api.optimize(lessonId);
+      await updateDocument(documentId, { status: "optimizing" });
+      const result = await api.optimize(content);
 
       // Use backend metrics if available, otherwise fallback
       const optimized = result.optimized_metrics
         ?? buildFallbackOptimizedMetrics(metrics, result.optimized_score);
 
-      updateDocument(classId, documentId, {
+      await updateDocument(documentId, {
         status: "optimized",
         optimizedMetrics: optimized,
-        optimizationResultId: result.result_id,
       });
 
       onOptimized?.(optimized);
     } catch (error) {
       console.error("Optimization failed:", error);
       setOptimizeError(error instanceof Error ? error.message : "Optimization failed");
-      updateDocument(classId, documentId, { status: "complete" });
+      await updateDocument(documentId, { status: "complete" });
     } finally {
       setIsOptimizing(false);
     }

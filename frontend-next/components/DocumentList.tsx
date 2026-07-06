@@ -43,8 +43,8 @@ export const DocumentList = ({ classId, sectionId }: DocumentListProps) => {
     };
   }, [classId]);
 
-  const loadDocuments = () => {
-    const docs = getDocuments(classId);
+  const loadDocuments = async () => {
+    const docs = await getDocuments(classId);
     const completedDocs = docs.filter((doc) =>
       (doc.status === "complete" || doc.status === "optimized") && doc.metrics
     );
@@ -60,13 +60,13 @@ export const DocumentList = ({ classId, sectionId }: DocumentListProps) => {
     setDocuments(sortedDocs);
   };
 
-  const handleDelete = (e: React.MouseEvent, docId: string) => {
+  const handleDelete = async (e: React.MouseEvent, docId: string) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (window.confirm("Are you sure you want to delete this document?")) {
-      deleteDocument(classId, docId);
-      loadDocuments();
+      await deleteDocument(docId);
+      await loadDocuments();
     }
   };
 

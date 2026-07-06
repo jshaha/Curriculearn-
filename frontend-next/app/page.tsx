@@ -1,27 +1,52 @@
 "use client"
 
-import { useState } from "react"
-
-type Class = {
-  id: string
-  name: string
-  period: string
-  students: number
-  room: string
-  schedule: string
-}
-
-const MOCK_CLASSES: Class[] = [
-  { id: "1", name: "Cognitive Science", period: "Period 1", students: 28, room: "Lab 204", schedule: "Mon/Wed/Fri 9:00 AM" },
-  { id: "2", name: "AP Psychology", period: "Period 2", students: 24, room: "Room 312", schedule: "Tue/Thu 10:30 AM" },
-  { id: "3", name: "Neuroscience Lab", period: "Period 3", students: 16, room: "Lab 201", schedule: "Mon/Wed 1:00 PM" },
-  { id: "4", name: "Behavioral Economics", period: "Period 4", students: 22, room: "Room 405", schedule: "Tue/Thu 2:30 PM" },
-  { id: "5", name: "Memory & Learning", period: "Period 5", students: 19, room: "Room 308", schedule: "Mon/Wed/Fri 11:00 AM" },
-  { id: "6", name: "Advanced Psychology", period: "Period 6", students: 26, room: "Room 410", schedule: "Tue/Thu 4:00 PM" },
-]
+import { useEffect, useState } from "react"
+import { getClasses, seedDemoClassesIfEmpty, resetToDemo, type ClassRecord } from "@/lib/classes"
 
 export default function HomePage() {
   const [hoveredClass, setHoveredClass] = useState<string | null>(null)
+  const [classes, setClasses] = useState<ClassRecord[]>([])
+  const [loading, setLoading] = useState(true)
+  const [resetting, setResetting] = useState(false)
+
+  useEffect(() => {
+    let active = true
+    ;(async () => {
+      try {
+        // Seed a demo set on a brand-new (anonymous) visitor, otherwise load theirs.
+        const list = await seedDemoClassesIfEmpty()
+        if (active) setClasses(list)
+      } catch (err) {
+        console.error("Failed to load classes:", err)
+        if (active) {
+          try {
+            setClasses(await getClasses())
+          } catch {
+            /* leave empty */
+          }
+        }
+      } finally {
+        if (active) setLoading(false)
+      }
+    })()
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const handleReset = async () => {
+    if (!window.confirm("Reset everything to a fresh demo? This deletes all your classes and documents.")) return
+    setResetting(true)
+    try {
+      setClasses(await resetToDemo())
+    } catch (err) {
+      console.error("Reset failed:", err)
+    } finally {
+      setResetting(false)
+    }
+  }
+
+  const totalStudents = classes.reduce((acc, c) => acc + (c.students ?? 0), 0)
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -35,14 +60,27 @@ export default function HomePage() {
 
       <div className="relative max-w-6xl mx-auto px-12 py-24">
         {/* Header */}
-        <div className="mb-20">
-          <h1 className="text-7xl font-light mb-4 tracking-tight">Classes</h1>
-          <div className="h-px w-32 bg-white/20" />
+        <div className="mb-20 flex items-end justify-between">
+          <div>
+            <h1 className="text-7xl font-light mb-4 tracking-tight">Classes</h1>
+            <div className="h-px w-32 bg-white/20" />
+          </div>
+          <button
+            onClick={handleReset}
+            disabled={resetting || loading}
+            className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/40 border border-white/10 px-4 py-2 transition-colors hover:text-white/80 hover:border-white/30 disabled:opacity-40"
+            title="Delete all your data and restore the demo classes"
+          >
+            {resetting ? "Resetting…" : "Reset demo"}
+          </button>
         </div>
 
-        {/* Class Grid */}
+        {loading ? (
+          <div className="font-mono text-sm text-white/40">Loading classes…</div>
+        ) : (
+        /* Class Grid */
         <div className="grid grid-cols-2 gap-6">
-          {MOCK_CLASSES.map((classItem) => (
+          {classes.map((classItem) => (
             <a
               key={classItem.id}
               href={`/class/${classItem.id}`}
@@ -90,23 +128,24 @@ export default function HomePage() {
             </a>
           ))}
         </div>
+        )}
 
         {/* Footer stats */}
         <div className="mt-24 pt-12 border-t border-white/10">
           <div className="grid grid-cols-3 gap-8">
             <div>
-              <div className="text-4xl font-light mb-1">{MOCK_CLASSES.length}</div>
+              <div className="text-4xl font-light mb-1">{classes.length}</div>
               <div className="text-sm text-white/40">Total Classes</div>
             </div>
             <div>
               <div className="text-4xl font-light mb-1">
-                {MOCK_CLASSES.reduce((acc, c) => acc + c.students, 0)}
+                {totalStudents}
               </div>
               <div className="text-sm text-white/40">Total Students</div>
             </div>
             <div>
               <div className="text-4xl font-light mb-1">
-                {Math.round(MOCK_CLASSES.reduce((acc, c) => acc + c.students, 0) / MOCK_CLASSES.length)}
+                {classes.length > 0 ? Math.round(totalStudents / classes.length) : 0}
               </div>
               <div className="text-sm text-white/40">Average Class Size</div>
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addDocument } from "@/lib/storage";
+import { createDocument, updateDocument } from "@/lib/storage";
 import { api } from "@/lib/api";
 
 interface MaterialUploadProps {
@@ -25,48 +25,46 @@ export const MaterialUpload = ({
     setIsUploading(true);
     setError(null);
 
+    let docId: string | null = null;
     try {
-      const docId = `doc-${Date.now()}`;
-
-      // Add document to storage immediately with "uploading" status
-      const newDoc = {
-        id: docId,
-        filename: file.name,
+      // Create the document immediately with "uploading" status.
+      const newDoc = await createDocument({
         classId,
-        lessonId: "", // Will be set after upload
-        uploadDate: new Date().toISOString(),
-        status: "uploading" as const,
-      };
-      addDocument(newDoc);
+        filename: file.name,
+        status: "uploading",
+      });
+      docId = newDoc.id;
 
       console.log("Uploading file to backend:", file.name);
 
-      // Upload to backend and get real lesson_id
+      // Upload to backend → parsed lesson content (backend is stateless).
       const uploadResult = await api.upload(file);
-      console.log("Upload successful, lesson_id:", uploadResult.lesson_id);
+      console.log("Upload successful:", uploadResult.title);
 
-      // Analyze to get real metrics
+      // Analyze to get real metrics + Claude diagnoses.
       console.log("Analyzing lesson...");
-      const analyzeResult = await api.analyze(uploadResult.lesson_id);
+      const analyzeResult = await api.analyze(uploadResult.content);
       console.log("Analysis complete:", analyzeResult);
 
-      // Update document with complete status, real metrics, and Claude diagnoses
-      const updatedDoc = {
-        ...newDoc,
-        lessonId: uploadResult.lesson_id,
-        status: "complete" as const,
+      // Persist parsed content + results so analyze/optimize work after restarts.
+      await updateDocument(docId, {
+        status: "complete",
+        content: uploadResult.content,
         metrics: analyzeResult.metrics,
-        diagnoses: analyzeResult.issues, // Save Claude diagnoses!
-      };
-
-      // Replace the uploading doc with complete doc
-      // Note: addDocument now automatically dispatches the storage change event
-      addDocument(updatedDoc);
+        diagnoses: analyzeResult.issues,
+      });
 
       if (onUploadComplete) {
         onUploadComplete(docId, analyzeResult.metrics);
       }
     } catch (err) {
+      if (docId) {
+        try {
+          await updateDocument(docId, { status: "error" });
+        } catch {
+          /* ignore */
+        }
+      }
       setError(err instanceof Error ? err.message : "Upload failed");
       console.error("Upload error:", err);
     } finally {

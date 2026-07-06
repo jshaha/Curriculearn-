@@ -9,7 +9,7 @@ import { SectionBrainHeader } from "@/three/SectionBrainHeader";
 import { useScrollMotion } from "@/hooks/useScrollMotion";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { useTransitionProvider } from "@/components/TransitionProvider";
-import type { AnalysisMetrics } from "@/lib/api";
+import type { AnalysisMetrics, LessonContent } from "@/lib/api";
 
 export default function DocumentPage({
   params,
@@ -29,11 +29,22 @@ export default function DocumentPage({
   const sectionId = (searchParams.get("section") || "learning") as any;
 
   useEffect(() => {
-    const doc = getDocument(id, docId);
-    setDocument(doc);
-    setIsLoading(false);
+    let active = true;
+    getDocument(docId)
+      .then((doc) => {
+        if (!active) return;
+        setDocument(doc);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load document:", err);
+        if (active) setIsLoading(false);
+      });
     clearSectionTransition();
-  }, [id, docId, clearSectionTransition]);
+    return () => {
+      active = false;
+    };
+  }, [docId, clearSectionTransition]);
 
   const handleOptimized = (optimizedMetrics: AnalysisMetrics) => {
     setDocument(prev => prev ? {
@@ -118,7 +129,7 @@ export default function DocumentPage({
           metrics={document.metrics}
           optimizedMetrics={document.optimizedMetrics}
           filename={document.filename}
-          lessonId={document.lessonId}
+          content={document.content as LessonContent}
           documentId={document.id}
           classId={id}
           diagnoses={document.diagnoses}

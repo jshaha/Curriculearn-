@@ -14,15 +14,7 @@ import { useTransitionProvider } from "@/components/TransitionProvider";
 import { useUIStore } from "@/lib/store";
 import { preloadBrainSharedData } from "@/three/brainShared";
 import { logNavigationEvent } from "@/lib/webgl-diagnostics";
-
-const CLASS_NAMES: Record<string, string> = {
-  "1": "Cognitive Science",
-  "2": "AP Psychology",
-  "3": "Neuroscience Lab",
-  "4": "Behavioral Economics",
-  "5": "Memory & Learning",
-  "6": "Advanced Psychology",
-};
+import { getClass } from "@/lib/classes";
 
 export default function ClassPage({
   params,
@@ -30,7 +22,19 @@ export default function ClassPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const className = CLASS_NAMES[id] || "Class";
+  const [className, setClassName] = useState("Class");
+
+  useEffect(() => {
+    let active = true;
+    getClass(id)
+      .then((c) => {
+        if (active && c) setClassName(c.name);
+      })
+      .catch((err) => console.error("Failed to load class:", err));
+    return () => {
+      active = false;
+    };
+  }, [id]);
   const router = useRouter();
   const navigationTimeoutRef = useRef<number | null>(null);
   const prefetchedRoutesRef = useRef<Set<SectionId>>(new Set());

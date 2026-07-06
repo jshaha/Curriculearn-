@@ -24,8 +24,8 @@ export interface Diagnosis {
 }
 
 export interface OptimizeResult {
-  result_id: string;
-  lesson_id: string;
+  result_id?: string;
+  lesson_id?: string;
   original_score: number;
   optimized_score: number;
   improvement: number;
@@ -35,18 +35,24 @@ export interface OptimizeResult {
   original_metrics?: AnalysisMetrics;
 }
 
-export interface UploadResult {
-  lesson_id: string;
+// Parsed lesson content returned by the backend. The frontend owns this and
+// passes it back on analyze/optimize, so the backend stays stateless.
+export interface LessonContent {
+  id: string;
   title: string;
+  learning_goals: string[];
+  segments: unknown[];
+}
+
+export interface UploadResult {
+  title: string;
+  content: LessonContent;
   segments_count: number;
-  message: string;
 }
 
 export interface AnalyzeResult {
-  lesson_id: string;
   metrics: AnalysisMetrics;
   issues: Diagnosis[];
-  message: string;
 }
 
 // Render injects the backend host (e.g. "curriculearn-api.onrender.com") via
@@ -66,25 +72,26 @@ export const api = {
     if (!response.ok) throw new Error("Upload failed");
     return response.json();
   },
-  async analyze(lessonId: string): Promise<AnalyzeResult> {
-    const response = await fetch(`${API_BASE}/api/analyze/${lessonId}`, {
+
+  async analyze(content: LessonContent): Promise<AnalyzeResult> {
+    const response = await fetch(`${API_BASE}/api/analyze`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({})
+      body: JSON.stringify({ lesson: content })
     });
     if (!response.ok) throw new Error("Analysis failed");
     return response.json();
   },
 
-  async optimize(lessonId: string): Promise<OptimizeResult> {
-    const response = await fetch(`${API_BASE}/api/optimize/${lessonId}`, {
+  async optimize(content: LessonContent): Promise<OptimizeResult> {
+    const response = await fetch(`${API_BASE}/api/optimize`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({})
+      body: JSON.stringify({ lesson: content })
     });
     if (!response.ok) {
       const errorText = await response.text();

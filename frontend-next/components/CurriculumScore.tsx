@@ -12,8 +12,8 @@ export const CurriculumScore = ({ classId }: CurriculumScoreProps): JSX.Element 
   const [docCount, setDocCount] = useState(0);
 
   useEffect(() => {
-    const calculateScore = () => {
-      const classDocs = getDocuments(classId).filter(
+    const calculateScore = async () => {
+      const classDocs = (await getDocuments(classId)).filter(
         (doc) => doc.status === "complete" && doc.metrics
       );
 
