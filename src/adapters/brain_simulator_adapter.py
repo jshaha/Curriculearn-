@@ -147,7 +147,7 @@ class BrainSimulatorAdapter:
             global_metrics=global_metrics,
             learning_score=metrics_dict.get('learning_score', 50.0),
             segment_metrics=segment_metrics,
-            model_name=brain_states.get('model_name', 'all-MiniLM-L6-v2'),
+            model_name=brain_states.get('model_name', 'paraphrase-MiniLM-L3-v2'),
             model_version='sentence-transformers',
             confidence=0.85,
             warnings=[]

@@ -5,7 +5,11 @@ services:
     runtime: python
     plan: free  # FREE TIER (spins down after 15min inactivity)
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 backend.api_server:app
+    # --threads lets the single worker answer /health while an inference request
+    # is running on another thread (threads share the already-loaded model, so
+    # this adds almost no memory). Without it, Render's 5s health check times out
+    # during the ~9s CPU-throttled inference and restarts the instance.
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 backend.api_server:app
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.4"

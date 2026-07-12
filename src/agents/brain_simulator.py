@@ -9,9 +9,11 @@ Output: Brain state representations (embeddings over time)
 """
 
 import numpy as np
+import torch
 from sentence_transformers import SentenceTransformer
 from typing import List, Dict, Any
 
+torch.set_num_threads(1)
 
 class BrainSimulator:
     """
@@ -24,13 +26,13 @@ class BrainSimulator:
     how TRIBE's voxels represent brain regions.
     """
 
-    def __init__(self, model_name: str = 'all-MiniLM-L6-v2'):
+    def __init__(self, model_name: str = 'paraphrase-MiniLM-L3-v2'):
         """
         Initialize the brain simulator.
 
         Args:
             model_name: Name of the sentence transformer model to use.
-                       Default is 'all-MiniLM-L6-v2' (80MB, 384 dimensions)
+                       Default is 'paraphrase-MiniLM-L3-v2' (80MB, 384 dimensions)
         """
         print(f"Loading brain simulation model: {model_name}...")
         self.model = SentenceTransformer(model_name)
