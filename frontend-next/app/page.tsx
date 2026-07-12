@@ -13,6 +13,13 @@ export default function HomePage() {
     let active = true
     ;(async () => {
       try {
+        // Wake up the backend (Render free tier spins down after 15 min inactivity)
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL
+        if (apiUrl) {
+          fetch(`${apiUrl}/health`).catch(() => {
+            // Silently fail — backend might be starting up
+          })
+        }
         // Seed a demo set on a brand-new (anonymous) visitor, otherwise load theirs.
         const list = await seedDemoClassesIfEmpty()
         if (active) setClasses(list)
