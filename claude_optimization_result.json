@@ -1,0 +1,32 @@
+{
+  "original_score": 60.93488503065265,
+  "best_score": 60.93488503065265,
+  "improvement": 0.0,
+  "iterations": 1,
+  "model": "claude-sonnet-4-6-20250514",
+  "best_lesson": {
+    "title": "Introduction to Photosynthesis",
+    "segments": [
+      {
+        "id": "slide_1",
+        "title": "What is photosynthesis?",
+        "content": "Photosynthesis is how plants make food."
+      },
+      {
+        "id": "slide_2",
+        "title": "Plants need sunlight",
+        "content": "Plants use sunlight to create energy."
+      },
+      {
+        "id": "slide_3",
+        "title": "Complex overload section",
+        "content": "Chlorophyll captures photons in thylakoid membranes where photosystem II initiates electron transport chains while simultaneously splitting water molecules to release oxygen and generate ATP through chemiosmosis involving proton gradients across thylakoid membranes before electrons reach photosystem I which reduces NADP+ to NADPH for use in the Calvin cycle where carbon dioxide is fixed into glucose through a complex series of reactions."
+      },
+      {
+        "id": "slide_4",
+        "title": "The equation",
+        "content": "The chemical equation is 6CO2 + 6H2O + light \u2192 C6H12O6 + 6O2."
+      }
+    ]
+  }
+}

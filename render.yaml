@@ -12,7 +12,7 @@ services:
       - key: FLASK_DEBUG
         value: "false"
       - key: USE_CLAUDE_AGENTS
-        value: "false"  # set to "true" after adding ANTHROPIC_API_KEY below
+        value: "true"  # set to "true" after adding ANTHROPIC_API_KEY below
       # Add your Anthropic API key in the Render dashboard to enable Claude agents:
       - key: ANTHROPIC_API_KEY
         sync: false  # Manual entry in dashboard (secret)
