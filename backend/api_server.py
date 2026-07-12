@@ -34,7 +34,18 @@ CurriculumParser = parser_module.CurriculumParser
 BrainSimulatorAdapter = adapter_module.BrainSimulatorAdapter
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend
+CORS(app, resources={
+    r"/api/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"],
+        "supports_credentials": False
+    },
+    r"/health": {
+        "origins": "*",
+        "methods": ["GET", "OPTIONS"],
+    }
+})
 
 # Persistent storage file paths
 STORAGE_DIR = project_root / "backend" / "data"
