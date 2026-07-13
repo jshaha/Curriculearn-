@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { getClasses, seedDemoClassesIfEmpty, resetToDemo, type ClassRecord } from "@/lib/classes"
+import { signOut } from "@/lib/supabase"
 
 export default function HomePage() {
   const [hoveredClass, setHoveredClass] = useState<string | null>(null)
@@ -20,7 +21,7 @@ export default function HomePage() {
             // Silently fail — backend might be starting up
           })
         }
-        // Seed a demo set on a brand-new (anonymous) visitor, otherwise load theirs.
+        // Seed a demo set on a brand-new user's first sign-in, otherwise load theirs.
         const list = await seedDemoClassesIfEmpty()
         if (active) setClasses(list)
       } catch (err) {
@@ -72,14 +73,23 @@ export default function HomePage() {
             <h1 className="text-7xl font-light mb-4 tracking-tight">Classes</h1>
             <div className="h-px w-32 bg-white/20" />
           </div>
-          <button
-            onClick={handleReset}
-            disabled={resetting || loading}
-            className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/40 border border-white/10 px-4 py-2 transition-colors hover:text-white/80 hover:border-white/30 disabled:opacity-40"
-            title="Delete all your data and restore the demo classes"
-          >
-            {resetting ? "Resetting…" : "Reset demo"}
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleReset}
+              disabled={resetting || loading}
+              className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/40 border border-white/10 px-4 py-2 transition-colors hover:text-white/80 hover:border-white/30 disabled:opacity-40"
+              title="Delete all your data and restore the demo classes"
+            >
+              {resetting ? "Resetting…" : "Reset demo"}
+            </button>
+            <button
+              onClick={() => signOut()}
+              className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/40 border border-white/10 px-4 py-2 transition-colors hover:text-white/80 hover:border-white/30"
+              title="Sign out of your Google account"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
 
         {loading ? (

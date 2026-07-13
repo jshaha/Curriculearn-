@@ -65,16 +65,30 @@ const DEMO_CLASSES: Omit<ClassRecord, "id">[] = [
   { name: "Advanced Psychology", period: "Period 6", students: 26, room: "Room 410", schedule: "Tue/Thu 4:00 PM" },
 ];
 
+// Shared in-flight seed promise. Without this, two near-simultaneous callers
+// (e.g. React StrictMode double-invoking the mount effect) both read "empty" and
+// each insert the demo set, producing duplicate classes. Concurrent callers now
+// share one promise; it's cleared once settled so resetToDemo can seed again.
+let seedInFlight: Promise<ClassRecord[]> | null = null;
+
 /** Seed the demo classes if this user has none yet. Returns the full list. */
 export const seedDemoClassesIfEmpty = async (): Promise<ClassRecord[]> => {
-  const existing = await getClasses();
-  if (existing.length > 0) return existing;
-  const { data, error } = await supabase
-    .from("classes")
-    .insert(DEMO_CLASSES)
-    .select(SELECT_COLS);
-  if (error) throw error;
-  return (data as ClassRecord[]) ?? [];
+  if (seedInFlight) return seedInFlight;
+  seedInFlight = (async () => {
+    const existing = await getClasses();
+    if (existing.length > 0) return existing;
+    const { data, error } = await supabase
+      .from("classes")
+      .insert(DEMO_CLASSES)
+      .select(SELECT_COLS);
+    if (error) throw error;
+    return (data as ClassRecord[]) ?? [];
+  })();
+  try {
+    return await seedInFlight;
+  } finally {
+    seedInFlight = null;
+  }
 };
 
 /**
