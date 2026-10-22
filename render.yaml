@@ -17,6 +17,9 @@ services:
         value: "false"
       - key: USE_CLAUDE_AGENTS
         value: "true"  # set to "true" after adding ANTHROPIC_API_KEY below
+      # Cheapest current Claude model; keeps per-visitor demo cost low.
+      - key: CLAUDE_MODEL
+        value: "claude-haiku-4-5"
       # Add your Anthropic API key in the Render dashboard to enable Claude agents:
       - key: ANTHROPIC_API_KEY
         sync: false  # Manual entry in dashboard (secret)

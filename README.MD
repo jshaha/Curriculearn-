@@ -166,7 +166,7 @@ Create a `.env` file in the repo root if you want the optional integrations. Eve
 |---|---|---|
 | `ANTHROPIC_API_KEY` | Claude-powered Diagnostician & Curriculum Editor | No — falls back to deterministic agents |
 | `USE_CLAUDE_AGENTS` | Set to `true` to opt into the Claude-powered agents | No (defaults to `false`) |
-| `CLAUDE_MODEL` | Override the Claude model used (defaults to `claude-sonnet-4-6`) | No |
+| `CLAUDE_MODEL` | Override the Claude model used (defaults to `claude-haiku-4-5`, the most token-efficient model) | No |
 | `GEMINI_API_KEY` / `OPENAI_API_KEY` / `REPLICATE_API_TOKEN` | Agent 7 image generation backend | No — uses placeholders without a key |
 | `NEXT_PUBLIC_API_URL` | Tells `frontend-next` where the backend API is running | Yes, if running the frontend against a non-local backend |
 
