@@ -125,11 +125,20 @@ class ClaudeCurriculumEditor(ClaudeAgentBase):
         max_candidates: int,
     ) -> str:
         """Build the initial user message with task description."""
+        # Inline diagnosis details and the full lesson text so the agent can go
+        # straight to writing edits instead of fetching each piece with a tool
+        # call (one API round trip each).
         diagnoses_overview = []
         for d in sorted(diagnosis_report.diagnoses, key=lambda x: x.priority):
+            actions = "; ".join(d.recommended_actions) or "none"
             diagnoses_overview.append(
-                f"- [{d.priority}] {d.id}: {d.issue_type} ({d.severity}) in segment '{d.segment_id}'"
+                f"- [{d.priority}] {d.id}: {d.issue_type} ({d.severity}) in segment '{d.segment_id}'\n"
+                f"  Explanation: {d.explanation}\n"
+                f"  Recommended actions: {actions}"
             )
+        segments_text = "\n\n".join(
+            f"### {s.id}: \"{s.title}\"\n{s.content}" for s in lesson.segments
+        )
 
         return f"""Create up to {max_candidates} edit candidates for this lesson.
 
@@ -140,6 +149,9 @@ class ClaudeCurriculumEditor(ClaudeAgentBase):
 ## Diagnoses (by priority)
 {chr(10).join(diagnoses_overview)}
 
+## Lesson Segments
+{segments_text}
+
 ## Instructions
 1. Review the highest-priority diagnoses first
 2. For each candidate, create edits that address one or more issues
@@ -147,7 +159,7 @@ class ClaudeCurriculumEditor(ClaudeAgentBase):
 4. Call finalize_candidate after completing each candidate's edits
 5. Create diverse candidates that take different approaches when possible
 
-Start by examining the highest-priority diagnosis and the affected segment."""
+The diagnoses and full lesson text are above, so you do not need the lookup tools. Work efficiently: in a single response, make each candidate's edit calls followed by its finalize_candidate call, in order, for every candidate."""
 
     def handle_tool_call(
         self, tool_name: str, tool_input: Dict[str, Any], context: Dict[str, Any]

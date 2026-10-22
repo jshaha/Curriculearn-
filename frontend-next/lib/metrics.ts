@@ -14,27 +14,14 @@ export const METRIC_KEYS = [
 
 export type MetricKey = typeof METRIC_KEYS[number];
 
-// Deterministic fallback when backend doesn't return full metrics
+// Used only if the backend response lacks per-metric results. Carries the
+// original metrics over unchanged (with the real optimized score) rather than
+// estimating improvements the simulator never measured.
 export function buildFallbackOptimizedMetrics(
   original: AnalysisMetrics,
   optimizedScore: number
 ): AnalysisMetrics {
-  return {
-    learning_score: optimizedScore,
-    engagement: Math.min(100, Math.round(original.engagement * 1.15)),
-    cognitive_load: Math.max(0, Math.round(original.cognitive_load * 0.9)),
-    concept_flow: Math.min(100, Math.round(original.concept_flow * 1.12)),
-    retention: Math.min(100, Math.round(original.retention * 1.18)),
-    reinforcement: Math.min(100, Math.round(original.reinforcement * 1.1)),
-    multimodal_support: Math.min(100, Math.round(original.multimodal_support * 1.05)),
-    // Novelty: move toward optimal 65
-    novelty: Math.round(original.novelty + (65 - original.novelty) * 0.3),
-    // Information density: reduce if too high
-    information_density:
-      original.information_density > 80
-        ? Math.round(original.information_density * 0.93)
-        : original.information_density,
-  };
+  return { ...original, learning_score: optimizedScore };
 }
 
 // Delta calculation with improvement detection

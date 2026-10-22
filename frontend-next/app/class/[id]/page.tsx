@@ -15,6 +15,7 @@ import { useUIStore } from "@/lib/store";
 import { preloadBrainSharedData } from "@/three/brainShared";
 import { logNavigationEvent } from "@/lib/webgl-diagnostics";
 import { getClass } from "@/lib/classes";
+import { api } from "@/lib/api";
 
 export default function ClassPage({
   params,
@@ -47,6 +48,7 @@ export default function ClassPage({
   useEffect(() => {
     console.log(`[ClassPage] MOUNTED for class ${id}`);
     void preloadBrainSharedData();
+    api.wake();
 
     // Clear any lingering transition state when returning to class page
     clearSectionTransition();

@@ -49,11 +49,10 @@ When creating content, you must write REAL educational content, not templates or
 
 ## Creating Edit Candidates
 
-1. Start by reviewing the diagnoses using get_diagnosis_details
-2. Get the segment content using get_segment_content
-3. Use get_lesson_context to understand the broader lesson
-4. Create edits that address the issues with substantive content
-5. Call finalize_candidate when done with each candidate
+1. Review the diagnoses and lesson text provided in the message (use get_diagnosis_details, get_segment_content, or get_lesson_context only if something you need is missing)
+2. Create edits that address the issues with substantive content
+3. Call finalize_candidate when done with each candidate
+4. Batch your tool calls: issue all edits and finalize calls for every candidate in a single response, in order
 
 ## Quality Standards
 

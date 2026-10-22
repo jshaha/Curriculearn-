@@ -2,25 +2,30 @@
 
 import { useEffect, useState } from "react"
 import { getClasses, seedDemoClassesIfEmpty, resetToDemo, type ClassRecord } from "@/lib/classes"
-import { signOut } from "@/lib/supabase"
+import { signOut, supabase } from "@/lib/supabase"
+import { openIntro } from "@/components/IntroSlides"
+import { api } from "@/lib/api"
 
 export default function HomePage() {
   const [hoveredClass, setHoveredClass] = useState<string | null>(null)
   const [classes, setClasses] = useState<ClassRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [resetting, setResetting] = useState(false)
+  // Guests have no account to return to, so signing out would orphan their data.
+  const [isGuest, setIsGuest] = useState(true)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setIsGuest(data.session?.user.is_anonymous ?? true)
+    })
+  }, [])
 
   useEffect(() => {
     let active = true
     ;(async () => {
       try {
         // Wake up the backend (Render free tier spins down after 15 min inactivity)
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL
-        if (apiUrl) {
-          fetch(`${apiUrl}/health`).catch(() => {
-            // Silently fail — backend might be starting up
-          })
-        }
+        api.wake()
         // Seed a demo set on a brand-new user's first sign-in, otherwise load theirs.
         const list = await seedDemoClassesIfEmpty()
         if (active) setClasses(list)
@@ -66,14 +71,24 @@ export default function HomePage() {
         }} />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-12 py-24">
+      <div className="relative max-w-6xl mx-auto px-4 py-12 sm:px-12 sm:py-24">
         {/* Header */}
-        <div className="mb-20 flex items-end justify-between">
+        <div className="mb-14 flex flex-col gap-6 sm:mb-20 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-7xl font-light mb-4 tracking-tight">Classes</h1>
-            <div className="h-px w-32 bg-white/20" />
+            <div className="mb-3 font-mono text-[0.65rem] uppercase tracking-[0.26em] text-[#FF8A1A]">Curriculearn</div>
+            <h1 className="text-5xl sm:text-7xl font-light mb-4 tracking-tight">Classes</h1>
+            <div className="h-px w-32 bg-white/20 mb-4" />
+            <p className="max-w-md text-sm text-white/45">
+              Upload a lesson to any class. Curriculearn simulates how students process it, finds the weak spots, and rewrites them.
+            </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={openIntro}
+              className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#FF8A1A] border border-[#FF8A1A]/40 px-4 py-2 transition-colors hover:border-[#FF8A1A]"
+            >
+              How it works
+            </button>
             <button
               onClick={handleReset}
               disabled={resetting || loading}
@@ -82,6 +97,7 @@ export default function HomePage() {
             >
               {resetting ? "Resetting…" : "Reset demo"}
             </button>
+            {!isGuest && (
             <button
               onClick={() => signOut()}
               className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/40 border border-white/10 px-4 py-2 transition-colors hover:text-white/80 hover:border-white/30"
@@ -89,6 +105,7 @@ export default function HomePage() {
             >
               Sign out
             </button>
+            )}
           </div>
         </div>
 
@@ -96,14 +113,14 @@ export default function HomePage() {
           <div className="font-mono text-sm text-white/40">Loading classes…</div>
         ) : (
         /* Class Grid */
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {classes.map((classItem) => (
             <a
               key={classItem.id}
               href={`/class/${classItem.id}`}
               onMouseEnter={() => setHoveredClass(classItem.id)}
               onMouseLeave={() => setHoveredClass(null)}
-              className="group relative block border border-white/10 hover:border-white/30 transition-all p-8 bg-black hover:bg-white/[0.02]"
+              className="group relative block border border-white/10 hover:border-white/30 transition-all p-6 sm:p-8 bg-black hover:bg-white/[0.02]"
             >
               {/* Hover accent line */}
               <div className={`absolute left-0 top-0 bottom-0 w-px bg-white transition-opacity ${hoveredClass === classItem.id ? 'opacity-100' : 'opacity-0'}`} />
@@ -149,7 +166,7 @@ export default function HomePage() {
 
         {/* Footer stats */}
         <div className="mt-24 pt-12 border-t border-white/10">
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-4 sm:gap-8">
             <div>
               <div className="text-4xl font-light mb-1">{classes.length}</div>
               <div className="text-sm text-white/40">Total Classes</div>

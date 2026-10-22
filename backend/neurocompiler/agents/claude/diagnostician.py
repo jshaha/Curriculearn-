@@ -138,10 +138,24 @@ class ClaudeDiagnostician(ClaudeAgentBase):
         self, lesson: StructuredLesson, metric_report: MetricReport
     ) -> str:
         """Build the initial user message with lesson overview."""
+        # Inline every segment's content and metrics up front. Without this the
+        # agent fetches them one tool call (one API round trip) at a time, which
+        # took minutes on a typical 15-20 segment lesson.
+        metrics_map = {sm.segment_id: sm.metrics for sm in metric_report.segment_metrics}
         segments_overview = []
         for segment in lesson.segments:
+            m = metrics_map.get(segment.id)
+            metrics_line = (
+                f"cognitive_load={m.cognitive_load:.0f}, information_density={m.information_density:.0f}, "
+                f"concept_flow={m.concept_flow:.0f}, retention={m.retention:.0f}, "
+                f"reinforcement={m.reinforcement:.0f}, novelty={m.novelty:.0f}, "
+                f"engagement={m.engagement:.0f}, multimodal_support={m.multimodal_support:.0f}"
+                if m else "no metrics"
+            )
             segments_overview.append(
-                f"- {segment.id}: \"{segment.title}\" (concepts: {', '.join(segment.concepts) or 'none listed'})"
+                f"### {segment.id}: \"{segment.title}\"\n"
+                f"Metrics: {metrics_line}\n"
+                f"Content: {segment.content}"
             )
 
         global_metrics = metric_report.global_metrics
@@ -166,7 +180,7 @@ class ClaudeDiagnostician(ClaudeAgentBase):
 - Reinforcement: {global_metrics.reinforcement:.1f}
 - Multimodal Support: {global_metrics.multimodal_support:.1f}
 
-Please analyze each segment's metrics and identify educational issues. Start by examining segments that may have problems based on the global metrics."""
+Every segment's full content and metrics are included above, so you do not need the lookup tools. Identify the most important issues (at most 8), record them all in a single response with parallel record_diagnosis calls, then call finalize_diagnosis_report."""
 
     def handle_tool_call(
         self, tool_name: str, tool_input: Dict[str, Any], context: Dict[str, Any]

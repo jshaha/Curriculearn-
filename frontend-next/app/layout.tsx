@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { AuthGate } from "@/components/AuthGate";
+import { IntroSlides } from "@/components/IntroSlides";
 import { PageTransitionOverlay } from "@/components/PageTransitionOverlay";
 import { TransitionProvider } from "@/components/TransitionProvider";
 import { siteContent } from "@/content/siteContent";
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <TransitionProvider>
           <PageTransitionOverlay />
           <AuthGate>{children}</AuthGate>
+          <IntroSlides />
         </TransitionProvider>
       </body>
     </html>

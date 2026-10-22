@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createDocument, updateDocument } from "@/lib/storage";
 import { api } from "@/lib/api";
+import { PipelineProgress, ANALYZE_STAGES } from "@/components/PipelineProgress";
 
 interface MaterialUploadProps {
   classId: string;
@@ -17,11 +19,30 @@ export const MaterialUpload = ({
 }: MaterialUploadProps): JSX.Element => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    await processFile(file);
+    // Clear the file input
+    e.target.value = "";
+  };
 
+  // One-click demo for visitors without a lesson file on hand.
+  const handleSample = async () => {
+    setError(null);
+    try {
+      const res = await fetch("/samples/photosynthesis-lesson.txt");
+      if (!res.ok) throw new Error("Couldn't load the sample lesson");
+      const blob = await res.blob();
+      await processFile(new File([blob], "Photosynthesis (sample).txt", { type: "text/plain" }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Couldn't load the sample lesson");
+    }
+  };
+
+  const processFile = async (file: File) => {
     setIsUploading(true);
     setError(null);
 
@@ -57,6 +78,10 @@ export const MaterialUpload = ({
       if (onUploadComplete) {
         onUploadComplete(docId, analyzeResult.metrics);
       }
+
+      // Take the user straight to the analysis; the per-section document lists
+      // are easy to miss on a first visit.
+      router.push(`/class/${classId}/document/${docId}`);
     } catch (err) {
       if (docId) {
         try {
@@ -69,8 +94,6 @@ export const MaterialUpload = ({
       console.error("Upload error:", err);
     } finally {
       setIsUploading(false);
-      // Clear the file input
-      e.target.value = "";
     }
   };
 
@@ -97,7 +120,7 @@ export const MaterialUpload = ({
           {isUploading ? (
             <>
               <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-              <span>Uploading...</span>
+              <span>Analyzing...</span>
             </>
           ) : (
             <>
@@ -109,6 +132,24 @@ export const MaterialUpload = ({
           )}
         </div>
       </label>
+
+      {!isUploading && (
+        <button
+          onClick={handleSample}
+          className="mt-2 w-full text-center font-mono text-[0.62rem] uppercase tracking-[0.16em] text-fg/55 underline-offset-4 transition-colors hover:text-accent hover:underline"
+        >
+          or try a sample lesson
+        </button>
+      )}
+
+      {isUploading && (
+        <div className="mt-3 w-[300px]">
+          <PipelineProgress
+            stages={ANALYZE_STAGES}
+            note="About a minute. Longer if the server is waking up."
+          />
+        </div>
+      )}
 
       {error && (
         <div className="mt-3 overflow-hidden rounded-lg border border-red-500/30 bg-red-500/10 backdrop-blur-xl">

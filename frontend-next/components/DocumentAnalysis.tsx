@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type { AnalysisMetrics, Diagnosis, LessonContent } from "@/lib/api";
+import type { AnalysisMetrics, Diagnosis, LessonContent, OptimizeResult } from "@/lib/api";
 import { api } from "@/lib/api";
 import { updateDocument } from "@/lib/storage";
 import { buildFallbackOptimizedMetrics, getScoreColor, getScoreColorClass } from "@/lib/metrics";
 import { MetricsComparison } from "@/components/MetricsComparison";
+import { PipelineProgress, OPTIMIZE_STAGES } from "@/components/PipelineProgress";
 
 interface DocumentAnalysisProps {
   metrics: AnalysisMetrics;
@@ -125,6 +126,8 @@ export const DocumentAnalysis = ({
 }: DocumentAnalysisProps): JSX.Element => {
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizeError, setOptimizeError] = useState<string | null>(null);
+  // Result of an optimization run in this session (edits aren't persisted).
+  const [lastRun, setLastRun] = useState<OptimizeResult | null>(null);
 
   const handleOptimize = async () => {
     setIsOptimizing(true);
@@ -136,6 +139,7 @@ export const DocumentAnalysis = ({
 
       // Call the optimize API with the lesson content (backend is stateless)
       const result = await api.optimize(content);
+      setLastRun(result);
 
       // Use backend metrics if available, otherwise fallback
       const optimized = result.optimized_metrics
@@ -217,12 +221,15 @@ export const DocumentAnalysis = ({
     <div className="mx-auto w-full max-w-[1280px] px-6 pb-20 sm:px-10">
       {optimizedMetrics ? (
         <>
+          {lastRun && <OptimizationSummary result={lastRun} />}
+
           {/* Side-by-side comparison */}
           <div className="mb-14 mt-10">
             <MetricsComparison
               originalMetrics={metrics}
               optimizedMetrics={optimizedMetrics}
               filename={filename}
+              edits={lastRun?.edits}
             />
           </div>
 
@@ -344,6 +351,14 @@ export const DocumentAnalysis = ({
                 )}
               </span>
             </button>
+            {isOptimizing && (
+              <div className="mt-4 max-w-md">
+                <PipelineProgress
+                  stages={OPTIMIZE_STAGES}
+                  note="Usually 1–2 minutes. Rewrites are only kept if the re-simulated score improves."
+                />
+              </div>
+            )}
             {optimizeError && (
               <div className="mt-3 overflow-hidden rounded-lg border border-red-500/30 bg-red-500/10 backdrop-blur-xl">
                 <div className="px-4 py-2.5 font-mono text-[0.68rem] text-red-400">
@@ -707,6 +722,49 @@ export const DocumentAnalysis = ({
           animation: shimmer 2.5s infinite;
         }
       `}</style>
+    </div>
+  );
+};
+
+const ACTION_LABELS: Record<string, string> = {
+  split_section: "Split section",
+  insert_segment: "Inserted segment",
+  modify_segment: "Rewrote segment",
+};
+
+const OptimizationSummary = ({ result }: { result: OptimizeResult }): JSX.Element => {
+  const edits = result.edits ?? [];
+  const improved = edits.length > 0 && result.improvement > 0;
+  return (
+    <div className="mt-10 rounded-lg border border-fg/12 bg-[#0d0e11] p-6">
+      <div className="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.26em] text-fg/50">
+        Optimization result
+      </div>
+      {improved ? (
+        <>
+          <div className="mb-4 font-mono text-[0.85rem] text-fg/90">
+            Learning score {Math.round(result.original_score)} → {Math.round(result.optimized_score)}{" "}
+            <span className="text-emerald-500">(+{result.improvement.toFixed(1)})</span> after keeping{" "}
+            {edits.length} {edits.length === 1 ? "edit" : "edits"}:
+          </div>
+          <ul className="space-y-2">
+            {edits.map((edit, i) => (
+              <li key={i} className="flex gap-3 font-mono text-[0.7rem] leading-relaxed text-fg/70">
+                <span className="flex-shrink-0 text-accent">
+                  {ACTION_LABELS[edit.action] ?? edit.action} · {edit.target_segment_id.replace("segment_", "§")}
+                </span>
+                <span>{edit.rationale}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <div className="font-mono text-[0.75rem] leading-relaxed text-fg/70">
+          No rewrite beat the original. Each candidate was re-simulated, and none raised the learning
+          score by at least one point, so the lesson was left unchanged. The optimizer only keeps edits
+          that measurably help.
+        </div>
+      )}
     </div>
   );
 };

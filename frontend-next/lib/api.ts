@@ -30,9 +30,17 @@ export interface OptimizeResult {
   optimized_score: number;
   improvement: number;
   iterations: number;
-  // Optional full metrics from backend
-  optimized_metrics?: AnalysisMetrics;
-  original_metrics?: AnalysisMetrics;
+  // Real before/after metrics measured by the simulator
+  optimized_metrics?: AnalysisMetrics | null;
+  original_metrics?: AnalysisMetrics | null;
+  // Edits the optimizer kept (empty when no candidate beat the original)
+  edits?: OptimizationEdit[];
+}
+
+export interface OptimizationEdit {
+  action: string;
+  target_segment_id: string;
+  rationale: string;
 }
 
 // Parsed lesson content returned by the backend. The frontend owns this and
@@ -64,6 +72,13 @@ const WITH_PROTOCOL = /^https?:\/\//.test(RAW_API_BASE) ? RAW_API_BASE : `https:
 const API_BASE = WITH_PROTOCOL.replace(/\/+$/, "");
 
 export const api = {
+  /** Fire-and-forget ping so a spun-down Render instance starts waking up. */
+  wake(): void {
+    fetch(`${API_BASE}/health`).catch(() => {
+      /* backend may still be starting */
+    });
+  },
+
   async upload(file: File): Promise<UploadResult> {
     const formData = new FormData();
     formData.append("file", file);

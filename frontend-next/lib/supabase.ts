@@ -5,9 +5,9 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
-// A single browser client. The Google session is persisted in localStorage,
-// so a signed-in user keeps the same user_id (and their data) across reloads
-// and across devices (identity is tied to their Google account, not the browser).
+// A single browser client. The session is persisted in localStorage, so a
+// visitor keeps the same user_id (and their data) across reloads. Guest data is
+// tied to the browser; Google sign-in ties it to the account across devices.
 export const supabase: SupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     persistSession: true,
@@ -18,9 +18,9 @@ export const supabase: SupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON
 });
 
 /**
- * Returns the current signed-in user id. Throws if there is no session — the
- * app is gated behind Google sign-in (see AuthGate), so data calls only run
- * once a user is authenticated.
+ * Returns the current user id (guest or Google). Throws if there is no session;
+ * AuthGate creates a guest session before rendering the app, so data calls only
+ * run once a user exists.
  */
 export async function ensureAuth(): Promise<string> {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
@@ -35,6 +35,15 @@ export async function ensureAuth(): Promise<string> {
     throw new Error("Not signed in");
   }
   return session.user.id;
+}
+
+/**
+ * Start a guest session. Portfolio visitors get a real (anonymous) user_id so
+ * row-level security still isolates their data, without a sign-up step.
+ */
+export async function signInAsGuest(): Promise<void> {
+  const { error } = await supabase.auth.signInAnonymously();
+  if (error) throw error;
 }
 
 /** Redirect to Google's OAuth consent screen, returning to the current origin. */

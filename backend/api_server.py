@@ -262,20 +262,26 @@ def upload_lesson():
             file_path.unlink()
 
 
+def _metrics_dict(metric_report):
+    """Flatten a MetricReport into the metrics shape the frontend expects."""
+    g = metric_report.global_metrics
+    return {
+        "learning_score": metric_report.learning_score,
+        "engagement": g.engagement,
+        "cognitive_load": g.cognitive_load,
+        "concept_flow": g.concept_flow,
+        "retention": g.retention,
+        "novelty": g.novelty,
+        "information_density": g.information_density,
+        "reinforcement": g.reinforcement,
+        "multimodal_support": g.multimodal_support,
+    }
+
+
 def _run_analysis(lesson):
     """Simulate + diagnose a lesson. Returns (metrics_dict, diagnoses_list)."""
     metric_report = simulator.simulate(lesson)
-    metrics = {
-        "learning_score": metric_report.learning_score,
-        "engagement": metric_report.global_metrics.engagement,
-        "cognitive_load": metric_report.global_metrics.cognitive_load,
-        "concept_flow": metric_report.global_metrics.concept_flow,
-        "retention": metric_report.global_metrics.retention,
-        "novelty": metric_report.global_metrics.novelty,
-        "information_density": metric_report.global_metrics.information_density,
-        "reinforcement": metric_report.global_metrics.reinforcement,
-        "multimodal_support": metric_report.global_metrics.multimodal_support,
-    }
+    metrics = _metrics_dict(metric_report)
     diagnosis_report = diagnostician.diagnose(lesson, metric_report)
     diagnoses = [
         {
@@ -340,12 +346,30 @@ def optimize_lesson_stateless():
             simulator=simulator,
             max_iterations=max_iterations,
             max_candidates=max_candidates,
+            # The optimizer's default 12-segment ceiling silently discards every
+            # candidate for a typical uploaded lesson (parsed into 15-20
+            # segments). Budget growth relative to the lesson instead.
+            max_total_segments=len(lesson.segments) + 3,
         )
+        # Real before/after metrics from the simulator, plus a summary of the
+        # edits that were kept, so the UI never has to estimate an improvement.
+        edits = [
+            {
+                "action": edit.action,
+                "target_segment_id": edit.target_segment_id,
+                "rationale": edit.rationale,
+            }
+            for plan in result.edit_history
+            for edit in plan.edits
+        ]
         return jsonify({
             "original_score": result.original_score,
             "optimized_score": result.best_score,
             "improvement": result.best_score - result.original_score,
             "iterations": result.iterations,
+            "original_metrics": _metrics_dict(result.original_metrics) if result.original_metrics else None,
+            "optimized_metrics": _metrics_dict(result.best_metrics) if result.best_metrics else None,
+            "edits": edits,
             "message": "Optimization complete",
         })
     except Exception as e:
@@ -452,7 +476,8 @@ def optimize_lesson(lesson_id):
             lesson=lesson,
             simulator=simulator,
             max_iterations=max_iterations,
-            max_candidates=max_candidates
+            max_candidates=max_candidates,
+            max_total_segments=len(lesson.segments) + 3,
         )
 
         # Store result
